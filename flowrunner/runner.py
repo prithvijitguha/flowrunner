@@ -7,6 +7,7 @@ from typing import Any
 
 @dataclass
 class FlowRunner:
+    """FlowRunner is a class to run all steps in a flow"""
     module: Any
     graph: DiGraph = field(default_factory=lambda: DiGraph())
     def __post_init__(self):
