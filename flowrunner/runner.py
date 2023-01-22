@@ -10,22 +10,17 @@ class FlowRunner:
     module: Any
     graph: DiGraph = field(default_factory=lambda: DiGraph())
     def __post_init__(self):
-        self.functions = {name: value for name, value in self.module.__dict__.items() if callable(value) and hasattr(value, 'is_step')}
-        self.nodes = [(key, value.next) for key, value in self.functions.items()]
+        self.functions = {name: [value, value.next] for name, value in self.module.__dict__.items() if callable(value) and hasattr(value, 'is_step')}
+
 
     def validate(self):
-        # iterate over functions and check
-        for func_next_tuple in self.nodes:
-            temp_func = func_next_tuple[0]
-            temp_next = func_next_tuple[1]
-            if temp_next not in dir(self.module):
-                click.secho(f"{temp_next} not in module", fg="red")
-            if not hasattr(temp_next, 'is_step'):
-                click.secho(f"{temp_next} not 'step' ", fg="red")
-
-        # if func is module and func is_step
-
-
+        # iterate over functions
+        for key, value in self.functions.items():
+            next = value[1]
+            # check if they are all 'steps'
+            # check if their next is in the dir()
+            if next not in dir(self.module):
+                click.secho(f"Node {next} not in graph")
 
 
     def _traverse_graph(self):
@@ -38,7 +33,7 @@ class FlowRunner:
 
 
 flow = FlowRunner(flow_example)
-#flow.validate()
+flow.validate()
 flow._traverse_graph()
 
 
