@@ -1,4 +1,4 @@
-from flowrunner.data_store import DataStore
+from flowrunner.core.data_store import DataStore
 
 def test_data_store():
     data_store = DataStore()
