@@ -1,8 +1,9 @@
-from decorators import step
+from decorators import step, start, end
 from core.data_store import DataStore
 
 data_store = DataStore()
 
+@start
 @step(next='middle_func')
 def first_func():
     """This function is the start of our workflow
@@ -34,6 +35,7 @@ def model_func():
 
 
 
+@end
 @step
 def end_func():
     """This function is the end where
