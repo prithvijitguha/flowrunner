@@ -15,9 +15,12 @@ class FlowRunner:
         # nodes are a dict of key: value pairs
         # eg. {'example_function': <function example_function at 0x000002DA548CE9D0>,
         self.nodes = {name: value for name, value in self.module.__dict__.items() if callable(value) and hasattr(value, 'is_step')}
+
         # edges are combination of function names we get it from the 'next' value in parameters
         # eg. [('example_function', 'example_second_function'), ('example_second_function', 'example_third_function')]
-        self.edges = [(func_name, actual_func.next) for  func_name, actual_func in  self.nodes.items()]
+        self.edges = [(func_name, actual_func.next) for  func_name, actual_func in  self.nodes.items() if actual_func.next is not None]
+        self.graph.add_nodes_from(self.nodes.keys())
+        self.graph.add_edges_from(self.edges)
 
     def validate(self):
         """Function to validate a FlowRun"""
@@ -46,10 +49,16 @@ class FlowRunner:
                 click.echo("\n")
 
 
-flow = FlowRunner(flow_example)
-flow.validate()
-flow._traverse_graph()
 
+
+flow = FlowRunner(flow_example)
+print(flow.edges)
+print(flow.nodes)
+print(flow.graph)
+#flow.validate()
+print(flow.graph.nodes())
+#flow._traverse_graph()
+for i in flow.graph.adjacency(): print(i)
 
 
 

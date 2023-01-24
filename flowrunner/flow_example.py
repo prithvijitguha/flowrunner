@@ -18,10 +18,20 @@ def middle_func():
     print(data_store.read_data('key'))
     print("hello world middle")
 
+
+@step(next='model_func')
+def another_middle_func():
+    """This function is the middle where we
+    filter + transform stuff"""
+    print(data_store.read_data('key'))
+    print("hello world another middle")
+
 @step(next='end_func')
 def model_func():
     """This function does model training"""
     print("hello world model training")
+
+
 
 
 @step
