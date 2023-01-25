@@ -2,15 +2,6 @@
 from typing import Callable
 from functools import wraps
 
-# def step(func: Callable, next=None) -> Callable:
-#     """This decorator indicates a step in the function"""
-#     func.is_step = True
-#     func.name = func.__name__
-#     func.next = next
-#     return func
-
-
-
 
 def step(function: Callable = None, next: str = None):
     """This decorator indicates a step in the function
