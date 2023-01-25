@@ -1,111 +1,22 @@
 <!DOCTYPE html>
-<html>
-<head>
-<style>
-.box {
-  background-color: lightgrey;
-  width: 300px;
-  border: 15px solid green;
-  padding: 50px;
-  margin: 20px;
-}
-
-/* Pretty Stuff? */
-html {
-  background: #011F2A;
-}
-
-.things > .content {
-  float: left;
-  width: 50%;
-  height: 500px;
-  -webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-  position: relative;
-}
-
-.things > .content h1 {
-  font-family: 'Arial', sans-serif;
-  text-transform: uppercase;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  position: absolute;
-  height: 150px;
-  color: #89323B;
-}
-
-/* Arrow */
-
-.arrow {
-	position: relative;
-  margin: 0 auto;
-  width: 100px;
-}
-
-.arrow .curve {
-	border: 2px solid #BE5F4B;
-	border-color: transparent transparent transparent #BE5F4B;
-	height: 360px;
-	width: 1200px;
-	border-radius: 230px 0 0 150px;
-}
-
-.arrow .point {
-	position: absolute;
-	left: 40px;
-	top: 315px;
-}
-
-.arrow .point:before, .arrow .point:after {
-	border: 1px solid #BE5F4B;
-	height: 25px;
-	content: "";
-	position: absolute;
-}
-
-.arrow .point:before {
-	top: -11px;
-	left: -11px;
-	transform:rotate(-74deg);
-	-webkit-transform:rotate(-74deg);
-  -moz-transform:rotate(-74deg);
-  -ms-transform: rotate(-74deg);
-}
-
-.arrow .point:after {
-  top: -20px;
-	left: 5px;
-	transform:rotate(12deg);
-	-webkit-transform: rotate(12deg);
-  -moz-transform:rotate(12deg);
-  -ms-transform: rotate(12deg);
-}
-</style>
-</head>
-<body>
-
-<h2>Demonstrating the Box Model</h2>
-
-<p>The CSS box model is essentially a box that wraps around every HTML element. It consists of: borders, padding, margins, and the actual content.</p>
-
-<div class="box">This text is the content of the box. We have added a 50px padding, 20px margin and a 15px green border. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-</body>
-
-<div class="things">
-    <div class="content">
-      <div class="arrow">
-        <div class="curve"></div>
-        <div class="point"></div>
-      </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FlowRunner</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+	<!-- use go-debug.js when developing and go.js when deploying -->
+    <script src="https://unpkg.com/gojs/release/go-debug.js"></script>
+    <!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
+     In this case we also add a background color so we can see that area. -->
+    <div id="myDiagramDiv"
+        style="width:400px; height:150px; background-color: #DAE4E4;">
     </div>
-    <div class="content">
-      <h1>Curved Arrow</h1>
-    </div>
-</div>
-
-
+    <script>
+        const myDiagram = new go.Diagram("myDiagramDiv");
+    </script>
+  </body>
 </html>
