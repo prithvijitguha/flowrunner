@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
+<ul>
+  {% for node in nodes %}
+    <li>
+      <em>{{ node }}:</em>
+    </li>
+  {% endfor %}
+</ul>
+<ul>
+{% for edge in edges %}
+  <li>
+    <em>{{ edge }}:</em>
+  </li>
+{% endfor %}
+</ul>
   <script src="https://unpkg.com/gojs@2.2.22/release/go-debug.js"></script>
   <script id="code">
       function init() {
