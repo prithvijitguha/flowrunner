@@ -1,6 +1,6 @@
 """Module for decorators"""
-from typing import Callable
-from functools import wraps
+from typing import Callable, Union
+from functools import wraps, update_wrapper
 
 
 def step(function: Callable = None, next: str = None):
@@ -22,18 +22,32 @@ def step(function: Callable = None, next: str = None):
 
 def start(func: Callable) -> Callable:
     """This decorator indicates the start of a flow"""
-    func.is_step = True
     func.is_start = True
     func.name = func.__name__
     return func
 
 def end(func: Callable) -> Callable:
     """This decorator indicates the end of a flow"""
-    func.is_step = True
     func.is_end = True
     func.name = func.__name__
     return func
 
+class Step:
+    """Step is a decorator class to convert
+    any function to a 'step' function
+    and have a next
+    """
+    def __init__(self, func: Callable, next: Union[str, list, None] = None):
+        func.is_step = True
+        func.next = next
+        func.name = func.__name__
+        self.func = func
+        update_wrapper(self, func)
+
+    def __call__(self, *args, **kwargs):
+        return self.func(*args, **kwargs)
 
 
+def read_output():
+    pass
 

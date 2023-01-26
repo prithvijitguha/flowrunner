@@ -1,99 +1,75 @@
 import flow_example
 import click
 from dataclasses import dataclass, field
-from networkx import DiGraph
+
 from typing import Any
+
 
 @dataclass
 class FlowRunner:
-    """FlowRunner is a class to run all steps in a flow"""
+    """FlowRunner is a class to run all steps in a flow
+    Attributes:
+        graph: A list of graph
+        index: A dictionary containing the index and
+
+    """
+
     module: Any
-    graph: DiGraph = field(default_factory=lambda: DiGraph())
-    nodes: dict = field(default_factory=lambda: dict() )
-    start: dict = field(default_factory=lambda: dict() )
-    end: dict = field(default_factory=lambda: dict() )
+    # [
+    #   {'first_function': ['next_func1', 'next_func2'],}
+    #   {'next_func1': ['next_func3'], 'next_func2' : ['next_func4', 'next_func5']}
+    #   {'next_func1': ['next_func3'], 'next_func2' : ['next_func4', 'next_func5']}
+    # ]
+    graph: list = field(default_factory=lambda: list())
+    index: dict = field(default_factory=lambda: dict())
+    nodes: list = field(default_factory=lambda: list())
+    start: list = field(default_factory=lambda: list())
+    end: list = field(default_factory=lambda: list())
+    node_func_map: dict = field(default_factory=lambda: dict())
+
     def __post_init__(self):
         """This function is to setup the nodes
         and edges for the graph"""
-        # nodes are a dict of key: value pairs
-        # eg. {'example_function': <function example_function at 0x000002DA548CE9D0>,
+        # get the values for nodes list
+        # get the start and end nodes list
         for name, value in self.module.__dict__.items():
-            if callable(value) and hasattr(value, 'is_step'):
-                self.nodes[name] = value
-            if callable(value) and hasattr(value, 'is_start'):
-                self.start[name] = value
-            if callable(value) and hasattr(value, 'is_end'):
-                self.end[name] = value
-
-
-
-        # edges are combination of function names we get it from the 'next' value in parameters
-        # eg. [('example_function', 'example_second_function'), ('example_second_function', 'example_third_function')]
-        self.edges = [(func_name, actual_func.next) for  func_name, actual_func in  self.nodes.items() if actual_func.next is not None]
-        self.graph.add_nodes_from(self.nodes.keys())
-        self.graph.add_edges_from(self.edges)
-
-    def validate(self):
-        """Function to validate a FlowRun"""
-        # iterate over functions
-        # we only need to check for the second value in tuple
-        # since the first value we get from the actual function itself
-        for edge in self.edges:
-            current = edge[0]
-            next = edge[1]
-            # check if they are all 'steps'
-            # check if their next is in the dir()
-            if next not in dir(self.module) and not self.nodes[current].is_end:
-                click.secho(f"Node: {next} not in graph", fg='magenta')
-
-        # check how many start functions
-        count_start = len(self.start.keys())
-        # check how many end
-        count_end = len(self.end.keys())
-
-        # check if count is zero mention we need a start
-        if count_start == 0:
-            click.secho("No start function present in flow", fg='magenta')
-        # if len is more 1 mention we need only 1
-        if count_start > 1:
-            click.secho("Only 1 start function allowed", fg='magenta')
-        # check if count of end is zero mention we need an end function
-        if count_end == 0:
-            click.secho("No end function present in flow", fg='magenta')
-       # if len is more 1 mention we need only 1 end function
-        if count_end > 1:
-            click.secho("Only 1 end function allowed", fg='magenta')
-
+            if callable(value):
+                if hasattr(value, "is_step"):
+                    self.nodes.append(name)
+                if hasattr(value, "is_start"):
+                    self.start.append(name)
+                if hasattr(value, "is_end"):
+                    self.end.append(name)
+            # store the name of the function against the actual reference of the function in a dict
+            self.node_func_map[name] = value
 
     def _traverse_graph(self):
         """Function to traverse the graph"""
         # add all the edges to the graph
-        # self.graph.add_edges_from(self.edges)
-        # print(self.graph)
         for value in self.module.__dict__.values():
-            if callable(value) and hasattr(value, 'is_step'):
+            if callable(value) and hasattr(value, "is_step"):
                 # check the next value and add it as edge
-                click.secho(value.name, fg='green')
-                click.secho(value.__doc__, fg='bright_red')
-                click.secho(f"Next Callable: {value.next}", fg='blue')
-                click.echo("\n")
+                click.secho(value.name, fg="green")
+                click.secho(value.__doc__, fg="bright_red")
+                click.secho(f"==>Next Callable: {value.next}\n", fg="blue")
 
-    def _traverse_graph(self):
+    def _create_graph(self):
+        # {
+        #   'first_func': ['next_func1', 'next_func2']
+        # }
         # start will always be the start
+        # self.graph.append()
         # [0: [], ,-1:[]]
         # find the next of start
-        # iterate over all the function in the module
+        # assign the index
+        # assign the node
+        # assign the edges
+        # append to after list
         # end will always be the end
-
-
-
+        pass
 
 
 flow = FlowRunner(flow_example)
-flow.validate()
+# flow.validate()
+flow._create_graph()
 flow._traverse_graph()
-
-
-
-
-
