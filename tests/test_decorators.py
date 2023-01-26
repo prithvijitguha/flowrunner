@@ -2,11 +2,14 @@ from flowrunner.decorators import step, start, end, Step
 import pytest
 
 @pytest.fixture
+@step(next=['Test'])
 def test_function():
     return None
 
+
 @pytest.fixture
-def test_function():
+@Step
+def test_function_class():
     return None
 
 
@@ -31,6 +34,15 @@ def test_step():
     assert hasattr(test_function, 'is_step')
     assert test_function.name == test_function.__name__
     assert test_function.is_step == True
+
+@pytest.mark.skip(reason="no way of currently testing this")
+def test_step_class():
+    """A function to check where the step decorator works as required"""
+    assert hasattr(test_function_class, 'name')
+    assert hasattr(test_function_class, 'next')
+    assert hasattr(test_function_class, 'is_step')
+    assert test_function_class.name == test_function_class.__name__
+    assert test_function_class.is_step == True
 
 
 

@@ -99,6 +99,11 @@ class Graph:
         # end will always be the end
         pass
 
+    @staticmethod
+    def _create_node():
+
+
+
 
 
 class Run:
