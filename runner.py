@@ -11,6 +11,6 @@ graph = Graph(
     node_func_map=graph_options.node_func_map
     )
 
-graph
+graph._create_graph()
 
 

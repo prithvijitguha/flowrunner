@@ -59,6 +59,14 @@ class Graph:
     graph: list = field(default_factory=lambda: list())
     index: dict = field(default_factory=lambda: dict())
 
+    # graph = # [
+    #   1st Level
+    #   {'first_function': ['next_func1', 'next_func2'],}
+    #   2nd Level
+    #   {'next_func1': ['next_func3'], 'next_func2' : ['next_func4', 'next_func5']}
+    #   3rd Level
+    #   {'next_func1': ['next_func3'], 'next_func2' : ['next_func4', 'next_func5']}
+    # ]
     def _traverse_graph(self):
         """Function to traverse the graph"""
         # add all the edges to the graph
@@ -75,14 +83,7 @@ class Graph:
             # iterate over function
                 # echo function
                 # echo next
-        # graph = # [
-        #   1st Level
-        #   {'first_function': ['next_func1', 'next_func2'],}
-        #   2nd Level
-        #   {'next_func1': ['next_func3'], 'next_func2' : ['next_func4', 'next_func5']}
-        #   3rd Level
-        #   {'next_func1': ['next_func3'], 'next_func2' : ['next_func4', 'next_func5']}
-        # ]
+
 
 
     def _create_graph(self):
@@ -90,6 +91,9 @@ class Graph:
         # iterate over nodes in start
             # for each of them get their next value through node_func_map
             # add the next as list value
+        for node in self.start:
+            actual_func = self.node_func_map[node]
+            self.graph.append(self._create_graph_node(actual_func))
         # [0: [], ,-1:[]]
         # find the next of start
         # assign the index
@@ -99,9 +103,25 @@ class Graph:
         # end will always be the end
         pass
 
-    @staticmethod
-    def _create_node():
+    def validate_graph(self):
+        """This method should make sure
+        that the graph is valid
 
+        Scenarios to check:
+        - next is None and that function is not @end
+        - next is not present in list of functions
+        - start function is present as a next function
+        """
+        pass
+
+    @staticmethod
+    def _create_graph_node(func):
+        """Static method to create
+        nodes for graph"""
+        if isinstance(func.next, list):
+            return {func.name: [func for func in func.next]}
+        else:
+            return {func.name: func.next}
 
 
 
