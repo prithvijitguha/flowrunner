@@ -94,14 +94,10 @@ class Graph:
         for node in self.start:
             actual_func = self.node_func_map[node]
             self.graph.append(self._create_graph_node(actual_func))
-        # [0: [], ,-1:[]]
-        # find the next of start
-        # assign the index
-        # assign the node
-        # assign the edges
-        # append to after list
-        # end will always be the end
-        pass
+        # traversing the graph
+        # for each of the next in self.graph
+        # while their next is not None
+            # for next in
 
     def validate_graph(self):
         """This method should make sure
