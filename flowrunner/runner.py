@@ -78,6 +78,13 @@ class FlowRunner:
                 click.secho(f"Next Callable: {value.next}", fg='blue')
                 click.echo("\n")
 
+    def _traverse_graph(self):
+        # start will always be the start
+        # [0: [], ,-1:[]]
+        # find the next of start
+        # iterate over all the function in the module
+        # end will always be the end
+
 
 
 
