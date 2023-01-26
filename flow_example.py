@@ -1,5 +1,5 @@
-from decorators import step, start, end, read_output
-from core.data_store import DataStore
+from flowrunner.decorators import step, start, end, read_output
+from flowrunner.core.data_store import DataStore
 
 data_store = DataStore()
 
