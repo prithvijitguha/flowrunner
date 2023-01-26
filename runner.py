@@ -1,5 +1,5 @@
 import flow_example
-from flowrunner.core.graph import GraphOptions, Graph
+from flowrunner.core.graph import GraphOptions, Graph, run_flow
 
 
 graph_options = GraphOptions(flow_example)

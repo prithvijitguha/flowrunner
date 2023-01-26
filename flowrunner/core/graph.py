@@ -126,5 +126,5 @@ class Graph:
 
 
 
-class Run:
+def run_flow():
     pass
