@@ -41,7 +41,11 @@ class GraphOptions:
         repr_string = "Nodes=[" + ", ".join([i for i in self.nodes]) + "]"
         return repr_string
 
-
+@dataclass
+class Node:
+    """A class that contains the node object"""
+    name: str
+    function_reference: callable
 
 
 @dataclass
@@ -88,16 +92,20 @@ class Graph:
 
     def _create_graph(self):
         # start will always be the start
+        #start_nodeself.start
+        next_node_list = None
         # iterate over nodes in start
+        current_node = []
+        for node in self.start:
+            temp_next = self.node_func_map[node].next
+            next_node_list.append(*temp_next,)
+        print(current_node)
             # for each of them get their next value through node_func_map
             # add the next as list value
-        for node in self.start:
-            actual_func = self.node_func_map[node]
-            self.graph.append(self._create_graph_node(actual_func))
-        # traversing the graph
         # for each of the next in self.graph
         # while their next is not None
             # for next in
+        pass
 
     def validate_graph(self):
         """This method should make sure
