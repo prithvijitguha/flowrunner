@@ -14,10 +14,38 @@ class Node:
     """
     name: str
     function_reference: callable
-    next: list = field(default_factory=lambda: list())
+
+    def __post_init__(self):
+        """In post init we get the next node if
+        it is there"""
+        # if next has value
+        if self.function_reference.next:
+            if isinstance(self.function_reference.next, list):
+                # we do a check to see that all elements in the list
+                # are a string
+                element_types = [type(element) for element in self.function_reference.next]
+                elements_unique = list(set(element_types))
+                # we make sure that the types are uniform
+                # if the len of the set is more than 1 then we raise an error
+                if len(elements_unique) > 1:
+                    raise TypeError(f"More than 1 type of element found, next can be str or list of str, found: {elements_unique}")
+                # if all the elements are uniform, we make sure that
+                # they are all of string type
+                if isinstance(type(elements_unique[0]), str):
+                    raise TypeError(f"'next' value can only be 'list of str' or 'str', found: {type(elements_unique[0])}")
+                # then we assign the next
+                self.next = self.function_reference.next
+            elif isinstance(self.function_reference.next, str):
+                # we make sure that the next is put in a list
+                self.next = [self.function_reference.next]
+        else:
+            self.next = []
 
     def __repr__(self):
         return self.name
+
+    def __hash__(self):
+        return hash(self.name)
 
 # class to handle the seperation of functions
 @dataclass
@@ -84,13 +112,13 @@ class Graph:
             self.nodes
             self.node_map: A dict with names of functions as keys and Node object as value.
             This makes it easy to pick up the node from the name
-
         """
         self.start = self.graph_options.start
         self.middle_nodes = self.graph_options.middle_nodes
         self.end = self.graph_options.end
         self.nodes = self.start + self.middle_nodes + self.end
         self.node_map = {node.name: node for node in self.nodes}
+        self.levels = []
 
 
     def validate_graph(self):
@@ -112,17 +140,25 @@ class Graph:
         """
         # create temp_node = start
         temp_level = self.start
-        print(temp_level)
+
+        self.levels.append(temp_level) # add temp level to 'self.levels'
+
         # while loop for when temp_level is not empty
-        while not temp_level:
+        while temp_level:
             next_level = []
             # iterate through temp node
-            for node in temp_level:
-                next = node.function_reference.next
             # find the next of each
-            # assign that next as node.next of current node
-            # put each of those a new list
-            # now that new list is temp_level
+            for node in temp_level:
+                # we iterate through the list of 'node.next' and
+                # using the 'self.node_map' we find the Node
+                next = [self.node_map[next_node] for next_node in node.next]
+                # add the next to the list
+                next_level += next
+            next_level = list(set(next_level))# we make sure the nodes in the level are unique
+            if not next_level:
+                break
+            self.levels.append(next_level)
+            temp_level = next_level
 
     def generate_html(self):
         """A method to generate the html page"""
