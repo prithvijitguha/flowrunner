@@ -74,6 +74,11 @@ class GraphOptions:
         # if list of functions directly iterate over them
         elif isinstance(self.module, list):
             self.functions = {func.__name__: func for func in  self.module}
+        # manage if BaseFlow type
+        elif issubclass(self.module, BaseFlow):
+            print("is baseflow")
+            self.functions = [method for method in dir(self.module) if callable(getattr(self.module, method))]
+
         # iterate over list of functions
         # find the start
         # find the end
@@ -173,11 +178,7 @@ class Graph:
         """A method to run the graph
         To run the flow we iterate over 'self.levels'
         and we call each function"""
-        for level in self.levels:
-            for node in level:
-                function_output = node.function_reference()
-                _datastore[node.name] = function_output
-
+        pass
 
 
 
@@ -187,3 +188,10 @@ class BaseFlow:
     def read_output(self, method_name: str):
         """Method to read output of another method"""
         pass
+
+    def run_flow(self):
+        """Method to run flow"""
+        pass
+        # get a list of all methods in a class
+        # pass that to the GraphOptions class
+        #
