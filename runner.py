@@ -3,14 +3,13 @@ from flowrunner.core.graph import GraphOptions, Graph, run_flow
 
 
 graph_options = GraphOptions(flow_example)
-print(graph_options)
-graph = Graph(
-    nodes=graph_options.nodes,
-    start=graph_options.start,
-    end=graph_options.end,
-    node_func_map=graph_options.node_func_map
-    )
+#print(graph_options)
 
-graph._create_graph()
+graph = Graph(graph_options=graph_options)
+
+graph._arrange_graph()
+
+
+#graph._traverse_graph()
 
 

@@ -1,9 +1,10 @@
 """Module for decorators"""
-from typing import Callable, Union
+from typing import Callable, Union, List
 from functools import wraps, update_wrapper
+from flowrunner.core.graph import Node
 
 
-def step(function: Callable = None, next: str = None):
+def step(function: Callable = None, next: Union[List, str] = None):
     """This decorator indicates a step in the function
     We add a 3 attributes to it is_step, name, next"""
     def _step(f):
