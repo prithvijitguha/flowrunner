@@ -2,8 +2,6 @@ from flowrunner.decorators import step, start, end
 from flowrunner.core.graph import BaseFlow
 
 
-
-
 class FlowExample(BaseFlow):
     @start
     @step(next=['middle_func', 'another_middle_func'])
@@ -42,6 +40,6 @@ class FlowExample(BaseFlow):
         """This function is the end where
         we write data into a table"""
         final_value = self.read_output('model_func')
-        print(final_value)
         return final_value
+
 

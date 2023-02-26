@@ -1,6 +1,9 @@
 from dataclasses import dataclass, field
 from flowrunner.core.data_store import _DataStore
+from flowrunner.system.logger import logger
 from typing import Any
+
+import click
 
 
 _datastore = _DataStore()
@@ -74,10 +77,6 @@ class GraphOptions:
         # if list of functions directly iterate over them
         elif isinstance(self.module, list):
             self.functions = {func.__name__: func for func in  self.module}
-        # manage if BaseFlow type
-        elif issubclass(self.module, BaseFlow):
-            print("is baseflow")
-            self.functions = [method for method in dir(self.module) if callable(getattr(self.module, method))]
 
         # iterate over list of functions
         # find the start
@@ -102,7 +101,7 @@ class GraphOptions:
 
 @dataclass
 class Graph:
-    """FlowRunner is a class to run all steps in a flow
+    """Graph is a class that stores the graph object, classify nodes
     Attributes:
         graph: A list of graph
         index: A dictionary containing the index and
@@ -134,13 +133,39 @@ class Graph:
         - There should be atleast 1 middle
         - All start nodes have a next value
         - All middle nodes have a next value
+        - No end nodes have a next value
         - Any step that is not a next for any function
         - Any start function that is mentioned in another next
-        - An end that has a next value
-        - Validate each node
+        - Validate each node, makes sure it has a return statement at the end
         """
-        pass
-
+        # validating start nodes
+        if len(self.start) == 0:
+            click.secho("No start nodes present, please specify with '@start'", fg='bright_red')
+        click.secho(f"✓ Start node present...",fg='green')
+        # validating end nodes
+        if len(self.end) == 0:
+            click.secho("No end nodes present, please specify with '@end'", fg='bright_red')
+        click.secho(f"✓ Middle nodes present...", fg='green')
+        # validating middle nodes
+        if len(self.middle_nodes) == 0:
+            click.secho("No middle nodes present, please specify with '@step' and without '@start' or '@end'", fg='bright_red')
+        click.secho(f"✓ End nodes present...", fg='green')
+        # validating middle nodes
+        # All start nodes have a next value
+        for start_node in self.start:
+            if not start_node.function_reference.next:
+                click.secho(f"Node {start_node.name} does not have next", fg='bright_red')
+        click.secho(f"✓ All start nodes have next...", fg='green')
+        # All middle nodes have a next value
+        for middle_node in self.middle_nodes:
+            if not middle_node.function_reference.next:
+                click.secho(f"Node {middle_node.name} does not have next", fg='bright_red')
+        click.secho(f"✓ All middle nodes have next...", fg='green')
+        # No end nodes have a next value
+        for end_node in self.end:
+            if end_node.function_reference.next:
+                click.secho(f"Node {end_node.name} has next, '@end' node cannot have a 'next'", fg='bright_red')
+        click.secho(f"✓ All end nodes do not have a next...", fg='green')
 
     def _arrange_graph(self):
         """Method to traverse graph and arrange into
@@ -174,24 +199,56 @@ class Graph:
         """A method to generate the html page"""
         pass
 
-    def run_flow(self):
-        """A method to run the graph
-        To run the flow we iterate over 'self.levels'
-        and we call each function"""
+
+@dataclass
+class GraphValidator:
+    """This class is used to validate any Graph
+    It checks for the following:
+    - There should be atleast 1 start
+    - There should be atleast 1 end
+    - There should be atleast 1 middle
+    - All start nodes have a next value
+    - All middle nodes have a next value
+    - No end nodes have a next value
+    - Any step that is not a next for any function
+    - Any start function that is mentioned in another next
+    - Validate each node, makes sure it has a return statement at the end
+    """
+    graph: Graph
+
+    def validate_start_nodes(self):
         pass
+
+    def run_validations(self):
+        self.validate_start_nodes()
+
 
 
 
 
 @dataclass
 class BaseFlow:
-    def read_output(self, method_name: str):
+    @classmethod
+    def read_output(cls, method_name: str):
         """Method to read output of another method"""
         pass
 
-    def run_flow(self):
-        """Method to run flow"""
-        pass
+    @classmethod
+    def run_flow(cls):
+        """Class Method to run flow"""
+        graph_options = GraphOptions(cls)
+        graph = Graph(graph_options=graph_options)
+        graph.validate_graph()
+        graph._arrange_graph()
+
+    @classmethod
+    def validate_flow(cls):
+        """Class method to validate the graph"""
+        graph_options = GraphOptions(cls)
+        graph = Graph(graph_options=graph_options)
+        graph.validate_graph()
+
+
         # get a list of all methods in a class
         # pass that to the GraphOptions class
         #
