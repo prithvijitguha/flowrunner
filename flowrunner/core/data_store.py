@@ -5,11 +5,11 @@ from typing import Dict
 # Data Store will be a class which to handle all data passing between steps
 # instance is always a plain dict
 @dataclass
-class _DataStore:
+class DataStore:
     """Attributes
-    data_store: A dict
+    data: A dict with key of function name and value of output
     """
-    pass
+    data: dict = field(default_factory=lambda: dict())
 
 
 

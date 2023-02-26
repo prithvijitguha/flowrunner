@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from flowrunner.core.data_store import _DataStore
+from flowrunner.core.data_store import DataStore
 from flowrunner.system.logger import logger
 from flowrunner.system.exceptions import InvalidFlowException
 from typing import Any
@@ -7,7 +7,7 @@ from typing import Any
 import click
 
 
-_datastore = _DataStore()
+datastore = DataStore()
 
 @dataclass
 class Node:
@@ -283,10 +283,11 @@ class GraphValidator:
 
 @dataclass
 class BaseFlow:
+    data_store: DataStore = field(default_factory=lambda: DataStore())
     @classmethod
     def read_output(cls, method_name: str):
         """Method to read output of another method"""
-        pass
+        return datastore.data[method_name] # we return the output the method
 
     @classmethod
     def validate_flow(cls):
@@ -309,5 +310,12 @@ class BaseFlow:
         graph_options = GraphOptions(cls)
         graph = Graph(graph_options=graph_options)
         graph._arrange_graph()
+        # we iterate through the functions level wise and we store the
+        # output into a datastore
+        for level in graph.levels:
+            for node in level:
+                datastore.data[node.name] = node.function_reference()
+
+
 
 

@@ -5,7 +5,7 @@ from flowrunner.core.graph import BaseFlow
 class FlowExample(BaseFlow):
     @start
     @step(next=['middle_func', 'another_middle_func'])
-    def first_func():
+    def first_func(self):
         """This function is the start of our workflow
         where we extract 3 dataframes"""
         x = 2
