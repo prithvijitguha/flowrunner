@@ -13,7 +13,7 @@ requires-python = ">=3.7"
 keywords = ["one", "two"]
 license = {text = "BSD-3-Clause"}
 classifiers = [
-    "Framework :: Tardis-flow",
+    "Framework :: FlowRunner",
     "Programming Language :: Python :: 3",
 ]
 dependencies = [

@@ -11,4 +11,3 @@ coloredlogs.install(level='DEBUG')
 # specific logger object to the install() function. In this case only log
 # messages originating from that logger will show up on the terminal.
 coloredlogs.install(level='DEBUG', logger=logger)
-

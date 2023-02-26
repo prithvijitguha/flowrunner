@@ -21,7 +21,8 @@ filename = f"flowchart_{flow_example.__name__}.html"
 logger.debug("Saving file: %s", filename)
 content = template.render(
     nodes=flow.nodes,
-    edges=flow.edges
+    edges=flow.edges,
+    flow_name=flow_example.__name__
 )
 with open(filename, mode="w", encoding="utf-8") as message:
     message.write(content)
