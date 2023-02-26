@@ -168,8 +168,11 @@ class Graph:
         pass
 
     def run_flow(self):
-        """A method to run the graph"""
-        pass
+        """A method to run the graph
+        To run the flow we iterate over 'self.levels'
+        and we call each function"""
+        for level in self.levels:
+            [node.function_reference() for node in level]
 
 
 

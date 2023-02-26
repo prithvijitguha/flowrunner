@@ -13,7 +13,7 @@ def first_func():
 
 @start
 @step(next='another_middle_func')
-def middle_func(data_store):
+def middle_func():
     """This function is the middle where we
     filter + transform stuff"""
     value_from_first = data_store["first_func"]
@@ -22,7 +22,7 @@ def middle_func(data_store):
 
 
 @step(next='model_func')
-def another_middle_func(data_store):
+def another_middle_func():
     """This function is the middle where we
     filter + transform stuff"""
     value_from_first = read_output('first_func')

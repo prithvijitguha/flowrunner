@@ -10,7 +10,7 @@ graph = Graph(graph_options=graph_options)
 
 graph._arrange_graph()
 
-
+graph.run_flow()
 #graph._traverse_graph()
 
 
