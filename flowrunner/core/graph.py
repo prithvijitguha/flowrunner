@@ -234,21 +234,16 @@ class BaseFlow:
         pass
 
     @classmethod
-    def run_flow(cls):
-        """Class Method to run flow"""
-        graph_options = GraphOptions(cls)
-        graph = Graph(graph_options=graph_options)
-        graph.validate_graph()
-        graph._arrange_graph()
-
-    @classmethod
     def validate_flow(cls):
         """Class method to validate the graph"""
         graph_options = GraphOptions(cls)
         graph = Graph(graph_options=graph_options)
-        graph.validate_graph()
+        GraphValidator(graph).run_validations()
 
+    @classmethod
+    def run_flow(cls):
+        """Class Method to run flow"""
+        graph_options = GraphOptions(cls)
+        graph = Graph(graph_options=graph_options)
+        graph._arrange_graph()
 
-        # get a list of all methods in a class
-        # pass that to the GraphOptions class
-        #
