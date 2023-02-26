@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from flowrunner.core.data_store import _DataStore
 from flowrunner.system.logger import logger
+from flowrunner.system.exceptions import InvalidFlowException
 from typing import Any
 
 import click
@@ -157,48 +158,6 @@ class Graph:
         """A method to generate the html page"""
         pass
 
-    def validate_graph_base(self):
-        """Method to validate any graph. Things to check for
-        - There should be atleast 1 start
-        - There should be atleast 1 end
-        - There should be atleast 1 middle
-        - All start nodes have a next value
-        - All middle nodes have a next value
-        - No end nodes have a next value
-        - Any step that is not a next for any function
-        - Any start function that is mentioned in another next
-        - Validate each node, makes sure it has a return statement at the end
-        """
-        # validating start nodes
-        if len(self.start) == 0:
-            click.secho("No start nodes present, please specify with '@start'", fg='bright_red')
-        click.secho(f"✓ Start node present...",fg='green')
-        # validating end nodes
-        if len(self.end) == 0:
-            click.secho("No end nodes present, please specify with '@end'", fg='bright_red')
-        click.secho(f"✓ Middle nodes present...", fg='green')
-        # validating middle nodes
-        if len(self.middle_nodes) == 0:
-            click.secho("No middle nodes present, please specify with '@step' and without '@start' or '@end'", fg='bright_red')
-        click.secho(f"✓ End nodes present...", fg='green')
-        # validating middle nodes
-        # All start nodes have a next value
-        for start_node in self.start:
-            if not start_node.function_reference.next:
-                click.secho(f"Node {start_node.name} does not have next", fg='bright_red')
-        click.secho(f"✓ All start nodes have next...", fg='green')
-        # All middle nodes have a next value
-        for middle_node in self.middle_nodes:
-            if not middle_node.function_reference.next:
-                click.secho(f"Node {middle_node.name} does not have next", fg='bright_red')
-        click.secho(f"✓ All middle nodes have next...", fg='green')
-        # No end nodes have a next value
-        for end_node in self.end:
-            if end_node.function_reference.next:
-                click.secho(f"Node {end_node.name} has next, '@end' node cannot have a 'next'", fg='bright_red')
-        click.secho(f"✓ All end nodes do not have a next...", fg='green')
-
-
 @dataclass
 class GraphValidator:
     """This class is used to validate any Graph
@@ -215,30 +174,109 @@ class GraphValidator:
     """
     graph: Graph
 
-    def validate_start_nodes(self):
+    def validate_length_start_nodes(self) -> tuple[bool, str]:
         # check that the len of start is more than 1
         if len(self.graph.start) == 0:
-            click.secho("❌ No start nodes present, please specify with '@start'", fg='bright_red')
+            return (False, "No start nodes present, please specify with '@start'")
+        return (True, "Validated number of start nodes")
+
+    def validate_start_next_nodes(self) -> tuple[bool, str]:
         # check that all the start have a next value
         # All start nodes have a next value
+        bad_start_nodes = []
         for start_node in self.graph.start:
             if not start_node.function_reference.next:
-                click.secho(f"❌ Node {start_node.name} does not have next", fg='bright_red')
+                bad_start_nodes.append(start_node.name)
+        if bad_start_nodes:
+            return (False, f"Nodes {bad_start_nodes} do not have next")
+        return (True, "Validated start nodes 'next' values")
 
-    def validate_middle_nodes(self):
-        pass
-        # check that the len of middle nodes  is more than 1
-        # check that all the middle nodes have a next value
+    def validate_length_middle_nodes(self) -> tuple[bool, str]:
+        # check that the len of start is more than 1
+        if len(self.graph.middle_nodes) == 0:
+            return (False, "No middle_nodes present, please specify with '@step' and without '@start' or '@end'")
+        return (True, "Validate number of middle_nodes")
 
-    def validate_end_nodes(self):
-        pass
-        # check that the len of end is more than 1
-        # check that all the end do not have a next value
+    def validate_middle_next_nodes(self) -> tuple[bool, str]:
+        # check that all the start have a next value
+        # All start nodes have a next value
+        bad_middle_nodes = []
+        for middle_node in self.graph.middle_nodes:
+            if not middle_node.function_reference.next:
+                bad_middle_nodes.append(middle_node.name) # append the node to bad nodes for later
+        # if bad nodes has a length then we assume a failure
+        if bad_middle_nodes:
+            return (False, f"Nodes {bad_middle_nodes} do not have next")
+        return (True, "Validated middle_nodes 'next' values")
+
+
+    def validate_length_end_nodes(self) -> tuple[bool, str]:
+        # check that the len of start is more than 1
+        if len(self.graph.end) == 0:
+            return (False, "No end present, please specify with '@end'")
+        return (True, "Validated end nodes")
+
+    def validate_end_nodes_no_next(self) -> tuple[bool, str]:
+        # check that all the start have a next value
+        # All start nodes have a next value
+        bad_end_nodes = []
+        for end_node in self.graph.end:
+            if end_node.function_reference.next:
+                bad_end_nodes.append(end_node.name)
+        if bad_end_nodes:
+            return (False, f"Nodes {bad_end_nodes} have next, end nodes cannot have 'next' value")
+        return (True, "Validated start nodes 'next' values")
+
+    def get_validation_suite(self):
+
+        validation_suite = [
+            self.validate_length_start_nodes,
+            self.validate_start_next_nodes,
+            self.validate_length_middle_nodes,
+            self.validate_middle_next_nodes,
+            self.validate_length_end_nodes,
+            self.validate_end_nodes_no_next,
+        ]
+        return validation_suite
 
 
     def run_validations(self):
-        """Method to run all validation methods"""
-        self.validate_start_nodes()
+        """Method to run all validation methods
+        We iterate through the validation suite for each method and check
+        the output. Output is always in the form of Tuple[bool, str]. With bool for Pass or
+        Fail and str being the output message
+        """
+        validation_suite = self.get_validation_suite()
+
+        # iterate through the list of validations
+        for validation in validation_suite:
+            result, message = validation() # run the validation and check the output
+            if result == True:
+                click.secho(f"✅ {message}", fg="green")
+            elif result == False:
+                click.secho(f"❌ {message}", fg="bright_red")
+
+    def run_validations_raise_error(self):
+        """Method to run all validation methods but we raise an error if anything fails
+        We iterate through the validation suite for each method and check
+        the output. Output is always in the form of Tuple[bool, str]. With bool for Pass or
+        Fail and str being the output message
+        """
+        validation_suite = self.get_validation_suite()
+
+        validation_output = [] # a list to store the values of the output
+
+        # iterate through the list of validations
+        for validation in validation_suite:
+            result, message = validation() # run the validation and check the output
+            validation_output.append(result)
+            if result == True:
+                click.secho(f"✅ {message}", fg="green")
+            elif result == False:
+                click.secho(f"❌ {message}", fg="bright_red")
+
+        if all(validation_output) != True:
+            raise InvalidFlowException("Invalid Flow detected")
 
 
 
@@ -257,10 +295,19 @@ class BaseFlow:
         graph = Graph(graph_options=graph_options)
         GraphValidator(graph).run_validations()
 
+
+    @classmethod
+    def validate_flow_with_error(cls):
+        """Class method to validate the graph"""
+        graph_options = GraphOptions(cls)
+        graph = Graph(graph_options=graph_options)
+        GraphValidator(graph).run_validations_raise_error()
+
     @classmethod
     def run_flow(cls):
         """Class Method to run flow"""
         graph_options = GraphOptions(cls)
         graph = Graph(graph_options=graph_options)
         graph._arrange_graph()
+
 

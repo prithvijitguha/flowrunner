@@ -1,0 +1,4 @@
+
+
+class InvalidFlowException(Exception):
+    pass

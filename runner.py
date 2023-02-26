@@ -16,7 +16,7 @@ from flowrunner.core.graph import GraphOptions, Graph
 #graph._traverse_graph()
 
 FlowExample().validate_flow()
-
+FlowExample().validate_flow_with_error()
 #FlowExample().run_flow()
 
 
