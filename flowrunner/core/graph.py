@@ -157,6 +157,47 @@ class Graph:
         """A method to generate the html page"""
         pass
 
+    def validate_graph_base(self):
+        """Method to validate any graph. Things to check for
+        - There should be atleast 1 start
+        - There should be atleast 1 end
+        - There should be atleast 1 middle
+        - All start nodes have a next value
+        - All middle nodes have a next value
+        - No end nodes have a next value
+        - Any step that is not a next for any function
+        - Any start function that is mentioned in another next
+        - Validate each node, makes sure it has a return statement at the end
+        """
+        # validating start nodes
+        if len(self.start) == 0:
+            click.secho("No start nodes present, please specify with '@start'", fg='bright_red')
+        click.secho(f"✓ Start node present...",fg='green')
+        # validating end nodes
+        if len(self.end) == 0:
+            click.secho("No end nodes present, please specify with '@end'", fg='bright_red')
+        click.secho(f"✓ Middle nodes present...", fg='green')
+        # validating middle nodes
+        if len(self.middle_nodes) == 0:
+            click.secho("No middle nodes present, please specify with '@step' and without '@start' or '@end'", fg='bright_red')
+        click.secho(f"✓ End nodes present...", fg='green')
+        # validating middle nodes
+        # All start nodes have a next value
+        for start_node in self.start:
+            if not start_node.function_reference.next:
+                click.secho(f"Node {start_node.name} does not have next", fg='bright_red')
+        click.secho(f"✓ All start nodes have next...", fg='green')
+        # All middle nodes have a next value
+        for middle_node in self.middle_nodes:
+            if not middle_node.function_reference.next:
+                click.secho(f"Node {middle_node.name} does not have next", fg='bright_red')
+        click.secho(f"✓ All middle nodes have next...", fg='green')
+        # No end nodes have a next value
+        for end_node in self.end:
+            if end_node.function_reference.next:
+                click.secho(f"Node {end_node.name} has next, '@end' node cannot have a 'next'", fg='bright_red')
+        click.secho(f"✓ All end nodes do not have a next...", fg='green')
+
 
 @dataclass
 class GraphValidator:
@@ -175,9 +216,14 @@ class GraphValidator:
     graph: Graph
 
     def validate_start_nodes(self):
-        pass
         # check that the len of start is more than 1
+        if len(self.graph.start) == 0:
+            click.secho("❌ No start nodes present, please specify with '@start'", fg='bright_red')
         # check that all the start have a next value
+        # All start nodes have a next value
+        for start_node in self.graph.start:
+            if not start_node.function_reference.next:
+                click.secho(f"❌ Node {start_node.name} does not have next", fg='bright_red')
 
     def validate_middle_nodes(self):
         pass
@@ -191,8 +237,8 @@ class GraphValidator:
 
 
     def run_validations(self):
+        """Method to run all validation methods"""
         self.validate_start_nodes()
-
 
 
 
