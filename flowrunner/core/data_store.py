@@ -5,18 +5,20 @@ from typing import Dict
 # Data Store will be a class which to handle all data passing between steps
 # instance is always a plain dict
 @dataclass
-class DataStore:
+class _DataStore:
     """Attributes
     data_store: A dict
     """
-    data_store: Dict = field(default_factory=lambda: {})
-    # get value from data_store
-    def read_data(self, key):
-        return self.data_store[key]
+    pass
 
-    # set value from data_store
-    def store_data(self, key, value):
-        self.data_store[key] = value
+
+
+
+def read_output(function_name: str):
+    """A function to read output from
+    function"""
+    pass
+
 
 
 

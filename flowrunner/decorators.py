@@ -49,6 +49,5 @@ class Step:
         return self.func(*args, **kwargs)
 
 
-def read_output():
-    pass
+
 

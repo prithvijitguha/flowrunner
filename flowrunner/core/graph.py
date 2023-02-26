@@ -1,8 +1,9 @@
-import click
 from dataclasses import dataclass, field
-
+from flowrunner.core.data_store import _DataStore
 from typing import Any
 
+
+_datastore = _DataStore()
 
 @dataclass
 class Node:
@@ -131,6 +132,7 @@ class Graph:
         - Any step that is not a next for any function
         - Any start function that is mentioned in another next
         - An end that has a next value
+        - Validate each node
         """
         pass
 
@@ -172,12 +174,16 @@ class Graph:
         To run the flow we iterate over 'self.levels'
         and we call each function"""
         for level in self.levels:
-            [node.function_reference() for node in level]
+            for node in level:
+                function_output = node.function_reference()
+                _datastore[node.name] = function_output
 
 
 
 
 
-
-def run_flow():
-    pass
+@dataclass
+class BaseFlow:
+    def read_output(self, method_name: str):
+        """Method to read output of another method"""
+        pass
