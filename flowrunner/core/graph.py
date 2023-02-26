@@ -129,6 +129,7 @@ class Graph:
         - All start nodes have a next value
         - All middle nodes have a next value
         - Any step that is not a next for any function
+        - Any start function that is mentioned in another next
         - An end that has a next value
         """
         pass
@@ -159,6 +160,8 @@ class Graph:
                 break
             self.levels.append(next_level)
             temp_level = next_level
+
+        print(self.levels)
 
     def generate_html(self):
         """A method to generate the html page"""

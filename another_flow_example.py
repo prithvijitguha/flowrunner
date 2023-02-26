@@ -4,7 +4,7 @@ from flowrunner.core.data_store import DataStore
 data_store = DataStore()
 
 @start
-@step(next=['middle_func', 'another_middle_func'])
+@step(next=['another_middle_func'])
 def first_func():
     """This function is the start of our workflow
     where we extract 3 dataframes"""
