@@ -7,6 +7,8 @@ FlowExample().validate_flow_with_error() # we validate the flow and throw an exc
 
 # FlowExample().run_flow()
 
-FlowRunner(FlowExample).run_flow()
+flow_runner = FlowRunner(FlowExample)
+
+flow_runner.run_flow()
 
 

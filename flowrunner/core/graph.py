@@ -152,7 +152,6 @@ class Graph:
             self.levels.append(next_level)
             temp_level = next_level
 
-        print(self.levels)
 
     def generate_html(self):
         """A method to generate the html page"""
@@ -319,6 +318,7 @@ class FlowRunner:
     base_flow: BaseFlow
     def run_flow(self):
         """Class Method to run flow"""
+        #flow_instance = self.base_flow()
         graph_options = GraphOptions(self.base_flow)
         graph = Graph(graph_options=graph_options)
         graph._arrange_graph()
@@ -326,4 +326,8 @@ class FlowRunner:
         # output into a datastore
         for level in graph.levels:
             for node in level:
-                node.function_reference()
+                node.function_reference(self.base_flow())
+                # we have to iterate though the steps and run the function
+                # which matches the name
+                # get list of functions
+

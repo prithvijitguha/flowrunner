@@ -1,6 +1,6 @@
 from flowrunner.decorators import step, start, end
 from flowrunner.core.graph import BaseFlow
-
+from dataclasses import dataclass
 
 class FlowExample(BaseFlow):
     @start
@@ -26,17 +26,18 @@ class FlowExample(BaseFlow):
     def another_middle_func(self):
         """This function is the middle where we
         filter + transform stuff"""
+
         value_from_first = self.data_store['first_func']
         self.data_store['another_middle_func'] = value_from_first
-        print("another_middle_func", value_from_first)
+        print("another_middle_func output", value_from_first)
 
     @step(next='end_func')
     def model_func(self):
         """This function does model training"""
         y = self.data_store['middle_func']
         x = self.data_store['another_middle_func']
-        print("model_func", x)
-        print("model_func", y)
+        print("model_func output", x)
+        print("model_func output", y)
 
 
 
@@ -46,6 +47,6 @@ class FlowExample(BaseFlow):
         """This function is the end where
         we write data into a table"""
         final_value = self.data_store['model_func']
-        print("end_func", final_value)
+        print("end_func output", final_value)
 
 
