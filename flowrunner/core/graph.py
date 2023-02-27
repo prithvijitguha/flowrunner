@@ -283,12 +283,7 @@ class GraphValidator:
 
 @dataclass
 class BaseFlow:
-    data_store: DataStore = field(default_factory=lambda: DataStore())
-    @classmethod
-    def read_output(cls, method_name: str):
-        """Method to read output of another method"""
-        return datastore.data[method_name] # we return the output the method
-
+    data_store: dict = field(default_factory=lambda: dict())
     @classmethod
     def validate_flow(cls):
         """Class method to validate the graph"""
@@ -314,8 +309,21 @@ class BaseFlow:
         # output into a datastore
         for level in graph.levels:
             for node in level:
-                datastore.data[node.name] = node.function_reference()
+                node.function_reference()
 
 
 
 
+@dataclass
+class FlowRunner:
+    base_flow: BaseFlow
+    def run_flow(self):
+        """Class Method to run flow"""
+        graph_options = GraphOptions(self.base_flow)
+        graph = Graph(graph_options=graph_options)
+        graph._arrange_graph()
+        # we iterate through the functions level wise and we store the
+        # output into a datastore
+        for level in graph.levels:
+            for node in level:
+                node.function_reference()

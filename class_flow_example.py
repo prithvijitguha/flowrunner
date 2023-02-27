@@ -9,14 +9,16 @@ class FlowExample(BaseFlow):
         """This function is the start of our workflow
         where we extract 3 dataframes"""
         x = 2
-        return x
+        self.data_store['first_func'] = x
+        print("first_func output", x)
 
     @step(next='model_func')
     def middle_func(self):
         """This function is the middle where we
         filter + transform stuff"""
-        value_from_first = self.read_output("first_func")
-        return value_from_first * 3
+        value_from_first = self.data_store['first_func']
+        self.data_store['middle_func'] = value_from_first * 3
+        print("middle_func output", self.data_store['middle_func'])
 
 
 
@@ -24,22 +26,26 @@ class FlowExample(BaseFlow):
     def another_middle_func(self):
         """This function is the middle where we
         filter + transform stuff"""
-        value_from_first = self.read_output('first_func')
-        return value_from_first + 6
+        value_from_first = self.data_store['first_func']
+        self.data_store['another_middle_func'] = value_from_first
+        print("another_middle_func", value_from_first)
 
     @step(next='end_func')
     def model_func(self):
         """This function does model training"""
-        y = self.read_output('middle_func')
-        x = self.read_output('another_middle_func')
-        return x - y
+        y = self.data_store['middle_func']
+        x = self.data_store['another_middle_func']
+        print("model_func", x)
+        print("model_func", y)
+
+
 
     @end
     @step
     def end_func(self):
         """This function is the end where
         we write data into a table"""
-        final_value = self.read_output('model_func')
-        return final_value
+        final_value = self.data_store['model_func']
+        print("end_func", final_value)
 
 
