@@ -1,6 +1,5 @@
 from flowrunner.decorators import step, start, end
 from flowrunner.core.graph import BaseFlow
-from dataclasses import dataclass
 
 class FlowExample(BaseFlow):
     @start
@@ -36,6 +35,7 @@ class FlowExample(BaseFlow):
         """This function does model training"""
         y = self.data_store['middle_func']
         x = self.data_store['another_middle_func']
+        self.data_store['model_func'] = x + y
         print("model_func output", x)
         print("model_func output", y)
 

@@ -92,6 +92,10 @@ class GraphOptions:
                 elif hasattr(func, "is_step") and hasattr(func, "is_end"):
                     self.end.append(Node(name_func, func))
 
+        # store an instance of the class that
+        # we are running
+        self.graph_instance = self.module()
+
     def __repr__(self):
         return f"Start={self.start}\nMiddle Nodes={self.middle_nodes}\nEnd={self.end}"
 
@@ -320,13 +324,14 @@ class FlowRunner:
         """Class Method to run flow"""
         #flow_instance = self.base_flow()
         graph_options = GraphOptions(self.base_flow)
+        graph_instance = graph_options.graph_instance
         graph = Graph(graph_options=graph_options)
         graph._arrange_graph()
         # we iterate through the functions level wise and we store the
         # output into a datastore
         for level in graph.levels:
             for node in level:
-                node.function_reference(self.base_flow())
+                node.function_reference(graph_instance)
                 # we have to iterate though the steps and run the function
                 # which matches the name
                 # get list of functions
