@@ -1,13 +1,10 @@
 from dataclasses import dataclass, field
-from flowrunner.core.data_store import DataStore
 from flowrunner.system.logger import logger
 from flowrunner.system.exceptions import InvalidFlowException
 from typing import Any
 
 import click
 
-
-datastore = DataStore()
 
 @dataclass
 class Node:
@@ -16,6 +13,7 @@ class Node:
         name: A str value of the name of the function __name__
         function_reference: The actual function or callable
         next: None by default, list value of what is next node
+        doc: Docstring of method
     """
     name: str
     function_reference: callable
@@ -23,6 +21,8 @@ class Node:
     def __post_init__(self):
         """In post init we get the next node if
         it is there"""
+        # store the __doc__ as attribute docstring
+        self.docstring = self.function_reference.__doc__
         # if next has value
         if self.function_reference.next:
             if isinstance(self.function_reference.next, list):
@@ -306,32 +306,45 @@ class BaseFlow:
     def run_flow(cls):
         """Class Method to run flow"""
         graph_options = GraphOptions(cls)
+        graph_instance = graph_options.graph_instance
         graph = Graph(graph_options=graph_options)
         graph._arrange_graph()
-        # we iterate through the functions level wise and we store the
-        # output into a datastore
         for level in graph.levels:
             for node in level:
-                node.function_reference()
-
+                node.function_reference(graph_instance)
 
 
 
 @dataclass
 class FlowRunner:
     base_flow: BaseFlow
-    def run_flow(self):
-        """Class Method to run flow"""
+    def __post_init__(self):
         #flow_instance = self.base_flow()
         graph_options = GraphOptions(self.base_flow)
-        graph_instance = graph_options.graph_instance
-        graph = Graph(graph_options=graph_options)
-        graph._arrange_graph()
+        self.graph_instance = graph_options.graph_instance # we store the same graph instance attribute of GraphOptions
+        self.graph = Graph(graph_options=graph_options)
+        self.graph._arrange_graph()
+
+
+    def run_flow(self):
+        """Method to run any BaseFlow subclass"""
         # we iterate through the functions level wise and we store the
         # output into a datastore
-        for level in graph.levels:
+        for level in self.graph.levels:
             for node in level:
-                node.function_reference(graph_instance)
+                node.function_reference(self.graph_instance)
+                # we have to iterate though the steps and run the function
+                # which matches the name
+                # get list of functions
+
+    def show_flow(self):
+        """Method to show flow"""
+        # we iterate through the functions level wise and we store the
+        # output into a datastore
+        for level in self.graph.levels:
+            for node in level:
+                node.name
+                node.docstring
                 # we have to iterate though the steps and run the function
                 # which matches the name
                 # get list of functions
