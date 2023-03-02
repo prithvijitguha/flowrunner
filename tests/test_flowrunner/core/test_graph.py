@@ -1,5 +1,5 @@
 from flowrunner.core.graph import Node, GraphOptions, BaseFlow
-from flowrunner.decorators import step, start, end
+from flowrunner.core.decorators import step, start, end
 
 
 @start

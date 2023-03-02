@@ -1,4 +1,4 @@
-from flowrunner.decorators import step, start, end
+from flowrunner.core.decorators import step, start, end
 from flowrunner.core.graph import BaseFlow
 
 class FlowExample(BaseFlow):
