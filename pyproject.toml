@@ -28,3 +28,5 @@ dynamic = ["version"]
 pdf = ["ReportLab>=1.2", "RXP"]
 rest = ["docutils>=0.3", "pack ==1.1, ==1.3"]
 
+[project.scripts]
+cli = 'flowrunner.cli:validate_flow'

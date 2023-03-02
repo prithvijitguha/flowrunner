@@ -1,4 +1,4 @@
-from flowrunner.decorators import step, start, end, Step
+from flowrunner.core.decorators import step, start, end, Step
 import pytest
 
 @pytest.fixture
