@@ -106,12 +106,11 @@ class GraphOptions:
 
     # list of functions/module
     base_flow: BaseFlow
-    functions: dict = field(default_factory=lambda: dict())
-    middle_nodes: list = field(default_factory=lambda: list())
-    start: list = field(default_factory=lambda: list())
-    end: list = field(default_factory=lambda: list())
-
     def __post_init__(self):
+        self.functions= {}
+        self.middle_nodes = []
+        self.start = []
+        self.end = []
         # if module get the list of functions
         if not isinstance(self.base_flow, list):
             self.functions = self.base_flow.__dict__
@@ -170,6 +169,7 @@ class Graph:
         self.nodes = self.start + self.middle_nodes + self.end
         self.node_map = {node.name: node for node in self.nodes}
         self.levels = []
+        self._arrange_graph()
 
     def _arrange_graph(self):
         """Method to traverse graph and arrange into
@@ -352,7 +352,6 @@ class FlowRunner:
             graph_options.base_flow_instance
         )  # we store the same graph instance attribute of GraphOptions
         self.graph = Graph(graph_options=graph_options)
-        self.graph._arrange_graph()
 
     def run_validations(self):
         """Method to run validations on a BaseFlow subclass"""
