@@ -2,8 +2,45 @@ from dataclasses import dataclass, field
 from flowrunner.system.logger import logger
 from flowrunner.system.exceptions import InvalidFlowException
 from typing import Any
-
 import click
+
+
+@dataclass
+class BaseFlow:
+    """BaseFlow is the base class on which all flows are
+    derived from
+
+    Attributes:
+        - data_store: A dict that is meant to be used to store data in key:value pairs.
+    """
+    data_store: dict = field(default_factory=lambda: dict())
+    @classmethod
+    def validate_flow(cls):
+        """Class method to validate the graph"""
+        graph_options = GraphOptions(cls)
+        graph = Graph(graph_options=graph_options)
+        GraphValidator(graph).run_validations()
+
+
+    @classmethod
+    def validate_flow_with_error(cls):
+        """Class method to validate the graph"""
+        graph_options = GraphOptions(cls)
+        graph = Graph(graph_options=graph_options)
+        GraphValidator(graph).run_validations_raise_error()
+
+    @classmethod
+    def run_flow(cls):
+        """Class Method to run flow"""
+        graph_options = GraphOptions(cls)
+        graph_instance = graph_options.base_flow_instance
+        graph = Graph(graph_options=graph_options)
+        graph._arrange_graph()
+        for level in graph.levels:
+            for node in level:
+                node.function_reference(graph_instance)
+
+
 
 
 @dataclass
@@ -12,12 +49,11 @@ class Node:
     Attributes:
         name: A str value of the name of the function __name__
         function_reference: The actual function or callable
-        next: None by default, list value of what is next node
-        doc: Docstring of method
+        next: None by default, list value of what is next node, assigned in __post_init__
+        doc: Docstring of method assigned in __post_init__
     """
     name: str
     function_reference: callable
-
     def __post_init__(self):
         """In post init we get the next node if
         it is there"""
@@ -63,9 +99,10 @@ class GraphOptions:
         - middle_nodes:
         - start:
         - end:
+        - functions: A
     """
     # list of functions/module
-    module: Any
+    base_flow: BaseFlow
     functions: dict = field(default_factory=lambda: dict())
     middle_nodes: list = field(default_factory=lambda: list())
     start: list = field(default_factory=lambda: list())
@@ -73,11 +110,11 @@ class GraphOptions:
 
     def __post_init__(self):
         # if module get the list of functions
-        if not isinstance(self.module, list):
-            self.functions = self.module.__dict__
+        if not isinstance(self.base_flow, list) and issubclass(self.base_flow, BaseFlow):
+            self.functions = self.base_flow.__dict__
         # if list of functions directly iterate over them
-        elif isinstance(self.module, list):
-            self.functions = {func.__name__: func for func in  self.module}
+        elif isinstance(self.base_flow, list):
+            self.functions = {func.__name__: func for func in  self.base_flow}
 
         # iterate over list of functions
         # find the start
@@ -94,7 +131,7 @@ class GraphOptions:
 
         # store an instance of the class that
         # we are running
-        self.graph_instance = self.module()
+        self.base_flow_instance = self.base_flow()
 
     def __repr__(self):
         return f"Start={self.start}\nMiddle Nodes={self.middle_nodes}\nEnd={self.end}"
@@ -284,34 +321,7 @@ class GraphValidator:
 
 
 
-@dataclass
-class BaseFlow:
-    data_store: dict = field(default_factory=lambda: dict())
-    @classmethod
-    def validate_flow(cls):
-        """Class method to validate the graph"""
-        graph_options = GraphOptions(cls)
-        graph = Graph(graph_options=graph_options)
-        GraphValidator(graph).run_validations()
 
-
-    @classmethod
-    def validate_flow_with_error(cls):
-        """Class method to validate the graph"""
-        graph_options = GraphOptions(cls)
-        graph = Graph(graph_options=graph_options)
-        GraphValidator(graph).run_validations_raise_error()
-
-    @classmethod
-    def run_flow(cls):
-        """Class Method to run flow"""
-        graph_options = GraphOptions(cls)
-        graph_instance = graph_options.graph_instance
-        graph = Graph(graph_options=graph_options)
-        graph._arrange_graph()
-        for level in graph.levels:
-            for node in level:
-                node.function_reference(graph_instance)
 
 
 
@@ -319,9 +329,8 @@ class BaseFlow:
 class FlowRunner:
     base_flow: BaseFlow
     def __post_init__(self):
-        #flow_instance = self.base_flow()
         graph_options = GraphOptions(self.base_flow)
-        self.graph_instance = graph_options.graph_instance # we store the same graph instance attribute of GraphOptions
+        self.graph_instance = graph_options.base_flow_instance # we store the same graph instance attribute of GraphOptions
         self.graph = Graph(graph_options=graph_options)
         self.graph._arrange_graph()
 
