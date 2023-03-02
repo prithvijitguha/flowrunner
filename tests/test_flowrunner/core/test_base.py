@@ -1,5 +1,5 @@
 from flowrunner.core.decorators import step, start, end
-from flowrunner.core.flow import Node
+from flowrunner.runner.flow import Node
 
 
 @start

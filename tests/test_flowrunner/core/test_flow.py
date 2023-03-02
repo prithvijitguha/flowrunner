@@ -1,4 +1,4 @@
-from flowrunner.core.flow import Node, GraphOptions, BaseFlow, GraphValidator, Graph
+from flowrunner.runner.flow import Node, GraphOptions, BaseFlow, GraphValidator, Graph
 from flowrunner.core.decorators import step, start, end
 import pytest
 
