@@ -1,5 +1,5 @@
 from class_flow_example import FlowExample
-from flowrunner.core.graph import FlowRunner
+from flowrunner.core.flow import FlowRunner
 
 FlowExample().validate_flow() # we validate the flow
 
