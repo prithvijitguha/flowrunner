@@ -1,5 +1,6 @@
+from flowrunner.runner.flow import BaseFlow, FlowRunner
 from flowrunner.core.decorators import step, start, end
-from flowrunner.runner.flow import BaseFlow
+
 
 class FlowExample(BaseFlow):
     @start
@@ -48,5 +49,24 @@ class FlowExample(BaseFlow):
         we write data into a table"""
         final_value = self.data_store['model_func']
         print("end_func output", final_value)
+
+
+
+def test_validate_flow():
+    """Run validate flow"""
+    FlowExample().validate_flow()
+
+
+def test_validate_flow_with_error():
+    FlowExample().validate_flow_with_error() # we validate the flow and throw an exception if its not valid
+
+
+def test_flowrunner():
+    flow_runner = FlowRunner(FlowExample)
+    flow_runner.run_flow()
+
+def test_base_flow_run_flow():
+    FlowExample().run_flow()
+
 
 
