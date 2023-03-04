@@ -7,7 +7,7 @@ from flowrunner.system.logger import logger
 from flowrunner.core.base import GraphOptions, Graph
 from flowrunner.core.helpers import GraphValidator
 from dataclasses import dataclass, field
-
+import click
 
 
 @dataclass
@@ -34,6 +34,10 @@ class BaseFlow:
         """Class Method to run flow"""
         FlowRunner(cls).run_flow()
 
+    @classmethod
+    def show(cls):
+        """Class method to show nodes/levels"""
+        FlowRunner(cls).show()
 
 @dataclass
 class FlowRunner:
@@ -72,8 +76,12 @@ class FlowRunner:
             for node in level:
                 node.function_reference(self.graph_instance)
 
-    def show_flow(self):
+    def show(self):
         """Method to show flow"""
         # we iterate through the functions level wise and we store the
         # output into a datastore
-        pass
+        for level in self.graph.levels:
+            for node in level:
+                click.secho(node.name, bg="bright_red")
+                if node.next:
+                    click.secho(node.next, bg="green")
