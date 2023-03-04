@@ -55,3 +55,5 @@ class FlowExample(BaseFlow):
 
 
 FlowExample().show()
+
+FlowExample().run_flow()
