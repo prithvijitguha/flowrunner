@@ -1,60 +1,68 @@
 from flowrunner.core.decorators import step, start, end, Step
+from flowrunner.runner.flow import BaseFlow
 import pytest
 
-@pytest.fixture
-@step(next=['Test'])
-def test_function():
-    return None
+class TestDecorators:
+    """Class to test Node class and decorators"""
+    @pytest.fixture(scope="module")
+    def example_decorator_flow(self):
+        """Method to return example flow"""
+        class ExampleDecoratorFlow(BaseFlow):
+            @start
+            @step(next=["method_2", "method_3"])
+            def method_1(self):
+                return None
+
+            @step(next=["method_4"])
+            def method_2(self):
+                return None
+
+            @step(next=["method_4"])
+            def method_3(self):
+                return None
+
+            @end
+            @step
+            def method_4(self):
+                return None
+
+        return ExampleDecoratorFlow
+
+    def test_node_start(self, example_decorator_flow):
+        """Function to test start nodes"""
+        assert example_decorator_flow.method_1.is_step == True
+        assert example_decorator_flow.method_1.is_start == True
+        assert example_decorator_flow.method_1.next == ["method_2", "method_3"]
+        assert hasattr(example_decorator_flow.method_3, "end") == False
 
 
-@pytest.fixture
-@Step
-def test_function_class():
-    return None
+    def test_node_middle(self, example_decorator_flow):
+        """Function to test start nodes"""
+        assert example_decorator_flow.method_2.is_step == True
+        assert example_decorator_flow.method_3.is_step == True
+        assert example_decorator_flow.method_2.next == ["method_4"]
+        assert example_decorator_flow.method_3.next == ["method_4"]
+        assert hasattr(example_decorator_flow.method_3, "end") == False
+        assert hasattr(example_decorator_flow.method_3, "start") == False
 
 
-@pytest.fixture
-@start
-@step
-def test_start_function():
-    return None
+    def test_node_end(self, example_decorator_flow):
+        """Function to test start nodes"""
+        assert example_decorator_flow.method_4.is_end == True
+        assert example_decorator_flow.method_4.is_end == True
+        assert example_decorator_flow.method_4.next == None
+        assert hasattr(example_decorator_flow.method_3, "start") == False
 
 
-@pytest.fixture
-@end
-@step
-def test_end_function():
-    return None
+    @pytest.fixture(scope="module")
+    def example_decorator_new_step_class(self):
+        """Fixture to 'Step' class"""
+        @Step
+        def test_method(self):
+            return None
 
+        return test_method
 
-def test_step():
-    """A function to check where the step decorator works as required"""
-    assert hasattr(test_function, 'name')
-    assert hasattr(test_function, 'next')
-    assert hasattr(test_function, 'is_step')
-    assert test_function.name == test_function.__name__
-    assert test_function.is_step == True
-
-#@pytest.mark.skip(reason="no way of currently testing this")
-def test_step_class():
-    """A function to check where the step decorator works as required"""
-    assert hasattr(test_function_class, 'name')
-    assert hasattr(test_function_class, 'next')
-    assert hasattr(test_function_class, 'is_step')
-    assert test_function_class.name == test_function_class.__name__
-    assert test_function_class.is_step == True
-
-
-
-def test_start():
-    """A function to check the start decorator"""
-    assert hasattr(test_start_function, 'is_start')
-    assert hasattr(test_start_function, 'is_step')
-    assert test_start_function.is_start == True
-
-
-def test_end():
-    """A function to check the end decorator"""
-    assert hasattr(test_end_function, 'is_end')
-    assert hasattr(test_start_function, 'is_step')
-    assert test_end_function.is_end == True
+    def test_step_class(self, example_decorator_new_step_class):
+        """Test to check the new 'Step' class"""
+        assert example_decorator_new_step_class.is_step == True
