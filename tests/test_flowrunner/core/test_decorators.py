@@ -37,7 +37,7 @@ class TestDecorators:
 
     @pytest.fixture(scope="module")
     def example_decorator_new_step_class(self):
-        """Fixture to 'Step' class"""
+        """Fixture to return function decorated with 'Step' class"""
         @Step
         def test_method():
             return None
