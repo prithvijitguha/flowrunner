@@ -3,32 +3,36 @@ from flowrunner.runner.flow import BaseFlow, FlowRunner
 from flowrunner.core.decorators import step, start, end
 import pytest
 
+
+
+@pytest.fixture(scope="session")
+def example_node_flow():
+    """Method to return example flow"""
+    class ExampleNodeFlow(BaseFlow):
+        @start
+        @step(next=["method_2", "method_3"])
+        def method_1(self):
+            """Test Docstring sample"""
+            return None
+
+        @step(next=["method_4"])
+        def method_2(self):
+            return None
+
+        @step(next=["method_4"])
+        def method_3(self):
+            return None
+
+        @end
+        @step
+        def method_4(self):
+            return None
+    return ExampleNodeFlow
+
+
+
 class TestNode:
     """Class to test Node class and decorators"""
-    @pytest.fixture(scope="module")
-    def example_node_flow(self):
-        """Method to return example flow"""
-        class ExampleNodeFlow(BaseFlow):
-            @start
-            @step(next=["method_2", "method_3"])
-            def method_1(self):
-                """Test Docstring sample"""
-                return None
-
-            @step(next=["method_4"])
-            def method_2(self):
-                return None
-
-            @step(next=["method_4"])
-            def method_3(self):
-                return None
-
-            @end
-            @step
-            def method_4(self):
-                return None
-        return ExampleNodeFlow
-
     @pytest.fixture(scope="module")
     def example_graph_options(self, example_node_flow):
         graph_options = GraphOptions(example_node_flow)
