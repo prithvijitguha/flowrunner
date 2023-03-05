@@ -34,6 +34,10 @@ class TestNode:
         graph_options = GraphOptions(example_node_flow)
         return graph_options
 
+    @pytest.fixture(scope="module")
+    def example_graph(self, example_graph_options):
+        graph = Graph(graph_options=example_graph_options)
+        return graph
 
     def test_graph_options(self, example_node_flow, example_graph_options):
         assert len(example_graph_options.start) == 1
@@ -51,6 +55,14 @@ class TestNode:
         assert start_node.function_reference == example_node_flow.method_1
         assert start_node.next == ["method_2", "method_3"]
         assert start_node.docstring == example_node_flow.method_1.__doc__
+
+
+    def test_graph(self, example_graph):
+        graph_levels = example_graph.levels
+        assert len(graph_levels[0]) == 1 # the first level/root marked with @start
+        assert len(graph_levels[1]) == 2 # the next set of methods next of the root
+        assert len(graph_levels[2]) == 1 # the next set of functions mentioned
+        assert len(graph_levels) == 3
 
 
 
