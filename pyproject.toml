@@ -24,6 +24,16 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[options]
+package_dir=[
+    "flowrunner"
+]
+
+
+[options.packages.find]
+where=[
+    "flowrunner"
+]
 [project.optional-dependencies]
 pdf = ["ReportLab>=1.2", "RXP"]
 rest = ["docutils>=0.3", "pack ==1.1, ==1.3"]

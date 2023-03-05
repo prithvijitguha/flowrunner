@@ -71,9 +71,10 @@ class Node:
             self.next = []
 
         # check if method name in next is same as current
-        bad_next_list = [next_callable for next_callable in self.function_reference.next if self.name == next_callable]
-        if bad_next_list:
-            raise ValueError(f"Value for next cannot be same as method {self.name}.next={bad_next_list}")
+        if self.next: # only if next list if full. ie. Only for start and middle
+            bad_next_list = [next_callable for next_callable in self.function_reference.next if self.name == next_callable]
+            if bad_next_list:
+                raise ValueError(f"Value for next cannot be same as method {self.name}.next={bad_next_list}")
     def __repr__(self):
         """String representation of this node, which will be actual function
         name
