@@ -8,7 +8,7 @@ class Node:
         name: A str value of the name of the function __name__
         function_reference: The actual function or callable
         next: None by default, list value of what is next node, assigned in __post_init__
-        doc: Docstring of method assigned in __post_init__
+        docstring: Docstring of method assigned in __post_init__
     """
 
     name: str

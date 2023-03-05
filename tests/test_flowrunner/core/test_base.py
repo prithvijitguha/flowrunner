@@ -12,6 +12,7 @@ class TestNode:
             @start
             @step(next=["method_2", "method_3"])
             def method_1(self):
+                """Test Docstring sample"""
                 return None
 
             @step(next=["method_4"])
@@ -26,33 +27,35 @@ class TestNode:
             @step
             def method_4(self):
                 return None
-
         return ExampleNodeFlow
 
-    def test_node_start(self, example_node_flow):
-        """Function to test start nodes"""
-        assert example_node_flow.method_1.is_step == True
-        assert example_node_flow.method_1.is_start == True
-        assert example_node_flow.method_1.next == ["method_2", "method_3"]
-        assert hasattr(example_node_flow.method_3, "end") == False
+    @pytest.fixture(scope="module")
+    def example_graph_options(self, example_node_flow):
+        graph_options = GraphOptions(example_node_flow)
+        return graph_options
 
 
-    def test_node_middle(self, example_node_flow):
-        """Function to test start nodes"""
-        assert example_node_flow.method_2.is_step == True
-        assert example_node_flow.method_3.is_step == True
-        assert example_node_flow.method_2.next == ["method_4"]
-        assert example_node_flow.method_3.next == ["method_4"]
-        assert hasattr(example_node_flow.method_3, "end") == False
-        assert hasattr(example_node_flow.method_3, "start") == False
+    def test_graph_options(self, example_node_flow, example_graph_options):
+        assert len(example_graph_options.start) == 1
+        assert len(example_graph_options.middle_nodes) == 2
+        assert len(example_graph_options.end) == 1
+        assert example_graph_options.start[0].name == example_node_flow.method_1.__name__
+        assert example_graph_options.middle_nodes[0].name == example_node_flow.method_2.__name__
+        assert example_graph_options.middle_nodes[1].name == example_node_flow.method_3.__name__
+        assert example_graph_options.end[0].name == example_node_flow.method_4.__name__
 
 
-    def test_node_end(self, example_node_flow):
-        """Function to test start nodes"""
-        assert example_node_flow.method_4.is_end == True
-        assert example_node_flow.method_4.is_end == True
-        assert example_node_flow.method_4.next == None
-        assert hasattr(example_node_flow.method_3, "start") == False
+    def test_node(self, example_graph_options, example_node_flow):
+        start_node = example_graph_options.start[0]
+        assert start_node.name == 'method_1'
+        assert start_node.function_reference == example_node_flow.method_1
+        assert start_node.next == ["method_2", "method_3"]
+        assert start_node.docstring == example_node_flow.method_1.__doc__
+
+
+
+
+
 
 
 

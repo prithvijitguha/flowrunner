@@ -3,7 +3,7 @@ from flowrunner.runner.flow import BaseFlow
 import pytest
 
 class TestDecorators:
-    """Class to test Node class and decorators"""
+    """Class to test decorators"""
     @pytest.fixture(scope="module")
     def example_decorator_flow(self):
         """Method to return example flow"""
