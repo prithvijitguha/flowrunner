@@ -90,53 +90,88 @@ class Node:
 # class to handle the seperation of functions
 @dataclass
 class GraphOptions:
-    """A class to manage the options we
-    supply to the Graph class
+    """A class for all the options to be given to Graph, a collection of start, middle and end nodes
+
+    We only take base_flow argument, the rest of the attributes are assigned in the __post_init__. We iterate over
+    all the methods in the class and arrange them according to 'start', 'step', 'end' as per the decorators.
+
     Attributes:
-        - module:
-        - functions:
+        - base_flow: A subclass of BaseFlow
+        - functions: A
         - middle_nodes:
         - start:
         - end:
-        - functions: A
+        - base_flow_instance:
     """
 
     # list of functions/module
     base_flow: Type
     def __post_init__(self):
-        self.functions= {}
-        self.middle_nodes = []
-        self.start = []
-        self.end = []
-        # if module get the list of functions
-        if not isinstance(self.base_flow, list):
-            self.functions = self.base_flow.__dict__
-        # if list of functions directly iterate over them
-        elif isinstance(self.base_flow, list):
-            self.functions = {func.__name__: func for func in self.base_flow}
+        """Method to assign some attributes for the BaseFlow.
 
-        # iterate over list of functions
-        # find the start
-        # find the end
+        We assign the following attributes
+
+        Attributes:
+            - functions
+            - middle_nodes
+            - start
+            - end
+            - base_flow_instance
+
+        Args:
+            - None
+
+        Returns:
+            - A string representation of the class
+
+        Examples:
+            >>> print(graph_options_instance)
+            Start=['method_1']
+            Middle Nodes=['method_2']
+            End=['method_3']
+
+        """
+        self.functions = self.base_flow.__dict__ # returns a dict of method name and actual reference {'test_1': <function Test.test_1 at 0x000002390259E9D0>}
+        self.middle_nodes = [] # list to store any methods that have 'step' decorator but NO 'start' or 'end'
+        self.start = [] # list to store any methods that have 'start' decorator
+        self.end = [] # list to store any methods that have 'end' decorator
+
+        # iterate over list of functions/methods of the class, we do a check to make sure that it is a callable.
+        # if it is a callable we make distinctions based on attributes. 'is_step', 'is_end' and 'is_start'. Following conditions classify them
+        # IF 'is_step' NO 'is_start' NO 'is_end' THEN 'middle_nodes'
+        # IF 'is_step' YES 'is_start' NO 'is_end' THEN 'start'
+        # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
         for name_func, func in self.functions.items():
             if callable(func):
                 # the ones with step, start and end in them
-                if (
+                if ( # IF 'is_step' NO 'is_start' NO 'is_end' THEN 'middle_nodes'
                     hasattr(func, "is_step")
                     and not hasattr(func, "is_start")
                     and not hasattr(func, "is_end")
                 ):
                     self.middle_nodes.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(func, "is_start"):
+                elif hasattr(func, "is_step") and hasattr(func, "is_start"): # IF 'is_step' YES 'is_start' NO 'is_end' THEN 'start'
                     self.start.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(func, "is_end"):
+                elif hasattr(func, "is_step") and hasattr(func, "is_end"): # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
                     self.end.append(Node(name_func, func))
 
-        # store an instance of the class that
-        # we are running
-        self.base_flow_instance = self.base_flow()
+        self.base_flow_instance = self.base_flow() # we store an instance of the class for reference for later BaseFlow()
 
     def __repr__(self):
+        """String representation of class
+        Args:
+            - None
+
+        Returns:
+            - A string representation of the class
+
+        Examples:
+            >>> print(graph_options_instance)
+            Start=['method_1']
+            Middle Nodes=['method_2']
+            End=['method_3']
+
+        """
         return f"Start={self.start}\nMiddle Nodes={self.middle_nodes}\nEnd={self.end}"
 
 
@@ -144,23 +179,43 @@ class GraphOptions:
 
 @dataclass
 class Graph:
-    """Graph is a class that stores the graph object, classify nodes
+    """A class containing an arranged collection of Nodes from start, middle, end in Graph.levels
     Attributes:
-        graph: A list of graph
-        index: A dictionary containing the index and
+        - graph_options: An instance of GraphOptions class
+        - start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
+        - middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
+        - end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
+        - nodes: A list of all the nodes start + middle_nodes + end
+        - node_map: A dict of {node.name: node} for reference for later
+        - levels: A list containing the iteration order for methods from start -> middle_nodes -> end
     """
 
     graph_options: GraphOptions
 
     def __post_init__(self):
-        """Method to arrange the start, middle and end nodes
-        We assign the following attributes
-            self.start
-            self.middle_nodes
-            self.end
-            self.nodes
-            self.node_map: A dict with names of functions as keys and Node object as value.
-            This makes it easy to pick up the node from the name
+        """Method to arrange the start, middle and end nodes.
+
+        In addition to arranging the nodes as per their order of iteration
+
+        Graph.levels = [
+            ['method_1'], # start nodes
+            ['method_2', 'method_3'], # middle nodes
+            ['method_4'] # end nodes
+        ]
+        In addition, we assign the following attributes.
+
+        Attributes:
+            - start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
+            - middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
+            - end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
+            - nodes: A list of all the nodes start + middle_nodes + end
+            - node_map: A dict of {node.name: node} for reference for later
+
+        Args:
+            - None
+
+        Returns:
+            - None
         """
         self.start = self.graph_options.start
         self.middle_nodes = self.graph_options.middle_nodes
