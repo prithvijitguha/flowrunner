@@ -1,22 +1,43 @@
+"""Module with base classes for use in other modules
+
+Node: A class for containing functions, with the function name, actual function reference, docstring and its next functions
+GraphOptions: A class for all the options to be given to Graph, a collection of start, middle and end nodes
+Graph: A class containing an arranged collection of Nodes from start, middle, end in Graph.levels
+"""
 from dataclasses import dataclass
 from typing import Type
 
 @dataclass
 class Node:
-    """A class that contains the node object
+    """A class for containing functions, with the function name, actual function reference, docstring and
+    its next functions
+
     Attributes:
         name: A str value of the name of the function __name__
         function_reference: The actual function or callable
         next: None by default, list value of what is next node, assigned in __post_init__
         docstring: Docstring of method assigned in __post_init__
     """
-
     name: str
     function_reference: callable
 
     def __post_init__(self):
         """In post init we get the next node if
-        it is there"""
+        its present.
+
+        We make sure that 'next' keyword argument is passed as either a single 'str' or 'list'. If
+        next is None then we just assign an empty list as 'next' attribute
+
+        Args:
+            - None
+
+        Returns:
+            - None
+
+        Raises:
+            - If more than 1 type of element found in 'next' keyword argument. Only a single string referencing a
+                function or a list of strings referencing functions are accepted
+        """
         # store the __doc__ as attribute docstring
         self.docstring = self.function_reference.__doc__
         # if next has value
@@ -49,9 +70,19 @@ class Node:
             self.next = []
 
     def __repr__(self):
+        """String representation of this node, which will be actual function
+        name
+
+        Examples:
+            >>> node_example Node('some_func', some_func)
+            some_func
+        """
         return self.name
 
     def __hash__(self):
+        """Method to make sure we hash on the function/method name
+        We expect the function/method names to be unique
+        """
         return hash(self.name)
 
 
