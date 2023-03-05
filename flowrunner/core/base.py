@@ -243,6 +243,8 @@ class Graph:
         Returns:
             - None
         """
+        # TODO: Maybe in the future there may be a need to add 'end' node or a later node in 'middle_nodes' to the 'next' of 'start'. Need to add
+        # check to remove any function in end and mentioned in middle nodes
         # create temp_node = start
         temp_level = self.start
 
