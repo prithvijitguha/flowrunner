@@ -73,6 +73,12 @@ class Node:
         """String representation of this node, which will be actual function
         name
 
+        Args:
+            - None
+
+        Returns:
+            - A string representation of the Node instance
+
         Examples:
             >>> node_example Node('some_func', some_func)
             some_func
@@ -97,11 +103,11 @@ class GraphOptions:
 
     Attributes:
         - base_flow: A subclass of BaseFlow
-        - functions: A
-        - middle_nodes:
-        - start:
-        - end:
-        - base_flow_instance:
+        - functions: A dictionary of {'test_1': <function Test.test_1 at 0x000002390259E9D0>} using inbuilt __dict__ method
+        - middle_nodes: A list of middle nodes i.e methods with only 'step' and no 'start' and 'end' decorator
+        - start: A list of middle nodes i.e methods with 'start' decorator
+        - end: A list of middle nodes i.e methods with 'end' decorator
+        - base_flow_instance: An instance of base_flow we use later to run flows
     """
 
     # list of functions/module
@@ -112,11 +118,11 @@ class GraphOptions:
         We assign the following attributes
 
         Attributes:
-            - functions
-            - middle_nodes
-            - start
-            - end
-            - base_flow_instance
+            - functions: A dictionary of {'test_1': <function Test.test_1 at 0x000002390259E9D0>} using inbuilt __dict__ method
+            - middle_nodes: A list of middle nodes i.e methods with only 'step' and no 'start' and 'end' decorator
+            - start: A list of middle nodes i.e methods with 'start' decorator
+            - end: A list of middle nodes i.e methods with 'end' decorator
+            - base_flow_instance: An instance of base_flow we use later to run flows
 
         Args:
             - None
@@ -163,7 +169,7 @@ class GraphOptions:
             - None
 
         Returns:
-            - A string representation of the class
+            - A string representation of the GraphOptions instance
 
         Examples:
             >>> print(graph_options_instance)
@@ -226,8 +232,16 @@ class Graph:
         self._arrange_graph()
 
     def _arrange_graph(self):
-        """Method to traverse graph and arrange into
-        self.levels and self.edges
+        """Method to arrange the Nodes in the Graph into the order of iteration
+
+        We assume that start will be the root node, after that we iterate over the next of each
+        node and append them to each level.
+
+        Args:
+            - None
+
+        Returns:
+            - None
         """
         # create temp_node = start
         temp_level = self.start

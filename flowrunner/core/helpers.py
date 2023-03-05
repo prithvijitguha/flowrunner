@@ -1,3 +1,9 @@
+"""Modules for any helpers for any base.py classes
+
+GraphValidator: A class for validating any subclass of BaseFlow
+"""
+
+
 from dataclasses import dataclass
 import click
 from flowrunner.runner.flow import Graph
@@ -17,17 +23,46 @@ class GraphValidator:
     - Any step that is not a next for any function
     - Any start function that is mentioned in another next
     - Validate each node, makes sure it has a return statement at the end
+
+    Each of the method represents a seperate check of the validation suite to be conducted on the self.graph attribute.
+    All the methods a tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+    of the output message.
+
+    Attributes:
+        - graph: An instance of Graph class to be checked
     """
 
     graph: Graph
 
     def validate_length_start_nodes(self) -> tuple[bool, str]:
+        """Method to validate the length of start nodes.
+
+        We make sure that there is atleast one start node
+
+        Args:
+            - None
+
+        Returns:
+            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+                of the output message.
+        """
         # check that the len of start is more than 1
         if len(self.graph.start) == 0:
             return (False, "No start nodes present, please specify with '@start'")
         return (True, "Validated number of start nodes")
 
     def validate_start_next_nodes(self) -> tuple[bool, str]:
+        """Method to check that the start nodes specified are valid.
+
+        We make sure that each of the nodes specified has a next
+
+        Args:
+            - None
+
+        Returns:
+            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+                of the output message
+        """
         # check that all the start have a next value
         # All start nodes have a next value
         bad_start_nodes = []
@@ -39,6 +74,17 @@ class GraphValidator:
         return (True, "Validated start nodes 'next' values")
 
     def validate_length_middle_nodes(self) -> tuple[bool, str]:
+        """Method to validate the length of middle nodes.
+
+        We make sure that there is atleast one start node
+
+        Args:
+            - None
+
+        Returns:
+            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+                of the output message.
+        """
         # check that the len of start is more than 1
         if len(self.graph.middle_nodes) == 0:
             return (
@@ -48,6 +94,17 @@ class GraphValidator:
         return (True, "Validate number of middle_nodes")
 
     def validate_middle_next_nodes(self) -> tuple[bool, str]:
+        """Method to check that the middle nodes specified are valid.
+
+        We make sure that each of the nodes specified has a next
+
+        Args:
+            - None
+
+        Returns:
+            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+                of the output message
+        """
         # check that all the start have a next value
         # All start nodes have a next value
         bad_middle_nodes = []
@@ -62,12 +119,34 @@ class GraphValidator:
         return (True, "Validated middle_nodes 'next' values")
 
     def validate_length_end_nodes(self) -> tuple[bool, str]:
+        """Method to validate the length of end nodes.
+
+        We make sure that there is atleast one end node
+
+        Args:
+            - None
+
+        Returns:
+            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+                of the output message.
+        """
         # check that the len of start is more than 1
         if len(self.graph.end) == 0:
             return (False, "No end present, please specify with '@end'")
         return (True, "Validated end nodes")
 
     def validate_end_nodes_no_next(self) -> tuple[bool, str]:
+        """Method to check that the end nodes specified are valid.
+
+        We make sure that each of the nodes specified does have a next value
+
+        Args:
+            - None
+
+        Returns:
+            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+                of the output message
+        """
         # check that all the start have a next value
         # All start nodes have a next value
         bad_end_nodes = []
@@ -84,6 +163,16 @@ class GraphValidator:
     def get_validation_suite(self):
         """Define validation suite, more methods
         need to be added to validation suite list
+
+        Any new validation method has to be added to validation_suite so that it can
+        be called on validation checks.
+
+        Args:
+            - None
+
+        Returns:
+            - validation_suite: A dict object containing the list of GraphValidator methods to be used to validate
+                base_flow subclasses
         """
         validation_suite = [
             self.validate_length_start_nodes,
@@ -100,6 +189,12 @@ class GraphValidator:
         We iterate through the validation suite for each method and check
         the output. Output is always in the form of Tuple[bool, str]. With bool for Pass or
         Fail and str being the output message
+
+        Args:
+            - None
+
+        Returns:
+            - Echo of output {✅} or {❌} if passed or failed respectively with message
         """
         validation_suite = self.get_validation_suite()
 
@@ -116,6 +211,15 @@ class GraphValidator:
         We iterate through the validation suite for each method and check
         the output. Output is always in the form of Tuple[bool, str]. With bool for Pass or
         Fail and str being the output message
+
+        Args:
+            - None
+
+        Returns:
+            - Echo of output {✅} or {❌} if passed or failed respectively with message
+
+        Raises:
+            - InvalidFlowException: If any validation check failed
         """
         validation_suite = self.get_validation_suite()
 
