@@ -38,6 +38,7 @@ class BaseFlow:
     @classmethod
     def show(cls):
         """Class method to show nodes/levels"""
+        FlowRunner(cls).run_validations()
         FlowRunner(cls).show()
 
 @dataclass

@@ -61,6 +61,7 @@ class Node:
                     raise TypeError(
                         f"'next' value can only be 'list of str' or 'str', found: {type(elements_unique[0])}"
                     )
+
                 # then we assign the next
                 self.next = self.function_reference.next
             elif isinstance(self.function_reference.next, str):
@@ -69,6 +70,10 @@ class Node:
         else:
             self.next = []
 
+        # check if method name in next is same as current
+        bad_next_list = [next_callable for next_callable in self.function_reference.next if self.name == next_callable]
+        if bad_next_list:
+            raise ValueError(f"Value for next cannot be same as method {self.name}.next={bad_next_list}")
     def __repr__(self):
         """String representation of this node, which will be actual function
         name
