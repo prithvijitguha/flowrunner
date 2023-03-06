@@ -2,14 +2,15 @@
 import click
 import inspect
 
-@click.command()
-@click.argument('filename')
-def test(filename):
-    """Print FILENAME."""
-    click.echo(filename)
 
+
+@click.command()
+@click.argument("filepath")
+def hello(filepath):
+    click.echo(filepath)
 
 if __name__=="__main__":
-    test()
+    hello()
+
 
 
