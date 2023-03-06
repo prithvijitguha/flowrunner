@@ -1,11 +1,15 @@
 """Module for cli commands"""
 import click
+import inspect
 
 @click.command()
-@click.option('--validate', help='Validate Flow')
-def validate_flow(flow):
-    """Simple program that greets NAME for a total of COUNT times."""
-    click.secho("Hello World")
+@click.argument('filename')
+def test(filename):
+    """Print FILENAME."""
+    click.echo(filename)
 
-if __name__ == '__main__':
-    validate_flow()
+
+if __name__=="__main__":
+    test()
+
+
