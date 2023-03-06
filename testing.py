@@ -1,5 +1,5 @@
-from flowrunner.runner.flow import BaseFlow
-from flowrunner.core.decorators import step, start, end
+from flowrunner import BaseFlow, step, start, end
+
 
 class ExampleFlow(BaseFlow):
     @start
