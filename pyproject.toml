@@ -20,7 +20,8 @@ dependencies = [
     "requests",
     'importlib-metadata; python_version<"3.8"',
     'click<=8.1.3',
-    'Jinja2<=3.1.2'
+    'Jinja2<=3.1.2',
+    'coloredlogs>=15.0.1'
 ]
 dynamic = ["version"]
 
@@ -39,7 +40,7 @@ pdf = ["ReportLab>=1.2", "RXP"]
 rest = ["docutils>=0.3", "pack ==1.1, ==1.3"]
 
 [project.scripts]
-cli = 'flowrunner.cli:validate_flow'
+cli = "flowrunner.cli:show"
 
 [tool.pytest.ini_options]
 pythonpath = "flowrunner"
