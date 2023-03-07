@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Module with base classes for use in other modules
 
 Node: A class for containing functions, with the function name, actual function reference, docstring and its next functions

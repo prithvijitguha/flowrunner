@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Module for cli commands
 Usage: cli.py [OPTIONS] COMMAND [ARGS]...
 

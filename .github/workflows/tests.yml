@@ -39,9 +39,9 @@ jobs:
       run: |
         pip install build>=0.10.0
         pip install .[dev]
-    - name: Run Linting
-      run: |
-        black .
+    # the below pre commit does all linting checks including black and linting tools
+    - name: pre-commit
+      uses: pre-commit/action@v3.0.0
     - name: Run Tests
       run: |
         python -m pytest --continue-on-collection-errors

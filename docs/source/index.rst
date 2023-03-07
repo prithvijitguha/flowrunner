@@ -3,12 +3,24 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to flowrunner's documentation!
+Welcome to FlowRunner's documentation!
 ======================================
 
 .. toctree::
+   :caption: Usage and Guides
    :maxdepth: 2
-   :caption: Contents:
+
+   introduction
+   getting_started
+
+.. toctree::
+   :caption: Contributing to FlowRunner
+   :maxdepth: 1
+
+   creating_your_development_environment
+   contributing_guide_code
+   contributing_guide_docs
+
 
 
 

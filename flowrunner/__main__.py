@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """This module is used to expose the cli commands
 to user"""
 

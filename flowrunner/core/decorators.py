@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Module for decorators"""
 from functools import update_wrapper, wraps
 from typing import Callable, List, Union
