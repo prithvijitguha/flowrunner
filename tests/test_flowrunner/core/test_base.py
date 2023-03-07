@@ -1,7 +1,8 @@
-from flowrunner.core.base import Node, GraphOptions, Graph
-from flowrunner.runner.flow import BaseFlow, FlowRunner
-from flowrunner.core.decorators import step, start, end
 import pytest
+
+from flowrunner.core.base import Graph, GraphOptions, Node
+from flowrunner.core.decorators import end, start, step
+from flowrunner.runner.flow import BaseFlow, FlowRunner
 
 
 @pytest.fixture(scope="session")

@@ -1,7 +1,9 @@
 """
 Module for logging
 """
-import coloredlogs, logging
+import logging
+
+import coloredlogs
 
 # Create a logger object.
 logger = logging.getLogger(__name__)

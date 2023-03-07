@@ -1,6 +1,6 @@
 """Module for decorators"""
-from typing import Callable, Union, List
-from functools import wraps, update_wrapper
+from functools import update_wrapper, wraps
+from typing import Callable, List, Union
 
 
 def step(function: Callable = None, next: Union[List, str] = None):

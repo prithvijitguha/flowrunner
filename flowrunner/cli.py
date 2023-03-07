@@ -9,11 +9,13 @@ Commands:
   show      Command to show the order of iteration of a Flow
   validate  Command to validate a Flow
 """
-import click
 import inspect
+from pydoc import importfile
+
+import click
+
 from flowrunner import BaseFlow
 from flowrunner.system.logger import logger
-from pydoc import importfile
 
 
 @click.group()

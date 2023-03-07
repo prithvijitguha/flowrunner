@@ -1,6 +1,7 @@
+import pytest
+
 from flowrunner.core.decorators import Step
 from flowrunner.runner.flow import BaseFlow
-import pytest
 from tests.test_flowrunner.core.test_base import example_node_flow
 
 

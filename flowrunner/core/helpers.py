@@ -5,7 +5,9 @@ GraphValidator: A class for validating any subclass of BaseFlow
 
 
 from dataclasses import dataclass
+
 import click
+
 from flowrunner.runner.flow import Graph
 from flowrunner.system.exceptions import InvalidFlowException
 

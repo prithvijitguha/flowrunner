@@ -2,11 +2,12 @@
 This feature is NOT READY YET
 """
 
-from jinja2 import Environment, FileSystemLoader
+import os
+
 import flow_example
+from jinja2 import Environment, FileSystemLoader
 from runner import FlowRunner
 from system.logger import logger
-import os
 
 flow = FlowRunner(flow_example)
 flow.validate()
