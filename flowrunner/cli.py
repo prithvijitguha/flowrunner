@@ -5,15 +5,19 @@ from flowrunner import BaseFlow
 from flowrunner.system.logger import logger
 from pydoc import importfile
 
+@click.group()
+def cli():
+    click.echo("Welcome to FlowRunner!")
 
-@click.command()
+
+@cli.command()
 @click.argument("filepath")
-def validate_flow(filepath):
+def validate(filepath):
     """Command to validate a python file containing a
     Flow
 
     Examples:
-        - python -m flowrunner /my_path/to/flow_file.py
+        - python -m flowrunner validate /my_path/to/flow_file.py
 
     Args:
         - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
@@ -24,6 +28,44 @@ def validate_flow(filepath):
     flow = _read_python_file(filepath)
     logger.info(f"Found flow {flow.__name__}")
     flow.validate_flow()
+
+@cli.command()
+@click.argument("filepath")
+def show(filepath):
+    """Command to show the flow of a python file containing a
+    Flow
+
+    Examples:
+        - python -m flowrunner show /my_path/to/flow_file.py
+
+    Args:
+        - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
+
+    Returns:
+        - Output regarding the validation of the flow
+    """
+    flow = _read_python_file(filepath)
+    logger.info(f"Found flow {flow.__name__}")
+    flow.show()
+
+
+@cli.command()
+@click.argument("filepath")
+def run(run_filepath):
+    """Command to run a Flow inside a python file
+
+    Examples:
+        - python -m flowrunner run /my_path/to/flow_file.py
+
+    Args:
+        - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
+
+    Returns:
+        - Output regarding the validation of the flow
+    """
+    flow = _read_python_file(run_filepath)
+    logger.info(f"Found flow {flow.__name__}")
+    flow.run_flow()
 
 
 
@@ -53,7 +95,7 @@ def _read_python_file(file_path: str) -> BaseFlow:
 
 
 if __name__=="__main__":
-    validate_flow()
+    cli()
 
 
 
