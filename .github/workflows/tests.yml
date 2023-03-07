@@ -45,3 +45,5 @@ jobs:
     - name: Run Tests
       run: |
         python -m pytest --continue-on-collection-errors
+    - name: pre-commit
+      uses: pre-commit/action@v3.0.0

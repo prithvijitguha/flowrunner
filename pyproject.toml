@@ -8,7 +8,7 @@ authors = [
     {name = "Prithvijit Guha", email = "prithvijit_guha2@hotmail.com"},
 ]
 description = "FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows"
-readme = "README.md"
+readme = "readme.md"
 requires-python = ">=3.9"
 keywords = ["one", "two"]
 license = {text = "BSD-3-Clause"}
@@ -26,6 +26,17 @@ dependencies = [
 
 
 dynamic = ["version"]
+
+
+
+[project.urls]
+homepage = "https://github.com/prithvijitguha/FlowRunner"
+issues = "https://github.com/prithvijitguha/FlowRunner/issues"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "flowrunner.__version__"}
+
 
 
 [project.optional-dependencies]
