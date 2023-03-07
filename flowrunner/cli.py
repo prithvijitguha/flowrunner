@@ -9,6 +9,18 @@ from pydoc import importfile
 @click.command()
 @click.argument("filepath")
 def validate_flow(filepath):
+    """Command to validate a python file containing a
+    Flow
+
+    Examples:
+        - python -m flowrunner /my_path/to/flow_file.py
+
+    Args:
+        - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
+
+    Returns:
+        - Output regarding the validation of the flow
+    """
     flow = _read_python_file(filepath)
     logger.info(f"Found flow {flow.__name__}")
     flow.validate_flow()
