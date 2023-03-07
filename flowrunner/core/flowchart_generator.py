@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Module to generate html pages
 This feature is NOT READY YET
 """

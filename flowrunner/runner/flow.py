@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """This module contains two main exposed classes
 to uses
 BaseFlow: A base class to build flows off of

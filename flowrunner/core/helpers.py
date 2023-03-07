@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Modules for any helpers for any base.py classes
 
 GraphValidator: A class for validating any subclass of BaseFlow
