@@ -8,7 +8,7 @@ from pydoc import importfile
 
 @click.command()
 @click.argument("filepath")
-def hello(filepath):
+def validate_flow(filepath):
     flow = _read_python_file(filepath)
     logger.info(f"Found flow {flow.__name__}")
     flow.validate_flow()
@@ -41,7 +41,7 @@ def _read_python_file(file_path: str) -> BaseFlow:
 
 
 if __name__=="__main__":
-    hello()
+    validate_flow()
 
 
 
