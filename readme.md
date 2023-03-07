@@ -13,6 +13,8 @@ integrated wtih any pre-existing framework like pandas or PySpark
 ## Installing FlowRunner
 To install FlowRunner, following commands will work
 
+Source code is hosted at https://github.com/prithvijitguha/FlowRunner
+
 ```sh
 pip install git+https://github.com/prithvijitguha/FlowRunner@main
 ```
