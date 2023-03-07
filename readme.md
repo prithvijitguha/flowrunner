@@ -1,5 +1,8 @@
 # FlowRunner: A lightweight Data Engineering/Science Flow package
 
+![tests](https://github.com/prithvijitguha/FlowRunner/actions/workflows/tests.yml/badge.svg?branch=master)&nbsp;
+![build](https://github.com/prithvijitguha/FlowRunner/actions/workflows/build.yml/badge.svg?branch=master)&nbsp;
+[![Python 3.9](https://img.shields.io/badge/python-3.9-%2334D058.svg)](https://www.python.org/downloads/release/python-390/)&nbsp;
 
 ## What is it?
 **FlowRunner** is a lightweight package to organize and represent Data Engineering/Science workflows. Its designed to be
@@ -60,7 +63,3 @@ TODO
 
 ## Contributing
 TODO
-
-
-
-
