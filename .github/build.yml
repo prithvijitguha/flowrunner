@@ -1,0 +1,53 @@
+name: Build and Test
+
+on:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - "readme.md"
+      - "**/.rst"
+      - "**/.jpg"
+      - "**/.png"
+      - "**/.md"
+      - "**/.yml"
+    branches: [ master ]
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "readme.md"
+      - "**/.rst"
+      - "**/.jpg"
+      - "**/.png"
+      - "**/.md"
+      - "**/.yml"
+
+jobs:
+  build:
+    name: build, test and codecov
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        pip install git+https://github.com/prithvijitguha/FlowRunner@main
+    # - name: Run Linting
+    #   run: |
+    #     black .
+    #     flake8 .
+    #     pylint .
+    # - name: Dependency Check Safety
+    #   run: |
+    #     safety check -r requirements.txt
+    - name: Run tests and collect coverage
+      run: |
+        python -m pytest tests -v
+
+
