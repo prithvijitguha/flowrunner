@@ -1,4 +1,5 @@
-"""This module is used to expose the cli commands"""
+"""This module is used to expose the cli commands
+to user"""
 
 from flowrunner.cli import cli
 

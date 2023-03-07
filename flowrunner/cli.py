@@ -1,4 +1,14 @@
-"""Module for cli commands"""
+"""Module for cli commands
+Usage: cli.py [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  run       Command to run a Flow
+  show      Command to show the order of iteration of a Flow
+  validate  Command to validate a Flow
+"""
 import click
 import inspect
 from flowrunner import BaseFlow
@@ -13,8 +23,7 @@ def cli():
 @cli.command()
 @click.argument("filepath")
 def validate(filepath):
-    """Command to validate a python file containing a
-    Flow
+    """Command to validate a Flow
 
     Examples:
         - python -m flowrunner validate /my_path/to/flow_file.py
@@ -32,8 +41,7 @@ def validate(filepath):
 @cli.command()
 @click.argument("filepath")
 def show(filepath):
-    """Command to show the flow of a python file containing a
-    Flow
+    """Command to show the order of iteration of a Flow
 
     Examples:
         - python -m flowrunner show /my_path/to/flow_file.py
@@ -42,7 +50,7 @@ def show(filepath):
         - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
 
     Returns:
-        - Output regarding the validation of the flow
+        - Shows the order of iteration and explaination of Flow
     """
     flow = _read_python_file(filepath)
     logger.info(f"Found flow {flow.__name__}")
@@ -52,7 +60,7 @@ def show(filepath):
 @cli.command()
 @click.argument("filepath")
 def run(run_filepath):
-    """Command to run a Flow inside a python file
+    """Command to run a Flow
 
     Examples:
         - python -m flowrunner run /my_path/to/flow_file.py
@@ -61,7 +69,7 @@ def run(run_filepath):
         - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
 
     Returns:
-        - Output regarding the validation of the flow
+        - Runs the Flow
     """
     flow = _read_python_file(run_filepath)
     logger.info(f"Found flow {flow.__name__}")
