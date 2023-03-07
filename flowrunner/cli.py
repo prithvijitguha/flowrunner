@@ -2,6 +2,7 @@
 import click
 import inspect
 from flowrunner import BaseFlow
+from flowrunner.system.logger import logger
 from pydoc import importfile
 
 
@@ -9,7 +10,7 @@ from pydoc import importfile
 @click.argument("filepath")
 def hello(filepath):
     flow = _read_python_file(filepath)
-    click.echo(f"Found flow {flow.__name__}")
+    logger.info(f"Found flow {flow.__name__}")
     flow.validate_flow()
 
 
