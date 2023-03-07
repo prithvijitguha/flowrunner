@@ -69,5 +69,6 @@ testpaths = [
     "tests"
 ]
 addopts = [
+    "--continue-on-collection-errors",
     "-v"
 ]

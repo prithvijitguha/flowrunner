@@ -45,4 +45,4 @@ jobs:
         black .
     - name: Run Tests
       run: |
-        python -m pytest --continue-on-collection-errors
+        python -m pytest
