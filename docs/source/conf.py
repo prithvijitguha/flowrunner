@@ -74,9 +74,11 @@ html_theme_options = {
     "repo_url": "https://github.com/prithvijitguha/FlowRunner",
     "repo_name": "FlowRunner",
     # Visible levels of the global TOC; -1 means unlimited
-    "globaltoc_depth": 3,
+    "globaltoc_depth": 1,
     # If False, expand all TOC entries
     "globaltoc_collapse": False,
     # If True, show hidden TOC entries
     "globaltoc_includehidden": False,
 }
+
+html_sidebars = {"**": ["globaltoc.html"]}
