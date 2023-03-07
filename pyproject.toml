@@ -14,11 +14,11 @@ keywords = ["one", "two"]
 license = {text = "BSD-3-Clause"}
 classifiers = [
     "Framework :: FlowRunner",
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
 ]
 dependencies = [
     'requests',
-    'importlib-metadata; python_version<"3.9"',
+    'importlib-metadata; python_version<="3.9"',
     'click>=8.1.3',
     'Jinja2>=3.1.2',
     'coloredlogs>=15.0.1'
@@ -30,16 +30,19 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 doc = [
-    "Sphinx>=6.1.3"
+    "Sphinx>=6.1.3",
+    "pre-commit>=3.1.1"
 ]
 
 dev = [
     "pylint>=2.16.4",
     "black>=23.1.0",
-    "pytest>=7.2.1"
+    "pytest>=7.2.1",
+    "pre-commit==3.1.1",
 ]
 test = [
-    "pytest>=7.2.1"
+    "pytest>=7.2.1",
+    "pre-commit>=3.1.1"
 ]
 
 
@@ -58,11 +61,13 @@ where=[
 cli = "flowrunner.cli:cli"
 
 [tool.pytest.ini_options]
-pythonpath = "flowrunner"
+pythonpath = [
+    "flowrunner",
+    "tests"
+    ]
 testpaths = [
     "tests"
 ]
 addopts = [
-    "--continue-on-collection-errors",
     "-v"
 ]
