@@ -1,22 +1,25 @@
-from flowrunner.core.helpers import GraphValidator
-from flowrunner.core.base import Graph, GraphOptions
-from flowrunner.system.exceptions import InvalidFlowException
-from flowrunner.runner.flow import BaseFlow
-from flowrunner.core.decorators import step, start, end
 import pytest
 
+from flowrunner.core.base import Graph, GraphOptions
+from flowrunner.core.decorators import end, start, step
+from flowrunner.core.helpers import GraphValidator
+from flowrunner.runner.flow import BaseFlow
+from flowrunner.system.exceptions import InvalidFlowException
+
 # TODO: Need to add more validation failures based on each method in validation suite
+
 
 @pytest.fixture(scope="module")
 def bad_flow_example():
     """Function to return a BadFlowExample for testing"""
+
     class BadFlowExample(BaseFlow):
         @start
         @step
         def method_1(self):
             return None
 
-        @step(next=['method_3'])
+        @step(next=["method_3"])
         def method_2(self):
             return None
 
@@ -24,13 +27,8 @@ def bad_flow_example():
         @step
         def method_3(self):
             return None
+
     return BadFlowExample
-
-
-
-
-
-
 
 
 def test_graph_validator(bad_flow_example):
