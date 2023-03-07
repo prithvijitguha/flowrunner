@@ -23,7 +23,7 @@ on:
 
 jobs:
   build:
-    name: build, test and codecov
+    name: build and test
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -38,11 +38,12 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install .[dev]
+        python -m build
     - name: Run Linting
       run: |
         black .
-    - name: Run tests and collect coverage
+    - name: Run Tests
       run: |
-        python -m pytest tests -v
+        pytest tests -v
 
 
