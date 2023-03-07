@@ -38,6 +38,7 @@ class BaseFlow:
     @classmethod
     def show(cls):
         """Class method to show nodes/levels"""
+        FlowRunner(cls).run_validations()
         FlowRunner(cls).show()
 
 @dataclass
@@ -53,6 +54,7 @@ class FlowRunner:
 
     def __post_init__(self):
         """A method done after instance of FlowRunner is created to generate the graph and arrange it"""
+        self.flow_name = self.base_flow.__name__
         graph_options = GraphOptions(self.base_flow)
         self.graph_instance = (
             graph_options.base_flow_instance
@@ -61,20 +63,20 @@ class FlowRunner:
 
     def run_validations(self):
         """Method to run validations on a BaseFlow subclass"""
-        logger.debug("Validating flow for %s", self.base_flow)
+        logger.debug("Validating flow for %s", self.flow_name)
         graph_validator = GraphValidator(self.graph)
         graph_validator.run_validations()
 
     def run_validations_raise_error(self):
         """Method to run validations on a BaseFlow subclass"""
-        logger.debug("Validating flow for %s", self.base_flow)
+        logger.debug("Validating flow for %s", self.flow_name)
         logger.warning("Validation will raise InvalidFlowException if invalid Flow found")
         graph_validator = GraphValidator(self.graph)
         graph_validator.run_validations_raise_error()
 
     def run_flow(self):
         """Method to run any BaseFlow subclass"""
-        logger.debug("Running flow for %s", self.base_flow)
+        logger.debug("Running flow for %s", self.flow_name)
         # we iterate through the functions level wise and we store the
         # output into a datastore
         for level in self.graph.levels:
@@ -83,7 +85,7 @@ class FlowRunner:
 
     def show(self):
         """Method to show flow"""
-        logger.debug("Show flow for %s", self.base_flow)
+        logger.debug("Show flow for %s", self.flow_name)
         # iterate through graph levels
         for level in self.graph.levels:
             # iterate through each node in the list
