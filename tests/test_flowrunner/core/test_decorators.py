@@ -6,6 +6,7 @@ from tests.test_flowrunner.core.test_base import example_node_flow
 
 class TestDecorators:
     """Class to test decorators"""
+
     def test_node_start(self, example_node_flow):
         """Function to test start nodes, make sure
         that attributes are being correctly"""
@@ -13,7 +14,6 @@ class TestDecorators:
         assert example_node_flow.method_1.is_start == True
         assert example_node_flow.method_1.next == ["method_2", "method_3"]
         assert hasattr(example_node_flow.method_3, "end") == False
-
 
     def test_node_middle(self, example_node_flow):
         """Function to test middle nodes, make sure
@@ -25,7 +25,6 @@ class TestDecorators:
         assert hasattr(example_node_flow.method_3, "end") == False
         assert hasattr(example_node_flow.method_3, "start") == False
 
-
     def test_node_end(self, example_node_flow):
         """Function to test end nodes, make sure
         that attributes are being correctly"""
@@ -34,10 +33,10 @@ class TestDecorators:
         assert example_node_flow.method_4.next == None
         assert hasattr(example_node_flow.method_3, "start") == False
 
-
     @pytest.fixture(scope="module")
     def example_decorator_new_step_class(self):
         """Fixture to return function decorated with 'Step' class"""
+
         @Step
         def test_method():
             return None

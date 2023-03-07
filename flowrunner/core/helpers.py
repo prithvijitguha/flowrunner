@@ -236,4 +236,3 @@ class GraphValidator:
 
         if all(validation_output) != True:
             raise InvalidFlowException("Invalid Flow detected")
-

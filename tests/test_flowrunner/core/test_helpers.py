@@ -7,16 +7,18 @@ import pytest
 
 # TODO: Need to add more validation failures based on each method in validation suite
 
+
 @pytest.fixture(scope="module")
 def bad_flow_example():
     """Function to return a BadFlowExample for testing"""
+
     class BadFlowExample(BaseFlow):
         @start
         @step
         def method_1(self):
             return None
 
-        @step(next=['method_3'])
+        @step(next=["method_3"])
         def method_2(self):
             return None
 
@@ -24,13 +26,8 @@ def bad_flow_example():
         @step
         def method_3(self):
             return None
+
     return BadFlowExample
-
-
-
-
-
-
 
 
 def test_graph_validator(bad_flow_example):

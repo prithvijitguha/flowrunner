@@ -7,6 +7,7 @@ Graph: A class containing an arranged collection of Nodes from start, middle, en
 from dataclasses import dataclass
 from typing import Type
 
+
 @dataclass
 class Node:
     """A class for containing functions, with the function name, actual function reference, docstring and
@@ -18,6 +19,7 @@ class Node:
         next: None by default, list value of what is next node, assigned in __post_init__
         docstring: Docstring of method assigned in __post_init__
     """
+
     name: str
     function_reference: callable
 
@@ -71,10 +73,17 @@ class Node:
             self.next = []
 
         # check if method name in next is same as current
-        if self.next: # only if next list if full. ie. Only for start and middle
-            bad_next_list = [next_callable for next_callable in self.function_reference.next if self.name == next_callable]
+        if self.next:  # only if next list if full. ie. Only for start and middle
+            bad_next_list = [
+                next_callable
+                for next_callable in self.function_reference.next
+                if self.name == next_callable
+            ]
             if bad_next_list:
-                raise ValueError(f"Value for next cannot be same as method {self.name}.next={bad_next_list}")
+                raise ValueError(
+                    f"Value for next cannot be same as method {self.name}.next={bad_next_list}"
+                )
+
     def __repr__(self):
         """String representation of this node, which will be actual function
         name
@@ -98,7 +107,6 @@ class Node:
         return hash(self.name)
 
 
-
 # class to handle the seperation of functions
 @dataclass
 class GraphOptions:
@@ -118,6 +126,7 @@ class GraphOptions:
 
     # list of functions/module
     base_flow: Type
+
     def __post_init__(self):
         """Method to assign some attributes for the BaseFlow.
 
@@ -143,10 +152,14 @@ class GraphOptions:
             End=['method_3']
 
         """
-        self.functions = self.base_flow.__dict__ # returns a dict of method name and actual reference {'test_1': <function Test.test_1 at 0x000002390259E9D0>}
-        self.middle_nodes = [] # list to store any methods that have 'step' decorator but NO 'start' or 'end'
-        self.start = [] # list to store any methods that have 'start' decorator
-        self.end = [] # list to store any methods that have 'end' decorator
+        self.functions = (
+            self.base_flow.__dict__
+        )  # returns a dict of method name and actual reference {'test_1': <function Test.test_1 at 0x000002390259E9D0>}
+        self.middle_nodes = (
+            []
+        )  # list to store any methods that have 'step' decorator but NO 'start' or 'end'
+        self.start = []  # list to store any methods that have 'start' decorator
+        self.end = []  # list to store any methods that have 'end' decorator
 
         # iterate over list of functions/methods of the class, we do a check to make sure that it is a callable.
         # if it is a callable we make distinctions based on attributes. 'is_step', 'is_end' and 'is_start'. Following conditions classify them
@@ -156,18 +169,24 @@ class GraphOptions:
         for name_func, func in self.functions.items():
             if callable(func):
                 # the ones with step, start and end in them
-                if ( # IF 'is_step' NO 'is_start' NO 'is_end' THEN 'middle_nodes'
+                if (  # IF 'is_step' NO 'is_start' NO 'is_end' THEN 'middle_nodes'
                     hasattr(func, "is_step")
                     and not hasattr(func, "is_start")
                     and not hasattr(func, "is_end")
                 ):
                     self.middle_nodes.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(func, "is_start"): # IF 'is_step' YES 'is_start' NO 'is_end' THEN 'start'
+                elif hasattr(func, "is_step") and hasattr(
+                    func, "is_start"
+                ):  # IF 'is_step' YES 'is_start' NO 'is_end' THEN 'start'
                     self.start.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(func, "is_end"): # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
+                elif hasattr(func, "is_step") and hasattr(
+                    func, "is_end"
+                ):  # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
                     self.end.append(Node(name_func, func))
 
-        self.base_flow_instance = self.base_flow() # we store an instance of the class for reference for later BaseFlow()
+        self.base_flow_instance = (
+            self.base_flow()
+        )  # we store an instance of the class for reference for later BaseFlow()
 
     def __repr__(self):
         """String representation of class
@@ -185,8 +204,6 @@ class GraphOptions:
 
         """
         return f"Start={self.start}\nMiddle Nodes={self.middle_nodes}\nEnd={self.end}"
-
-
 
 
 @dataclass
@@ -278,7 +295,3 @@ class Graph:
     def generate_html(self):
         """A method to generate the html graph using go-js"""
         pass
-
-
-
-

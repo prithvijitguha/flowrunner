@@ -37,15 +37,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
-        pip install git+https://github.com/prithvijitguha/FlowRunner@main
-    # - name: Run Linting
-    #   run: |
-    #     black .
-    #     flake8 .
-    #     pylint .
-    # - name: Dependency Check Safety
-    #   run: |
-    #     safety check -r requirements.txt
+        pip install .[dev]
+    - name: Run Linting
+      run: |
+        black .
     - name: Run tests and collect coverage
       run: |
         python -m pytest tests -v

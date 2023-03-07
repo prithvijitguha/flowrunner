@@ -18,7 +18,9 @@ class BaseFlow:
     Attributes:
         - data_store: A dict that is meant to be used to store data in key:value pairs
     """
+
     data_store: dict = field(default_factory=lambda: dict())
+
     @classmethod
     def validate_flow(cls):
         """Class method to validate the graph"""
@@ -32,7 +34,9 @@ class BaseFlow:
     @classmethod
     def run_flow(cls):
         """Class Method to run flow"""
-        FlowRunner(cls).run_validations_raise_error() # we run this in case of an invalid flow
+        FlowRunner(
+            cls
+        ).run_validations_raise_error()  # we run this in case of an invalid flow
         FlowRunner(cls).run_flow()
 
     @classmethod
@@ -40,6 +44,7 @@ class BaseFlow:
         """Class method to show nodes/levels"""
         FlowRunner(cls).run_validations()
         FlowRunner(cls).show()
+
 
 @dataclass
 class FlowRunner:
@@ -70,7 +75,9 @@ class FlowRunner:
     def run_validations_raise_error(self):
         """Method to run validations on a BaseFlow subclass"""
         logger.debug("Validating flow for %s", self.flow_name)
-        logger.warning("Validation will raise InvalidFlowException if invalid Flow found")
+        logger.warning(
+            "Validation will raise InvalidFlowException if invalid Flow found"
+        )
         graph_validator = GraphValidator(self.graph)
         graph_validator.run_validations_raise_error()
 
@@ -90,8 +97,10 @@ class FlowRunner:
         for level in self.graph.levels:
             # iterate through each node in the list
             for node in level:
-                click.secho(f"{node.name}\n", fg="green") # echo the node
-                docstring = node.docstring or "?" # echo the docstring if docstring is None then echo "?"
+                click.secho(f"{node.name}\n", fg="green")  # echo the node
+                docstring = (
+                    node.docstring or "?"
+                )  # echo the docstring if docstring is None then echo "?"
                 click.secho(docstring, fg="bright_red")
                 next_callables = ", ".join(node.next)
-                click.secho(f"   Next={next_callables}\n\n", fg='blue')
+                click.secho(f"   Next={next_callables}\n\n", fg="blue")

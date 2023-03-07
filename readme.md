@@ -54,15 +54,9 @@ $ python -m flowrunner example.py
 7
 ```
 
-
-
-
-
 ## Documentation
 TODO
 
-## Authors
-- Prithvijit Guha
 
 ## Contributing
 TODO
