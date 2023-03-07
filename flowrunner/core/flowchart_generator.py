@@ -1,4 +1,6 @@
-"""Module to generate html pages"""
+"""Module to generate html pages
+This feature is NOT READY YET
+"""
 
 from jinja2 import Environment, FileSystemLoader
 import flow_example
