@@ -22,7 +22,7 @@ def cli():
 
 @cli.command()
 @click.argument("filepath")
-def validate(filepath):
+def validate(filepath: str):
     """Command to validate a Flow
 
     Examples:
@@ -40,7 +40,7 @@ def validate(filepath):
 
 @cli.command()
 @click.argument("filepath")
-def show(filepath):
+def show(filepath: str):
     """Command to show the order of iteration of a Flow
 
     Examples:
@@ -59,7 +59,7 @@ def show(filepath):
 
 @cli.command()
 @click.argument("filepath")
-def run(run_filepath):
+def run(filepath: str):
     """Command to run a Flow
 
     Examples:
@@ -71,7 +71,7 @@ def run(run_filepath):
     Returns:
         - Runs the Flow
     """
-    flow = _read_python_file(run_filepath)
+    flow = _read_python_file(filepath)
     logger.info(f"Found flow {flow.__name__}")
     flow.run_flow()
 
