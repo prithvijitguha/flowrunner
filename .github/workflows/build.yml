@@ -45,6 +45,6 @@ jobs:
         black .
     - name: Run Tests
       run: |
-        pytest tests -v
+        python -m pytest tests -v
 
 
