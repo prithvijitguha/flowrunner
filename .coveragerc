@@ -1,11 +1,8 @@
 [run]
 omit =
-    */db/*
     */__init__.py
-    jwt/jwt_utils.py
+
 
 [report]
 omit =
-    *db/*
     */__init__.py
-    jwt/jwt_utils.py

@@ -1,5 +1,6 @@
 # FlowRunner: A lightweight Data Engineering/Science Flow package
 
+[![codecov](https://codecov.io/gh/prithvijitguha/FlowRunner/branch/main/graph/badge.svg?token=0B8X2WF0OA)](https://codecov.io/gh/prithvijitguha/FlowRunner)
 ![tests](https://github.com/prithvijitguha/FlowRunner/actions/workflows/tests.yml/badge.svg?branch=main)&nbsp;
 ![build](https://github.com/prithvijitguha/FlowRunner/actions/workflows/build.yml/badge.svg?branch=main)&nbsp;
 [![Documentation Status](https://readthedocs.org/projects/flowrunner/badge/?version=latest)](https://flowrunner.readthedocs.io/en/latest/?badge=latest)
