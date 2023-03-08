@@ -57,7 +57,7 @@ class ExampleFlow(BaseFlow):
 
 You can run the flow with the following command
 ```sh
-$ python -m flowrunner example.py
+$ python -m flowrunner run example.py
 7
 ```
 
