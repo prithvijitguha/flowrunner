@@ -9,8 +9,8 @@ on:
       - "**/.jpg"
       - "**/.png"
       - "**/.md"
-      - "**/.yml"
-    branches: [ master ]
+
+    branches: [ main ]
   pull_request:
     paths-ignore:
       - "docs/**"
@@ -19,7 +19,7 @@ on:
       - "**/.jpg"
       - "**/.png"
       - "**/.md"
-      - "**/.yml"
+
 
 jobs:
   build:
