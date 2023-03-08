@@ -63,6 +63,19 @@ We run ``validate`` to validate our Flow
 
    python -m flowrunner validate example.py
 
+The output runs validation checks on your Flow with ✅ for passed and ❌ for failed
+
+.. code-block:: console
+
+   2023-03-08 22:36:58 LAPTOP flowrunner.system.logger[9008] INFO Found flow ExampleFlow
+   2023-03-08 22:36:58 LAPTOP flowrunner.system.logger[9008] DEBUG Validating flow for ExampleFlow
+   ✅ Validated number of start nodes
+   ✅ Validated start nodes 'next' values
+   ✅ Validate number of middle_nodes
+   ✅ Validated middle_nodes 'next' values
+   ✅ Validated end nodes
+   ✅ Validated start nodes 'next' values
+
 
 ``show`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -74,6 +87,46 @@ step based on the docstring of the function
 
    python -m flowrunner show example.py
 
+Output will look like this. "?" is used in absence of a docstring for the method. However if you add a docstring
+that will show up too!
+
+.. code-block:: console
+
+   2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] INFO Found flow ExampleFlow
+   2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] DEBUG Validating flow for ExampleFlow
+   ✅ Validated number of start nodes
+   ✅ Validated start nodes 'next' values
+   ✅ Validate number of middle_nodes
+   ✅ Validated middle_nodes 'next' values
+   ✅ Validated end nodes
+   ✅ Validated start nodes 'next' values
+   2023-03-08 22:35:24 LAPTOP  flowrunner.system.logger[12692] DEBUG Show flow for ExampleFlow
+   method1
+
+   ?
+      Next=method2, method3
+
+
+   method2
+
+   ?
+      Next=method4
+
+
+   method3
+
+   ?
+      Next=method4
+
+
+   method4
+
+   ?
+      Next=
+
+
+
+
 
 ``run`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -83,4 +136,18 @@ We can use ``run`` command to actually run the flow
 .. code-block:: powershell
 
    python -m flowrunner run example.py
+   7
+
+.. code-block:: console
+
+   2023-03-08 22:29:48 LAPTOP flowrunner.system.logger[13528] INFO Found flow ExampleFlow
+   2023-03-08 22:29:48 LAPTOP flowrunner.system.logger[13528] DEBUG Validating flow for ExampleFlow
+   2023-03-08 22:29:48 LAPTOP flowrunner.system.logger[13528] WARNING Validation will raise InvalidFlowException if invalid Flow found
+   ✅ Validated number of start nodes
+   ✅ Validated start nodes 'next' values
+   ✅ Validate number of middle_nodes
+   ✅ Validated middle_nodes 'next' values
+   ✅ Validated end nodes
+   ✅ Validated start nodes 'next' values
+   2023-03-08 22:29:48 LAPTOP flowrunner.system.logger[13528] DEBUG Running flow for ExampleFlow
    7

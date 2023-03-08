@@ -52,18 +52,19 @@ class ExampleFlow(BaseFlow):
     @step
     def method4(self):
         self.a += 3
-        print(self.a)
+        print("output of flow is:", self.a)
 ```
 
 You can run the flow with the following command
-```sh
+```console
 $ python -m flowrunner run example.py
-7
+output of flow is: 7
 ```
 
 ## Documentation
-TODO
-
+Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
 
 ## Contributing
-TODO
+All contributions are welcome :smiley:
+
+If you are interested in contributing, please check out this page: [FlowRunner Contribution Page](https://flowrunner.readthedocs.io/en/latest/contributing_guide_code.html)
