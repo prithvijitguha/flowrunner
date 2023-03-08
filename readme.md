@@ -62,8 +62,9 @@ $ python -m flowrunner run example.py
 ```
 
 ## Documentation
-TODO
-
+Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
 
 ## Contributing
-TODO
+All contributions are welcome :smiley:
+
+If you are interested in contributing, please check out this page: [FlowRunner Contribution Page](https://flowrunner.readthedocs.io/en/latest/contributing_guide_code.html)
