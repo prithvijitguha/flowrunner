@@ -9,7 +9,7 @@ on:
       - "**/.jpg"
       - "**/.png"
       - "**/.md"
-      - "**/.yml"
+
     branches: [ master ]
   pull_request:
     paths-ignore:
@@ -19,7 +19,6 @@ on:
       - "**/.jpg"
       - "**/.png"
       - "**/.md"
-      - "**/.yml"
 
 jobs:
   build:
@@ -45,3 +44,5 @@ jobs:
     - name: Run Tests
       run: |
         python -m pytest --continue-on-collection-errors
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
