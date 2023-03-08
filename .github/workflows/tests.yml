@@ -10,7 +10,7 @@ on:
       - "**/.png"
       - "**/.md"
 
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
     paths-ignore:
       - "docs/**"
