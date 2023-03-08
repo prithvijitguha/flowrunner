@@ -52,13 +52,13 @@ class ExampleFlow(BaseFlow):
     @step
     def method4(self):
         self.a += 3
-        print(self.a)
+        print("output of flow is:", self.a)
 ```
 
 You can run the flow with the following command
 ```sh
 $ python -m flowrunner run example.py
-7
+output of flow is: 7
 ```
 
 ## Documentation
