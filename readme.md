@@ -56,7 +56,7 @@ class ExampleFlow(BaseFlow):
 ```
 
 You can run the flow with the following command
-```sh
+```console
 $ python -m flowrunner run example.py
 output of flow is: 7
 ```
