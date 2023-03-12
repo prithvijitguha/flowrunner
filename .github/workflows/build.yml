@@ -1,33 +1,27 @@
-name: Build and Package
+name: "Build and Package"
 
 on:
   push:
-    paths-ignore:
-      - "docs/**"
-      - "readme.md"
-      - "**/.rst"
-      - "**/.jpg"
-      - "**/.png"
-      - "**/.md"
+    paths-include:
+      - "**/*.py"
+      - "flowrunner/*"
+      - "**/*yml"
 
     branches: [ main ]
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "readme.md"
-      - "**/.rst"
-      - "**/.jpg"
-      - "**/.png"
-      - "**/.md"
-
+    paths-include:
+      - "**/*.py"
+      - "flowrunner/*"
+      - "**/*yml"
 
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
       matrix:
+        os: [ubuntu-latest, windows-latest]
         python-version: ["3.9"]
     steps:
     - uses: actions/checkout@v2

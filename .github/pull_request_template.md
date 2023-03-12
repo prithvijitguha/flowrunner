@@ -1,0 +1,4 @@
+- [ ] Closes #ISSUENUMBER
+- [ ] tests passed/added
+- [ ] Ensure all linting tests/pre-commit pass, see [here](https://flowrunner.readthedocs.io/en/latest/contributing_guide_code.html#commiting) for how to run them.
+- [ ] whatsnew entry eg. Added new feature to BaseFlow class

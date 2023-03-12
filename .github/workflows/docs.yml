@@ -1,17 +1,17 @@
-name: Documentation
+name: "Documentation Checks"
 
 on:
   push:
     paths-include:
       - "docs/**"
-      - "readme.md"
+      - "*.md"
       - "**/*.rst"
 
     branches: [ main ]
   pull_request:
-    paths-ignore:
+    paths-include:
       - "docs/**"
-      - "readme.md"
+      - "*.md"
       - "**/*.rst"
 jobs:
   build:
