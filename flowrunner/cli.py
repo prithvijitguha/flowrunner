@@ -78,7 +78,7 @@ def run(filepath: str):
     """
     flow = _read_python_file(filepath)
     logger.info(f"Found flow {flow.__name__}")
-    flow.run_flow()
+    flow.run()
 
 
 def _read_python_file(file_path: str) -> BaseFlow:
