@@ -35,7 +35,7 @@ Before we begin, please:
 * ``cd`` to the FlowRunner source directory
 
 .. tabs::
-    .. tab:: Windows
+    .. group-tab:: Windows
 
         .. code-block:: powershell
 
@@ -43,7 +43,7 @@ Before we begin, please:
             flow_dev/scripts/activate
 
 
-    .. tab:: Unix/macOS
+    .. group-tab:: Unix/macOS
 
         .. code-block:: bash
 
@@ -56,37 +56,36 @@ Before we begin, please:
 Step 2: Install the required packages
 ----------------------------------------
 
-Install the required packages using pip
+Install the required packages using `pip`
 
-**Editable Install**
+Following are commands depending on what part of FlowRunner you are working on
+
+
+Create an editable install of FlowRunner
 
 .. code-block:: powershell
 
     pip install -e .
 
-**Install Development Packages**
+.. tabs::
 
-.. code-block:: powershell
+    .. group-tab:: **Install Development Packages**
 
-    pip install -e .[dev]
+        .. code-block:: powershell
 
-**Install Testing Packages**
+            pip install -e .[dev]
 
-.. code-block:: powershell
+    .. group-tab:: **Install Testing Packages**
 
-    pip install -e .[test]
+        .. code-block:: powershell
 
+            pip install -e .[test]
 
-**Install Documentation Packages**
+    .. group-tab:: **Install Documentation Packages**
 
-.. code-block:: powershell
+        .. code-block:: powershell
 
-    pip install -e .[doc]
-
-
-.. _creating_development_environment.install_packages:
-
-
+            pip install -e .[doc]
 
 .. note::
    You will need to repeat the step each time you have made a change to the codebase

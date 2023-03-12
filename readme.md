@@ -14,9 +14,9 @@
 integrated with any pre-existing framework like pandas or PySpark
 
 ## Main Features
-- Easy BaseFlow to use to build Flows off of
-- Simple decorators to convert methods to Flow methods
-- Command Line Interface for running Flows
+- Easy BaseFlow to build all Flows
+- Simple decorators to convert methods to Flow `step`
+- Run flows with CLI or python class methods
 
 ## Installing FlowRunner
 To install FlowRunner, following commands will work
