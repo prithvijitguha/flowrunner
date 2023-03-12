@@ -2,7 +2,7 @@ name: "Run Tests and Linting Checks"
 
 on:
   push:
-    paths-include:
+    paths:
       - "**/*.py"
       - "flowrunner/*"
       - "**/*yml"
@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
   pull_request:
-    paths-include:
+    paths:
       - "**/*.py"
       - "flowrunner/*"
       - "**/*yml"

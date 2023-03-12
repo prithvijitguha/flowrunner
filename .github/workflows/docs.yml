@@ -2,14 +2,14 @@ name: "Documentation Checks"
 
 on:
   push:
-    paths-include:
+    paths:
       - "docs/**"
       - "*.md"
       - "**/*.rst"
 
     branches: [ main ]
   pull_request:
-    paths-include:
+    paths:
       - "docs/**"
       - "*.md"
       - "**/*.rst"
