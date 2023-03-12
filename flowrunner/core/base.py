@@ -292,7 +292,3 @@ class Graph:
                 break
             self.levels.append(next_level)
             temp_level = next_level
-
-    def generate_html(self):
-        """A method to generate the html graph using go-js"""
-        pass

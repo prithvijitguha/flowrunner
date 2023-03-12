@@ -50,17 +50,17 @@ class FlowExample(BaseFlow):
 
 def test_validate_flow():
     """Run validate flow"""
-    FlowExample().validate_flow()
+    FlowExample().validate()
 
 
 def test_validate_flow_with_error():
-    FlowExample().validate_flow_with_error()  # we validate the flow and throw an exception if its not valid
+    FlowExample().validate_with_error()  # we validate the flow and throw an exception if its not valid
 
 
 def test_flowrunner():
     flow_runner = FlowRunner(FlowExample)
-    flow_runner.run_flow()
+    flow_runner.run()
 
 
 def test_base_flow_run_flow():
-    FlowExample().run_flow()
+    FlowExample().run()

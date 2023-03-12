@@ -25,27 +25,25 @@ class BaseFlow:
     data_store: dict = field(default_factory=lambda: dict())
 
     @classmethod
-    def validate_flow(cls):
+    def validate(cls):
         """Class method to validate the graph"""
-        FlowRunner(cls).run_validations()
+        FlowRunner(cls).validate()
 
     @classmethod
-    def validate_flow_with_error(cls):
+    def validate_with_error(cls):
         """Class method to validate the graph"""
-        FlowRunner(cls).run_validations_raise_error()
+        FlowRunner(cls).validate_with_error()
 
     @classmethod
-    def run_flow(cls):
+    def run(cls):
         """Class Method to run flow"""
-        FlowRunner(
-            cls
-        ).run_validations_raise_error()  # we run this in case of an invalid flow
-        FlowRunner(cls).run_flow()
+        FlowRunner(cls).validate_with_error()  # we run this in case of an invalid flow
+        FlowRunner(cls).run()
 
     @classmethod
     def show(cls):
         """Class method to show nodes/levels"""
-        FlowRunner(cls).run_validations()
+        FlowRunner(cls).validate()
         FlowRunner(cls).show()
 
 
@@ -69,13 +67,13 @@ class FlowRunner:
         )  # we store the same graph instance attribute of GraphOptions
         self.graph = Graph(graph_options=graph_options)
 
-    def run_validations(self):
+    def validate(self):
         """Method to run validations on a BaseFlow subclass"""
         logger.debug("Validating flow for %s", self.flow_name)
         graph_validator = GraphValidator(self.graph)
         graph_validator.run_validations()
 
-    def run_validations_raise_error(self):
+    def validate_with_error(self):
         """Method to run validations on a BaseFlow subclass"""
         logger.debug("Validating flow for %s", self.flow_name)
         logger.warning(
@@ -84,7 +82,7 @@ class FlowRunner:
         graph_validator = GraphValidator(self.graph)
         graph_validator.run_validations_raise_error()
 
-    def run_flow(self):
+    def run(self):
         """Method to run any BaseFlow subclass"""
         logger.debug("Running flow for %s", self.flow_name)
         # we iterate through the functions level wise and we store the
