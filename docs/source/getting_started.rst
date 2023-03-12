@@ -1,5 +1,13 @@
 .. _getting_started:
 
+.. role:: python(code)
+  :language: python
+  :class: highlight
+
+.. role:: bash(code)
+  :language: bash
+  :class: highlight
+
 Getting Started
 ====================
 
@@ -60,7 +68,11 @@ contains ``example.py``
 Working with your Flow
 -------------------------
 
-Flows can be run either with cli(command line interface) commands or with inbuilt class methods
+Flows can be run in two ways:
+
+* cli: The command line interface way :bash:`python -m flowrunner [COMMAND] [PATH_TO_FLOW_FILE.py]`
+* Flow methods: The inbuilt class methods :python:`ExampleFlow().insert_method_name()`
+
 
 ``validate`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -75,7 +87,7 @@ We run ``validate`` to validate our Flow
 
          python -m flowrunner validate example.py
 
-   .. group-tab::  python methods
+   .. group-tab::  Flow methods
 
       .. code-block:: python
 
@@ -117,7 +129,7 @@ that will show up too!
 
          python -m flowrunner show example.py
 
-   .. group-tab::  python methods
+   .. group-tab::  Flow methods
 
       .. code-block:: python
 
@@ -175,7 +187,7 @@ We can use ``run`` command to actually run the flow
 
          python -m flowrunner run example.py
 
-   .. group-tab::  python methods
+   .. group-tab::  Flow methods
 
       .. code-block:: python
 
