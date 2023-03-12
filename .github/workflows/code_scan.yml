@@ -3,9 +3,15 @@ name: "Code Scanning"
 
 on:
   push:
-    branches: [main]
+    paths-include:
+      - "**/*.py"
+      - "flowrunner/*"
+
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    paths-include:
+      - "**/*.py"
+      - "flowrunner/*"
   # schedule:
     #        ┌───────────── minute (0 - 59)
     #        │  ┌───────────── hour (0 - 23)

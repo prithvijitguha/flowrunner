@@ -2,23 +2,18 @@ name: "Run Tests and Linting Checks"
 
 on:
   push:
-    paths-ignore:
-      - "docs/**"
-      - "readme.md"
-      - "**/.rst"
-      - "**/.jpg"
-      - "**/.png"
-      - "**/.md"
+    paths-include:
+      - "**/*.py"
+      - "flowrunner/*"
+      - "**/*yml"
 
     branches: [ main ]
+
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "readme.md"
-      - "**/.rst"
-      - "**/.jpg"
-      - "**/.png"
-      - "**/.md"
+    paths-include:
+      - "**/*.py"
+      - "flowrunner/*"
+      - "**/*yml"
 
 jobs:
   build:
