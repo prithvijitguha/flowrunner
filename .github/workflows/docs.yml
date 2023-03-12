@@ -1,0 +1,39 @@
+name: Documentation
+
+on:
+  push:
+    paths-include:
+      - "docs/**"
+      - "readme.md"
+      - "**/.rst"
+
+    branches: [ main ]
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "readme.md"
+      - "**/.rst"
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.9"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        pip install build>=0.10.0
+        pip install .[doc]
+    # the below pre commit does all linting checks including black and linting tools
+    - name: pre-commit
+      uses: pre-commit/action@v3.0.0
+    - name: build-docs
+      run: |
+        sphinx-build -b html docs/source/ docs/build/html
