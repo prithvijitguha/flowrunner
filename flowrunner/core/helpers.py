@@ -187,14 +187,14 @@ class GraphValidator:
         ]
         return validation_suite
 
-    def run_validations(self):
+    def run_validations(self, terminal_output: bool = True):
         """Method to run all validation methods
         We iterate through the validation suite for each method and check
         the output. Output is always in the form of Tuple[bool, str]. With bool for Pass or
         Fail and str being the output message
 
         Args:
-            - None
+            - terminal_output: An optional bool argument for whether to show the output in terminal
 
         Returns:
             - Echo of output {✅} or {❌} if passed or failed respectively with message
@@ -204,19 +204,19 @@ class GraphValidator:
         # iterate through the list of validations
         for validation in validation_suite:
             result, message = validation()  # run the validation and check the output
-            if result == True:
+            if result == True and terminal_output:
                 click.secho(f"✅ {message}", fg="green")
-            elif result == False:
+            elif result == False and terminal_output:
                 click.secho(f"❌ {message}", fg="bright_red")
 
-    def run_validations_raise_error(self):
+    def run_validations_raise_error(self, terminal_output: bool = True):
         """Method to run all validation methods but we raise an error if anything fails
         We iterate through the validation suite for each method and check
         the output. Output is always in the form of Tuple[bool, str]. With bool for Pass or
         Fail and str being the output message
 
         Args:
-            - None
+            - terminal_output: An optional bool argument for whether to show the output in terminal
 
         Returns:
             - Echo of output {✅} or {❌} if passed or failed respectively with message
@@ -232,9 +232,9 @@ class GraphValidator:
         for validation in validation_suite:
             result, message = validation()  # run the validation and check the output
             validation_output.append(result)
-            if result == True:
+            if result == True and terminal_output:
                 click.secho(f"✅ {message}", fg="green")
-            elif result == False:
+            elif result == False and terminal_output:
                 click.secho(f"❌ {message}", fg="bright_red")
 
         if all(validation_output) != True:

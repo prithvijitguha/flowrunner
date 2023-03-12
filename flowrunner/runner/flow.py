@@ -25,25 +25,27 @@ class BaseFlow:
     data_store: dict = field(default_factory=lambda: dict())
 
     @classmethod
-    def validate(cls):
+    def validate(cls, terminal_output: bool = False):
         """Class method to validate the graph"""
-        FlowRunner(cls).validate()
+        FlowRunner(cls).validate(terminal_output=terminal_output)
 
     @classmethod
-    def validate_with_error(cls):
+    def validate_with_error(cls, terminal_output: bool = False):
         """Class method to validate the graph"""
-        FlowRunner(cls).validate_with_error()
+        FlowRunner(cls).validate_with_error(terminal_output=terminal_output)
 
     @classmethod
     def run(cls):
         """Class Method to run flow"""
-        FlowRunner(cls).validate_with_error()  # we run this in case of an invalid flow
+        FlowRunner(cls).validate_with_error(
+            terminal_output=False
+        )  # we run this in case of an invalid flow
         FlowRunner(cls).run()
 
     @classmethod
     def show(cls):
         """Class method to show nodes/levels"""
-        FlowRunner(cls).validate()
+        FlowRunner(cls).validate(terminal_output=False)
         FlowRunner(cls).show()
 
 
@@ -67,20 +69,20 @@ class FlowRunner:
         )  # we store the same graph instance attribute of GraphOptions
         self.graph = Graph(graph_options=graph_options)
 
-    def validate(self):
+    def validate(self, terminal_output: bool = False):
         """Method to run validations on a BaseFlow subclass"""
         logger.debug("Validating flow for %s", self.flow_name)
         graph_validator = GraphValidator(self.graph)
-        graph_validator.run_validations()
+        graph_validator.run_validations(terminal_output=terminal_output)
 
-    def validate_with_error(self):
+    def validate_with_error(self, terminal_output: bool = False):
         """Method to run validations on a BaseFlow subclass"""
         logger.debug("Validating flow for %s", self.flow_name)
         logger.warning(
             "Validation will raise InvalidFlowException if invalid Flow found"
         )
         graph_validator = GraphValidator(self.graph)
-        graph_validator.run_validations_raise_error()
+        graph_validator.run_validations_raise_error(terminal_output=terminal_output)
 
     def run(self):
         """Method to run any BaseFlow subclass"""
