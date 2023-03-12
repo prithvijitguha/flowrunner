@@ -7,6 +7,7 @@ Getting Started
    :local:
 
 
+
 Installing FlowRunner
 --------------------------
 
@@ -16,7 +17,7 @@ Currently FlowRunner is only available through source
 
     pip install git+https://github.com/prithvijitguha/FlowRunner@main
 
-
+.. _getting_started.installing_flowrunner:
 
 Quickstart
 ---------------
@@ -53,6 +54,7 @@ contains ``example.py``
          self.a += 3
          print(self.a)
 
+.. _getting_started.create_first_flow:
 
 ``validate`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -76,6 +78,8 @@ The output runs validation checks on your Flow with ✅ for passed and ❌ for f
    ✅ Validated end nodes
    ✅ Validated start nodes 'next' values
 
+
+.. _getting_started.validate_flow:
 
 ``show`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -126,7 +130,7 @@ that will show up too!
 
 
 
-
+.. _getting_started.show_flow:
 
 ``run`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -151,3 +155,5 @@ We can use ``run`` command to actually run the flow
    ✅ Validated start nodes 'next' values
    2023-03-08 22:29:48 LAPTOP flowrunner.system.logger[13528] DEBUG Running flow for ExampleFlow
    7
+
+.. _getting_started.run_flow:
