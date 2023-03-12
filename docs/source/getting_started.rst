@@ -1,5 +1,13 @@
 .. _getting_started:
 
+.. role:: python(code)
+  :language: python
+  :class: highlight
+
+.. role:: bash(code)
+  :language: bash
+  :class: highlight
+
 Getting Started
 ====================
 
@@ -56,14 +64,36 @@ contains ``example.py``
 
 .. _getting_started.create_first_flow:
 
+
+Working with your Flow
+-------------------------
+
+Flows can be run in two ways:
+
+* cli: The command line interface way :bash:`python -m flowrunner [COMMAND] [PATH_TO_FLOW_FILE.py]`
+* Flow methods: The inbuilt class methods :python:`ExampleFlow().insert_method_name()`
+
+
 ``validate`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
 
 We run ``validate`` to validate our Flow
 
-.. code-block:: powershell
+.. tabs::
 
-   python -m flowrunner validate example.py
+   .. group-tab::  cli
+
+      .. code-block:: powershell
+
+         python -m flowrunner validate example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+         # we create an instance of the class and run its corresponding method
+         ExampleFlow().validate()
+
 
 The output runs validation checks on your Flow with ✅ for passed and ❌ for failed
 
@@ -79,6 +109,7 @@ The output runs validation checks on your Flow with ✅ for passed and ❌ for f
    ✅ Validated start nodes 'next' values
 
 
+
 .. _getting_started.validate_flow:
 
 ``show`` your Flow
@@ -87,12 +118,25 @@ The output runs validation checks on your Flow with ✅ for passed and ❌ for f
 We can use ``show`` command to display the order of iteration of our flow with description of each
 step based on the docstring of the function
 
-.. code-block:: powershell
-
-   python -m flowrunner show example.py
-
-Output will look like this. "?" is used in absence of a docstring for the method. However if you add a docstring
+Output will look like this. `"?"` is used in absence of a docstring for the method. However if you add a docstring
 that will show up too!
+
+.. tabs::
+
+   .. group-tab::  cli
+
+      .. code-block:: powershell
+
+         python -m flowrunner show example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+         # we create an instance of the class and run its corresponding method
+         ExampleFlow().show()
+
+
 
 .. code-block:: console
 
@@ -129,7 +173,6 @@ that will show up too!
       Next=
 
 
-
 .. _getting_started.show_flow:
 
 ``run`` your Flow
@@ -137,10 +180,20 @@ that will show up too!
 
 We can use ``run`` command to actually run the flow
 
-.. code-block:: powershell
+.. tabs::
+   .. group-tab::  cli
 
-   python -m flowrunner run example.py
-   7
+      .. code-block:: powershell
+
+         python -m flowrunner run example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+         # we create an instance of the class and run its corresponding method
+         ExampleFlow().run()
+
 
 .. code-block:: console
 
@@ -155,5 +208,6 @@ We can use ``run`` command to actually run the flow
    ✅ Validated start nodes 'next' values
    2023-03-08 22:29:48 LAPTOP flowrunner.system.logger[13528] DEBUG Running flow for ExampleFlow
    7
+
 
 .. _getting_started.run_flow:

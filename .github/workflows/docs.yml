@@ -5,14 +5,14 @@ on:
     paths-include:
       - "docs/**"
       - "readme.md"
-      - "**/.rst"
+      - "**/*.rst"
 
     branches: [ main ]
   pull_request:
     paths-ignore:
       - "docs/**"
       - "readme.md"
-      - "**/.rst"
+      - "**/*.rst"
 jobs:
   build:
     name: Test
