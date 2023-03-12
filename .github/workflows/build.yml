@@ -2,14 +2,14 @@ name: "Build and Package"
 
 on:
   push:
-    paths-include:
+    paths:
       - "**/*.py"
       - "flowrunner/*"
       - "**/*yml"
 
     branches: [ main ]
   pull_request:
-    paths-include:
+    paths:
       - "**/*.py"
       - "flowrunner/*"
       - "**/*yml"

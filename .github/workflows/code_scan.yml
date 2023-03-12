@@ -3,13 +3,13 @@ name: "Code Scanning"
 
 on:
   push:
-    paths-include:
+    paths:
       - "**/*.py"
       - "flowrunner/*"
 
     branches: [ main ]
   pull_request:
-    paths-include:
+    paths:
       - "**/*.py"
       - "flowrunner/*"
   # schedule:
