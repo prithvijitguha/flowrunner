@@ -2,7 +2,13 @@
 omit =
     */__init__.py
 
+include =
+    **/*.py
+
 
 [report]
 omit =
     */__init__.py
+
+include =
+    **/*.py
