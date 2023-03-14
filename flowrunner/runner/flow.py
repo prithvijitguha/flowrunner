@@ -24,29 +24,27 @@ class BaseFlow:
 
     data_store: dict = field(default_factory=lambda: dict())
 
-    @classmethod
-    def validate(cls, terminal_output: bool = False):
+    def validate(self, terminal_output: bool = False):
         """Class method to validate the graph"""
-        FlowRunner(cls).validate(terminal_output=terminal_output)
+        FlowRunner().validate(flow_instance=self, terminal_output=terminal_output)
 
-    @classmethod
-    def validate_with_error(cls, terminal_output: bool = False):
+    def validate_with_error(self, terminal_output: bool = False):
         """Class method to validate the graph"""
-        FlowRunner(cls).validate_with_error(terminal_output=terminal_output)
+        FlowRunner().validate_with_error(
+            flow_instance=self, terminal_output=terminal_output
+        )
 
-    @classmethod
-    def run(cls):
+    def run(self):
         """Class Method to run flow"""
-        FlowRunner(cls).validate_with_error(
-            terminal_output=False
+        FlowRunner().validate_with_error(
+            flow_instance=self, terminal_output=False
         )  # we run this in case of an invalid flow
-        FlowRunner(cls).run()
+        FlowRunner().run(flow_instance=self)
 
-    @classmethod
-    def show(cls):
+    def show(self):
         """Class method to show nodes/levels"""
-        FlowRunner(cls).validate(terminal_output=False)
-        FlowRunner(cls).show()
+        FlowRunner().validate(flow_instance=self, terminal_output=False)
+        FlowRunner().show(flow_instance=self)
 
 
 @dataclass
@@ -58,46 +56,59 @@ class FlowRunner:
         - graph: A Graph object constructed from self.base_flow, assigned in __post_init__
     """
 
-    base_flow: BaseFlow
-
-    def __post_init__(self):
+    def _get_details(cls, flow_instance):
         """A method done after instance of FlowRunner is created to generate the graph and arrange it"""
-        self.flow_name = self.base_flow.__name__
-        graph_options = GraphOptions(self.base_flow)
-        self.graph_instance = (
-            graph_options.base_flow_instance
-        )  # we store the same graph instance attribute of GraphOptions
-        self.graph = Graph(graph_options=graph_options)
+        base_flow = flow_instance.__class__
+        graph_options = GraphOptions(base_flow)
+        # self.graph_instance = (
+        #     graph_options.base_flow_instance
+        # )  # we store the same graph instance attribute of GraphOptions
+        graph = Graph(graph_options=graph_options)
+        return graph
 
-    def validate(self, terminal_output: bool = False):
+    @classmethod
+    def validate(cls, flow_instance, terminal_output: bool = False):
         """Method to run validations on a BaseFlow subclass"""
-        logger.debug("Validating flow for %s", self.flow_name)
-        graph_validator = GraphValidator(self.graph)
+        logger.debug("Validating flow for %s", flow_instance)
+        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
+        graph_validator = GraphValidator(graph)
         graph_validator.run_validations(terminal_output=terminal_output)
 
-    def validate_with_error(self, terminal_output: bool = False):
+    @classmethod
+    def validate_with_error(cls, flow_instance, terminal_output: bool = False):
         """Method to run validations on a BaseFlow subclass"""
-        logger.debug("Validating flow for %s", self.flow_name)
+        logger.debug("Validating flow for %s", flow_instance)
         logger.warning(
             "Validation will raise InvalidFlowException if invalid Flow found"
         )
-        graph_validator = GraphValidator(self.graph)
+        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
+        graph_validator = GraphValidator(graph)
         graph_validator.run_validations_raise_error(terminal_output=terminal_output)
 
-    def run(self):
+    @classmethod
+    def run(cls, flow_instance):
         """Method to run any BaseFlow subclass"""
-        logger.debug("Running flow for %s", self.flow_name)
+        logger.debug("Running flow for %s", flow_instance)
+        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
         # we iterate through the functions level wise and we store the
         # output into a datastore
-        for level in self.graph.levels:
+        for level in graph.levels:
             for node in level:
-                node.function_reference(self.graph_instance)
+                output = node.function_reference(
+                    flow_instance
+                )  # store the output of the method
 
-    def show(self):
+                flow_instance.data_store[
+                    node.name
+                ] = output  # we add it to the instance data_store = {'function_name_1': df}
+
+    @classmethod
+    def show(cls, flow_instance):
         """Method to show flow"""
-        logger.debug("Show flow for %s", self.flow_name)
+        logger.debug("Show flow for %s", flow_instance)
+        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
         # iterate through graph levels
-        for level in self.graph.levels:
+        for level in graph.levels:
             # iterate through each node in the list
             for node in level:
                 click.secho(f"{node.name}\n", fg="green")  # echo the node

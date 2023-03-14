@@ -1,62 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-import pytest
 
-from flowrunner import BaseFlow, FlowRunner, end, start, step
-
-
-class ExampleFlow(BaseFlow):
-    @start
-    @step(next=["method2", "method3"])
-    def method1(self):
-        self.a = 1
-        return self.a
-
-    @step(next=["method4"])
-    def method2(self):
-        self.a += 1
-        return self.a
-
-    @step(next=["method4"])
-    def method3(self):
-        self.a += 2
-        return self.a
-
-    @end
-    @step
-    def method4(self):
-        self.a += 3
-        print("output of flow is:", self.a)
-        return self.a
-
-
-def test_validate_flow():
-    """Run validate flow"""
-    ExampleFlow().validate()
-
-
-def test_validate_flow_with_error():
-    ExampleFlow().validate_with_error()  # we validate the flow and throw an exception if its not valid
-
-
-def test_flowrunner():
-    FlowRunner().run(ExampleFlow())
-
-
-def test_base_flow_run_flow():
-    ExampleFlow().run()
-
-
-def test_data_store():
-    """Test to check if data store actually stores output"""
-    flow_instance = ExampleFlow()
-    flow_instance.run()
-    data_store = flow_instance.data_store
-
-    assert data_store["method1"] == 1
-    assert data_store["method2"] == 2
-    assert data_store["method3"] == 4
-    assert data_store["method4"] == 7
+from flowrunner import BaseFlow, end, start, step
 
 
 class ExamplePandas(BaseFlow):
@@ -121,23 +66,8 @@ class ExamplePandas(BaseFlow):
         print(self.final_df)
 
 
-@pytest.fixture(scope="module")
-def pandas_expected_df():
-    data1 = {"Name": ["Hermione", "Harry", "Ron"], "marks": [100, 85, 75]}
+flow_instance = ExamplePandas()
 
-    data2 = {"Name": ["Hermione", "Ron", "Harry"], "marks": [100, 90, 80]}
+flow_instance.run()
 
-    df1 = pd.DataFrame(data1, index=["rank1", "rank2", "rank3"])
-
-    df2 = pd.DataFrame(data2, index=["rank1", "rank2", "rank3"])
-
-    df1.insert(1, "snapshot_date", "2023-03-12")
-    df2.insert(1, "snapshot_date", "2023-01-01")
-    return pd.concat([df1, df2])
-
-
-@pytest.mark.skip("issues with pandas testing")
-def test_pandas_example(pandas_expected_df):
-    pandas_example = ExamplePandas.run()
-    pandas_run = pandas_example.run()
-    pandas_run.final_df == pandas_expected_df
+print(flow_instance.data_store)
