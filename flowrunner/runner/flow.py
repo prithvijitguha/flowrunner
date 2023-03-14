@@ -19,30 +19,75 @@ class BaseFlow:
     derived from
 
     Attributes:
-        - data_store: A dict that is meant to be used to store data in key:value pairs
+        - data_store: A dict that is meant to be used to store data by method name and output eg. {'method_name': 4}
+        - param_store: A dict that stores parameter values eg. {'snapshot_date': '2023-01-01}
     """
 
     data_store: dict = field(default_factory=lambda: dict())
+    param_store: dict = field(default_factory=lambda: dict())
 
-    def validate(self, terminal_output: bool = False):
-        """Class method to validate the graph"""
+    def validate(self, terminal_output: bool = True):
+        """Method to validate a flow
+
+        We use the FlowRunner class to run the validation checks.
+        Args:
+            - flow_instance: An instance of the Flow class
+            - terminal_ouput: An optional bool value of whether to display the terminal output
+               for validate we choose to show the output, defaults to True
+        Returns:
+            - None
+        """
         FlowRunner().validate(flow_instance=self, terminal_output=terminal_output)
 
-    def validate_with_error(self, terminal_output: bool = False):
-        """Class method to validate the graph"""
+    def validate_with_error(self, terminal_output: bool = True):
+        """Method to validate a flow with an error
+
+        We use the FlowRunner class to run the validation checks.
+        Args:
+            - flow_instance: An instance of the Flow class
+            - terminal_ouput: An optional bool value of whether to display the terminal output
+               for validate we choose to show the output, defaults to True
+        Returns:
+            - None
+
+        Raises:
+            - InvalidFlowException: If an invalid flow is detected
+        """
         FlowRunner().validate_with_error(
             flow_instance=self, terminal_output=terminal_output
         )
 
     def run(self):
-        """Class Method to run flow"""
+        """Method to run a flow
+
+        We first run a validation check with raise error and do not show the output. Then
+        we use the FlowRunner class to run it
+
+        Args:
+            - None
+        Returns:
+            - None
+
+        Raises:
+            - InvalidFlowException: If an invalid flow is detected
+        """
         FlowRunner().validate_with_error(
             flow_instance=self, terminal_output=False
         )  # we run this in case of an invalid flow
         FlowRunner().run(flow_instance=self)
 
     def show(self):
-        """Class method to show nodes/levels"""
+        """Method to show the levels and order of iteration of the Flow
+
+        We first run a validation check without raising an error and do not show the output. Then
+        we use the FlowRunner class to run it
+
+        Args:
+            - None
+
+        Returns:
+            - None
+        """
         FlowRunner().validate(flow_instance=self, terminal_output=False)
         FlowRunner().show(flow_instance=self)
 
@@ -50,14 +95,22 @@ class BaseFlow:
 @dataclass
 class FlowRunner:
     """FlowRunner class is used to run all subclasses of BaseFlow class.
-    Attributes:
-        - base_flow: A subclass of BaseFlow
-        - graph_instance: An instance of self.base_flow, assigned in __post_init__
-        - graph: A Graph object constructed from self.base_flow, assigned in __post_init__
+
+    We use class methods to run each of the flows
     """
 
+    @classmethod
     def _get_details(cls, flow_instance):
-        """A method done after instance of FlowRunner is created to generate the graph and arrange it"""
+        """Private class method to get details of a flow
+
+        Args:
+            - flow_instance: An instance of the Flow class
+        Returns:
+            - None
+
+        Raises:
+            - InvalidFlowException: If an invalid flow is detected
+        """
         base_flow = flow_instance.__class__
         graph_options = GraphOptions(base_flow)
         # self.graph_instance = (
@@ -68,28 +121,77 @@ class FlowRunner:
 
     @classmethod
     def validate(cls, flow_instance, terminal_output: bool = False):
-        """Method to run validations on a BaseFlow subclass"""
+        """Class method to validate a Flow
+
+        We use the GraphValidator to do the heavy lifting for this part
+
+        Args:
+            - flow_instance: An instance of the Flow class
+            - terminal_output: An optional bool value to show output in terminal, defaults to False
+        Returns:
+            - None
+
+        """
         logger.debug("Validating flow for %s", flow_instance)
-        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
+        graph = cls._get_details(flow_instance=flow_instance)
         graph_validator = GraphValidator(graph)
         graph_validator.run_validations(terminal_output=terminal_output)
 
     @classmethod
     def validate_with_error(cls, flow_instance, terminal_output: bool = False):
-        """Method to run validations on a BaseFlow subclass"""
+        """Class method to validate a Flow with an error
+
+        We use the GraphValidator to do the heavy lifting for this part. We raise an error
+        if validation check fails
+
+        Args:
+            - flow_instance: An instance of the Flow class
+            - terminal_output: An optional bool value to show output in terminal, defaults to False
+
+        Returns:
+            - None
+
+        Raises:
+            - InvalidFlow: Raised if ANY of the validation checks are failed
+        """
         logger.debug("Validating flow for %s", flow_instance)
         logger.warning(
             "Validation will raise InvalidFlowException if invalid Flow found"
         )
-        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
+        graph = cls._get_details(flow_instance=flow_instance)
         graph_validator = GraphValidator(graph)
         graph_validator.run_validations_raise_error(terminal_output=terminal_output)
 
     @classmethod
     def run(cls, flow_instance):
-        """Method to run any BaseFlow subclass"""
+        """Class method to run a Flow
+
+        This method actually runs the flow and each method in order of iteration. We also do a validation
+        check before we run it(without terminal output, just notification we are running it).
+        During the run we iterate of Graph using the Graph.levels attribute, which is a list
+            [
+                [node1, node2], # first level
+                [node3, node4]  # second level
+            ]
+
+        We also store the output of a function in that instance of the Flow, inside the attribute BaseFlow.data_store.
+
+        eg. {
+                'method_1': 7,
+                'method_2': 8
+            }
+
+        Args:
+            - flow_instance: An instance of the Flow class
+
+        Returns:
+            - None
+
+        Raises:
+            - InvalidFlow: Raised if ANY of the validation checks are failed
+        """
         logger.debug("Running flow for %s", flow_instance)
-        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
+        graph = cls._get_details(flow_instance=flow_instance)
         # we iterate through the functions level wise and we store the
         # output into a datastore
         for level in graph.levels:
@@ -104,9 +206,19 @@ class FlowRunner:
 
     @classmethod
     def show(cls, flow_instance):
-        """Method to show flow"""
+        """Class method to show a Flow
+
+        This method we show the order of iteration by going over the levels in the Graph.levels attribute. This DOES NOT
+        run the actual method but just uses the 'docstring' and '__name__' to show the Flow.
+
+        Args:
+            - flow_instance: An instance of the Flow class
+
+        Returns:
+            - None
+        """
         logger.debug("Show flow for %s", flow_instance)
-        graph = cls._get_details(cls=cls, flow_instance=flow_instance)
+        graph = cls._get_details(flow_instance=flow_instance)
         # iterate through graph levels
         for level in graph.levels:
             # iterate through each node in the list
