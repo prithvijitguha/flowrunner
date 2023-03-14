@@ -89,5 +89,6 @@ testpaths = [
     "tests"
 ]
 addopts = [
+    "--cache-clear",
     "-v"
 ]
