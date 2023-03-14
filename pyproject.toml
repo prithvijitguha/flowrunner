@@ -1,4 +1,5 @@
 [build-system]
+# Minimum requirements for the build system to execute.
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
@@ -10,8 +11,8 @@ authors = [
 description = "FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows"
 readme = "readme.md"
 requires-python = ">=3.9"
-keywords = ["one", "two"]
-license = {text = "BSD-3-Clause"}
+keywords = ["Data Engineering", "Data Science"]
+license = {file = "LICENSE"}
 classifiers = [
     "Framework :: FlowRunner",
     "Programming Language :: Python :: 3.9",
@@ -64,6 +65,9 @@ test = [
     "coverage<=7.2.1",
     "isort>=5.12.0",
     "pre-commit>=3.1.1",
+    "pandas>=1.5.3"
+]
+pandas = [
     "pandas>=1.5.3"
 ]
 
