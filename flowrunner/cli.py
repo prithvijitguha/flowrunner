@@ -38,9 +38,9 @@ def validate(filepath: str):
     Returns:
         - Output regarding the validation of the flow
     """
-    flow = _read_python_file(filepath)
-    logger.info(f"Found flow {flow.__name__}")
-    flow.validate_flow()
+    flow_class = _read_python_file(filepath)
+    logger.info(f"Found flow {flow_class.__name__}")
+    flow_class().validate()
 
 
 @cli.command()
@@ -57,9 +57,9 @@ def show(filepath: str):
     Returns:
         - Shows the order of iteration and explaination of Flow
     """
-    flow = _read_python_file(filepath)
-    logger.info(f"Found flow {flow.__name__}")
-    flow.show()
+    flow_class = _read_python_file(filepath)
+    logger.info(f"Found flow {flow_class.__name__}")
+    flow_class().show()
 
 
 @cli.command()
@@ -76,9 +76,9 @@ def run(filepath: str):
     Returns:
         - Runs the Flow
     """
-    flow = _read_python_file(filepath)
-    logger.info(f"Found flow {flow.__name__}")
-    flow.run()
+    flow_class = _read_python_file(filepath)
+    logger.info(f"Found flow {flow_class.__name__}")
+    flow_class().run()
 
 
 def _read_python_file(file_path: str) -> BaseFlow:

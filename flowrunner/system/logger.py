@@ -17,3 +17,8 @@ coloredlogs.install(level="DEBUG")
 # specific logger object to the install() function. In this case only log
 # messages originating from that logger will show up on the terminal.
 coloredlogs.install(level="DEBUG", logger=logger)
+
+
+# suppress the py4j logger if its there
+py4jlogger = logging.getLogger("py4j")
+py4jlogger.setLevel(logging.INFO)

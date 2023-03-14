@@ -185,9 +185,9 @@ class GraphOptions:
                 ):  # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
                     self.end.append(Node(name_func, func))
 
-        self.base_flow_instance = (
-            self.base_flow()
-        )  # we store an instance of the class for reference for later BaseFlow()
+        # self.base_flow_instance = (
+        #     self.base_flow()
+        # )  # we store an instance of the class for reference for later BaseFlow()
 
     def __repr__(self):
         """String representation of class
