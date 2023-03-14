@@ -64,3 +64,4 @@ class ExamplePandas(BaseFlow):
         be more likely to write the data to some final layer/format
         """
         print(self.final_df)
+        return self.final_df
