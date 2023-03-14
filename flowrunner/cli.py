@@ -38,9 +38,10 @@ def validate(filepath: str):
     Returns:
         - Output regarding the validation of the flow
     """
-    flow_class = _read_python_file(filepath)
-    logger.info(f"Found flow {flow_class.__name__}")
-    flow_class().validate()
+    flow_list = _read_python_file(filepath)
+    for flow_class in flow_list:
+        logger.info("Validating flow %s", flow_class.__name__)
+        flow_class().validate()
 
 
 @cli.command()
@@ -57,9 +58,10 @@ def show(filepath: str):
     Returns:
         - Shows the order of iteration and explaination of Flow
     """
-    flow_class = _read_python_file(filepath)
-    logger.info(f"Found flow {flow_class.__name__}")
-    flow_class().show()
+    flow_list = _read_python_file(filepath)
+    for flow_class in flow_list:
+        logger.info("Checking flow %s", flow_class.__name__)
+        flow_class().show()
 
 
 @cli.command()
@@ -76,9 +78,10 @@ def run(filepath: str):
     Returns:
         - Runs the Flow
     """
-    flow_class = _read_python_file(filepath)
-    logger.info(f"Found flow {flow_class.__name__}")
-    flow_class().run()
+    flow_list = _read_python_file(filepath)
+    for flow_class in flow_list:
+        logger.info("Running flow %s", flow_class.__name__)
+        flow_class().run()
 
 
 def _read_python_file(file_path: str) -> BaseFlow:
@@ -89,13 +92,11 @@ def _read_python_file(file_path: str) -> BaseFlow:
         - file_path: A string value of file path
 
     Returns:
-        - flows: A list value of all subclasses of BaseFlow
-
-    Raises:
-        - ValueError: If more than 1 flow is found in the python file
+        - flows: A list value of all subclasses of BaseFlow except for BaseFlow itself
     """
-    module = importfile(file_path)
-    # module = importfile(file_path)
+    module = importfile(
+        file_path
+    )  # importfile is the best way to handle importing a module from a string
     module_elements_dict = vars(
         module
     )  # get module elements in dict eg. {'BaseFlow': <class 'flowrunner.runner.flow.BaseFlow'>, 'ExampleFlow': <class 'testing.ExampleFlow'>}
@@ -108,9 +109,9 @@ def _read_python_file(file_path: str) -> BaseFlow:
         and issubclass(element, BaseFlow)
         and element.__name__ != BaseFlow.__name__
     ]
-    if len(flows) > 1:
-        raise ValueError(f"Only 1 Flow are allowed per python file. Found {len(flows)}")
-    return flows[0]
+    flow_names = [flow.__name__ for flow in flows]
+    logger.info("Found Flows: %s", flow_names)
+    return flows
 
 
 if __name__ == "__main__":
