@@ -71,6 +71,9 @@ package_dir=[
     "flowrunner"
 ]
 
+[tool.setuptools.packages]
+find = {}
+
 [options.packages.find]
 where=[
     "flowrunner"
