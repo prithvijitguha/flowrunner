@@ -91,6 +91,10 @@ class BaseFlow:
         FlowRunner().validate(flow_instance=self, terminal_output=False)
         FlowRunner().show(flow_instance=self)
 
+    def display(self):
+        """Method to show html output of the flowchart"""
+        raise NotImplementedError
+
 
 @dataclass
 class FlowRunner:

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+<meta name="description" content="Interactive diagram showing the structure of the HTML DOM of this HTML page, allowing collapsing/expanding of subtrees."/>
+<link rel="stylesheet" href="styles.css"/>
+<title>Tree Example</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true});</script>
+</head>
+<body>
+<body>
+<div class="mermaid">
+  graph TD;
+  id("create_data") ==> id2("transformation_function_1")
+  id("create_data") --> id3("transformation_function_2")
+  id3("transformation_function_2") --> id4(append_data)
+  id2("transformation_function_1") --> id4(append_data)
+  id4(append_data) --> id5(show_data)
+</div>
+<div class="mermaid">
+graph TD;
+{% for level in levels %}
+    {% for node in level %}
+      {{ node }}({{ node }})
+    {% endfor %}
+{% endfor %}
+</div>
+</body>
+</html>
