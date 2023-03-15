@@ -239,3 +239,16 @@ class GraphValidator:
 
         if all(validation_output) != True:
             raise InvalidFlowException("Invalid Flow detected")
+
+
+class FlowChartGenerator:
+    """Class to build html flowcharts from graphs"""
+
+    @classmethod
+    def generate_html(cls, flow_instance):
+        """Class method to generate html data"""
+        raise NotImplementedError
+
+    def display(cls, flow_instance):
+        """Class method to display the html data"""
+        raise NotImplementedError

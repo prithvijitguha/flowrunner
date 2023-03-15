@@ -26,6 +26,11 @@ class BaseFlow:
     data_store: dict = field(default_factory=lambda: dict())
     param_store: dict = field(default_factory=lambda: dict())
 
+    def __post_init__(self):
+        """Post init to add attributes like levels"""
+        graph = FlowRunner()._get_details(self)
+        self.graph = graph
+
     def validate(self, terminal_output: bool = True):
         """Method to validate a flow
 
@@ -108,12 +113,13 @@ class FlowRunner:
         """Private class method to get details of a flow
 
         Args:
-            - flow_instance: An instance of the Flow class
+            flow_instance: An instance of the Flow class
+
         Returns:
-            - None
+            graph: A Graph object of the Flow
 
         Raises:
-            - InvalidFlowException: If an invalid flow is detected
+            InvalidFlowException: If an invalid flow is detected
         """
         base_flow = flow_instance.__class__
         graph_options = GraphOptions(base_flow)
