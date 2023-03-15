@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 import click
 
 from flowrunner.core.base import Graph, GraphOptions
-from flowrunner.core.helpers import GraphValidator
+from flowrunner.core.helpers import FlowChartGenerator, GraphValidator
 from flowrunner.system.logger import logger
 
 
@@ -99,6 +99,9 @@ class BaseFlow:
     def display(self):
         """Method to show html output of the flowchart"""
         raise NotImplementedError
+
+    def generate_html(self):
+        FlowChartGenerator().generate_html(self)
 
 
 @dataclass

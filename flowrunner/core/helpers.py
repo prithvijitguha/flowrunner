@@ -245,9 +245,46 @@ class FlowChartGenerator:
     """Class to build html flowcharts from graphs"""
 
     @classmethod
+    def _create_flowchart(cls, flow_instance):
+        """Class method to create the base graph for mermaid js
+
+        We iterate over the Graph.levels to understand the order of iteration. Then
+        we find the 'next' of each to make the edge connections. The final string should look like:
+
+        Examples:
+            >>> FlowChartGenerator()._create_flowchart(flow_instance)
+            graph TD;
+                create_data(create_data)==>transformation_function_1(transformation_function_1)
+                create_data(create_data)==>transformation_function_2(transformation_function_2)
+                transformation_function_2(transformation_function_2)==>append_data(append_data)
+                transformation_function_1(transformation_function_1)==>append_data(append_data)
+                append_data(append_data)==>show_data(show_data)
+
+        Args:
+            flow_instance: An instance of BaseFlow
+
+        Returns:
+            mermaid_js_string: A string render of the javascript string for mermaid js
+        """
+        graph = flow_instance.graph  # get the graph attribute which is Graph object
+        mermaid_js_string = (
+            "graph TD;\n"  # this will be passed to mermaid-js for rendering
+        )
+        # iterate through graph levels
+        for level in graph.levels:
+            # iterate through each node in the list of levels [node1, node2]
+            for node in level:  # each node is an actual Node object
+                for next_node in node.next:
+                    # edge string represents a connection in mermaid js
+                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node})\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
+                    mermaid_js_string += edge_string
+
+        return mermaid_js_string
+
+    @classmethod
     def generate_html(cls, flow_instance):
-        """Class method to generate html data"""
-        raise NotImplementedError
+        """Class method to generate html output from a BaseFlow instance"""
+        js_string = cls._create_flowchart(flow_instance=flow_instance)
 
     def display(cls, flow_instance):
         """Class method to display the html data"""
