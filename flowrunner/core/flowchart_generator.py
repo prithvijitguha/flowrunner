@@ -18,13 +18,17 @@ levels = graph.levels
 
 root = os.path.dirname(os.path.abspath(__file__))
 templates_dir = os.path.join(root, "templates")
-environment = Environment(loader=FileSystemLoader(templates_dir))
+environment = Environment(
+    loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True
+)
 template = environment.get_template("base_test.html")
 
 
 filename = "test_final.html"
 logger.debug("Saving file: %s", filename)
 content = template.render(levels=levels)
+
+print(content)
 with open(filename, mode="w", encoding="utf-8") as message:
     message.write(content)
     logger.debug("Saved file %s", filename)
