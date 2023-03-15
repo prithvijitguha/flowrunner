@@ -211,13 +211,13 @@ class GraphOptions:
 class Graph:
     """A class containing an arranged collection of Nodes from start, middle, end in Graph.levels
     Attributes:
-        - graph_options: An instance of GraphOptions class
-        - start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
-        - middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
-        - end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
-        - nodes: A list of all the nodes start + middle_nodes + end
-        - node_map: A dict of {node.name: node} for reference for later
-        - levels: A list containing the iteration order for methods from start -> middle_nodes -> end
+        graph_options: An instance of GraphOptions class
+        start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
+        middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
+        end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
+        nodes: A list of all the nodes start + middle_nodes + end
+        node_map: A dict of {node.name: node} for reference for later
+        levels: A list containing the iteration order for methods from start -> middle_nodes -> end
     """
 
     graph_options: GraphOptions

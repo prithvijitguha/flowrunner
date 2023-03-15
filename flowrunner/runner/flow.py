@@ -239,4 +239,7 @@ class FlowRunner:
                 )  # echo the docstring if docstring is None then echo "?"
                 click.secho(docstring, fg="bright_red")
                 next_callables = ", ".join(node.next)
-                click.secho(f"   Next={next_callables}\n\n", fg="blue")
+                if (
+                    next_callables
+                ):  # incase its end, we check if there is a next, if not we don't print 'Next='
+                    click.secho(f"   Next={next_callables}\n\n", fg="blue")
