@@ -5,12 +5,15 @@ GraphValidator: A class for validating any subclass of BaseFlow
 """
 
 
+import os
 from dataclasses import dataclass
 
 import click
+from jinja2 import Environment, FileSystemLoader
 
 from flowrunner.runner.flow import Graph
 from flowrunner.system.exceptions import InvalidFlowException
+from flowrunner.system.logger import logger
 
 
 @dataclass
@@ -284,7 +287,29 @@ class FlowChartGenerator:
     @classmethod
     def generate_html(cls, flow_instance):
         """Class method to generate html output from a BaseFlow instance"""
-        js_string = cls._create_flowchart(flow_instance=flow_instance)
+        mermaid_js_string = cls._create_flowchart(flow_instance=flow_instance)
+
+        root = os.path.dirname(os.path.abspath(__file__))
+        templates_dir = os.path.join(root, "templates")
+        environment = Environment(
+            loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True
+        )
+        template = environment.get_template("base.html")
+
+        flow_name = flow_instance.__class__.__name__  # Output eg.'ExamplePandas'
+
+        filename = f"{flow_name.lower()}.html"  # Output eg. examplepandas.html
+
+        content = template.render(
+            flow_name=flow_name, mermaid_js_string=mermaid_js_string
+        )
+
+        with open(filename, mode="w", encoding="utf-8") as message:
+            logger.debug("Saving file: %s", filename)
+            message.write(content)
+            logger.debug("Saved file %s", filename)
+
+        return content
 
     def display(cls, flow_instance):
         """Class method to display the html data"""
