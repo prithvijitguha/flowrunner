@@ -3,7 +3,7 @@ import pytest
 
 from flowrunner.core.base import Graph, GraphOptions
 from flowrunner.core.decorators import end, start, step
-from flowrunner.core.helpers import GraphValidator
+from flowrunner.core.helpers import FlowChartGenerator, GraphValidator
 from flowrunner.runner.flow import BaseFlow
 from flowrunner.system.exceptions import InvalidFlowException
 from tests.test_flowrunner.runner.test_flow import ExamplePandas
@@ -12,12 +12,26 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
 
 @pytest.fixture(scope="module")
-def expected_html_data():
-    """Fixture for how the html final data should look"""
-    with open("tests/test_flowrunner/core/examplepandas.html") as html_file:
-        html_data = html_file.readlines()
+def expected_js_string_tuple():
+    """Fixture to test the structure of js string"""
+    js_string = """
+    graph TD;
+    create_data(create_data)==>transformation_function_1(transformation_function_1)
+    create_data(create_data)==>transformation_function_2(transformation_function_2)
+    transformation_function_2(transformation_function_2)==>append_data(append_data)
+    transformation_function_1(transformation_function_1)==>append_data(append_data)
+    append_data(append_data)==>show_data(show_data)
+    """
 
-    return html_data
+    js_string2 = """
+    graph TD;
+    create_data(create_data)==>transformation_function_1(transformation_function_1)
+    create_data(create_data)==>transformation_function_2(transformation_function_2)
+    transformation_function_1(transformation_function_1)==>append_data(append_data)
+    transformation_function_2(transformation_function_2)==>append_data(append_data)
+    append_data(append_data)==>show_data(show_data)
+    """
+    return (js_string, js_string2)
 
 
 @pytest.fixture(scope="module")
@@ -49,17 +63,14 @@ def test_graph_validator(bad_flow_example):
         GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
 
 
-def test_flowchart_generator(expected_html_data):
+def test_flowchart_generator(expected_js_string_tuple):
     """Function to test the flowchart_generator
     We iterate line by line to find differences
     """
-    ExamplePandas().generate_html(True)
-
-    with open("./examplepandas.html") as html_file:
-        actual_html_data = html_file.readlines()
-    # iterate line by line in the html data to check whether they
-    # are equal
-    for actual_html_line, expected_html_line in zip(
-        actual_html_data, expected_html_data
-    ):
-        assert actual_html_line == expected_html_line
+    expected_js_string1 = expected_js_string_tuple[0]
+    expected_js_string2 = expected_js_string_tuple[1]
+    actual_js_string = FlowChartGenerator()._create_flowchart(ExamplePandas())
+    assert (
+        actual_js_string.strip() == expected_js_string1.strip()
+        or actual_js_string.strip() == expected_js_string2.strip()
+    )
