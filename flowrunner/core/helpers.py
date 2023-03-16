@@ -285,7 +285,7 @@ class FlowChartGenerator:
         return mermaid_js_string
 
     @classmethod
-    def generate_html(cls, flow_instance, save_file: False):
+    def generate_html(cls, flow_instance, save_file: bool = False):
         """Class method to generate html output from a BaseFlow instance
 
         We use the templates/base.html to create the flow html diagram.
