@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 import click
 
 from flowrunner.core.base import Graph, GraphOptions
-from flowrunner.core.helpers import GraphValidator
+from flowrunner.core.helpers import FlowChartGenerator, GraphValidator
 from flowrunner.system.logger import logger
 
 
@@ -25,6 +25,11 @@ class BaseFlow:
 
     data_store: dict = field(default_factory=lambda: dict())
     param_store: dict = field(default_factory=lambda: dict())
+
+    def __post_init__(self):
+        """Post init to add attributes like levels"""
+        graph = FlowRunner()._get_details(self)
+        self.graph = graph
 
     def validate(self, terminal_output: bool = True):
         """Method to validate a flow
@@ -91,6 +96,13 @@ class BaseFlow:
         FlowRunner().validate(flow_instance=self, terminal_output=False)
         FlowRunner().show(flow_instance=self)
 
+    def display(self):
+        """Method to show html output of the flowchart"""
+        raise NotImplementedError
+
+    def generate_html(self, save_file=False):
+        return FlowChartGenerator().generate_html(self, save_file)
+
 
 @dataclass
 class FlowRunner:
@@ -104,12 +116,13 @@ class FlowRunner:
         """Private class method to get details of a flow
 
         Args:
-            - flow_instance: An instance of the Flow class
+            flow_instance: An instance of the Flow class
+
         Returns:
-            - None
+            graph: A Graph object of the Flow
 
         Raises:
-            - InvalidFlowException: If an invalid flow is detected
+            InvalidFlowException: If an invalid flow is detected
         """
         base_flow = flow_instance.__class__
         graph_options = GraphOptions(base_flow)
@@ -229,4 +242,7 @@ class FlowRunner:
                 )  # echo the docstring if docstring is None then echo "?"
                 click.secho(docstring, fg="bright_red")
                 next_callables = ", ".join(node.next)
-                click.secho(f"   Next={next_callables}\n\n", fg="blue")
+                if (
+                    next_callables
+                ):  # incase its end, we check if there is a next, if not we don't print 'Next='
+                    click.secho(f"   Next={next_callables}\n\n", fg="blue")

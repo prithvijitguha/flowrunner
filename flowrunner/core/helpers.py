@@ -5,12 +5,15 @@ GraphValidator: A class for validating any subclass of BaseFlow
 """
 
 
+import os
 from dataclasses import dataclass
 
 import click
+from jinja2 import Environment, FileSystemLoader
 
 from flowrunner.runner.flow import Graph
 from flowrunner.system.exceptions import InvalidFlowException
+from flowrunner.system.logger import logger
 
 
 @dataclass
@@ -239,3 +242,86 @@ class GraphValidator:
 
         if all(validation_output) != True:
             raise InvalidFlowException("Invalid Flow detected")
+
+
+class FlowChartGenerator:
+    """Class to build html flowcharts from graphs"""
+
+    @classmethod
+    def _create_flowchart(cls, flow_instance):
+        """Class method to create the base graph for mermaid js
+
+        We iterate over the Graph.levels to understand the order of iteration. Then
+        we find the 'next' of each to make the edge connections. The final string should look like:
+
+        Examples:
+            >>> FlowChartGenerator()._create_flowchart(flow_instance)
+            graph TD;
+                create_data(create_data)==>transformation_function_1(transformation_function_1)
+                create_data(create_data)==>transformation_function_2(transformation_function_2)
+                transformation_function_2(transformation_function_2)==>append_data(append_data)
+                transformation_function_1(transformation_function_1)==>append_data(append_data)
+                append_data(append_data)==>show_data(show_data)
+
+        Args:
+            flow_instance: An instance of BaseFlow
+
+        Returns:
+            mermaid_js_string: A string render of the javascript string for mermaid js
+        """
+        graph = flow_instance.graph  # get the graph attribute which is Graph object
+        mermaid_js_string = (
+            "graph TD;\n"  # this will be passed to mermaid-js for rendering
+        )
+        # iterate through graph levels
+        for level in graph.levels:
+            # iterate through each node in the list of levels [node1, node2]
+            for node in level:  # each node is an actual Node object
+                for next_node in node.next:
+                    # edge string represents a connection in mermaid js
+                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node})\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
+                    mermaid_js_string += edge_string
+
+        return mermaid_js_string
+
+    @classmethod
+    def generate_html(cls, flow_instance, save_file: bool = False):
+        """Class method to generate html output from a BaseFlow instance
+
+        We use the templates/base.html to create the flow html diagram.
+
+        Args:
+            flow_instance: An instance of BaseFlow subclass object
+            save_file: Bool value to save file, defaults to False
+
+        Returns:
+            content: The html data containing the flow diagram
+        """
+        mermaid_js_string = cls._create_flowchart(flow_instance=flow_instance)
+
+        root = os.path.dirname(os.path.abspath(__file__))
+        templates_dir = os.path.join(root, "templates")
+        environment = Environment(
+            loader=FileSystemLoader(templates_dir), trim_blocks=True, lstrip_blocks=True
+        )
+        template = environment.get_template("base.html")
+
+        flow_name = flow_instance.__class__.__name__  # Output eg.'ExamplePandas'
+
+        filename = f"{flow_name.lower()}.html"  # Output eg. examplepandas.html
+
+        content = template.render(
+            flow_name=flow_name, mermaid_js_string=mermaid_js_string
+        )
+
+        if save_file:  # save_file is bool argument
+            with open(filename, mode="w", encoding="utf-8") as message:
+                logger.debug("Saving file: %s", filename)
+                message.write(content)
+                logger.debug("Saved file %s", filename)
+
+        return content
+
+    def display(cls, flow_instance):
+        """Class method to display the html data"""
+        raise NotImplementedError
