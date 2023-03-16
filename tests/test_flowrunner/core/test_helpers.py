@@ -71,6 +71,8 @@ def test_flowchart_generator(expected_js_string_tuple):
     expected_js_string2 = expected_js_string_tuple[1]
     actual_js_string = FlowChartGenerator()._create_flowchart(ExamplePandas())
     assert (
-        actual_js_string.strip() == expected_js_string1.strip()
-        or actual_js_string.strip() == expected_js_string2.strip()
+        actual_js_string.strip()
+        == expected_js_string1.strip()  # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+        or actual_js_string.strip()
+        == expected_js_string2.strip()  # for this we need to add an OR condition so we account for both conditions
     )

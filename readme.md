@@ -62,22 +62,6 @@ $ python -m flowrunner run example.py
 output of flow is: 7
 ```
 
-### Visualizing your Flow
-```python
-ExampleFlow().display()
-```
-
-Will generate the below output
-
-```mermaid
-graph TD;
-    id("method1") ==> id2("method2")
-    id("method1") --> id3("method3")
-    id3("method2") --> id4("method4")
-    id2("method3") --> id4("method4")
-```
-
-
 ## Documentation
 Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
 
