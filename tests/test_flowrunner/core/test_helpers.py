@@ -15,7 +15,7 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 def expected_html_data():
     """Fixture for how the html final data should look"""
     with open("tests/test_flowrunner/core/examplepandas.html") as html_file:
-        html_data = html_file.read()
+        html_data = html_file.readlines()
 
     return html_data
 
@@ -53,7 +53,10 @@ def test_flowchart_generator(expected_html_data):
     """Function to test the flowchart_generator
     We iterate line by line to find differences
     """
-    actual_html_data = ExamplePandas().generate_html()
+    ExamplePandas().generate_html(True)
+
+    with open("./examplepandas.html") as html_file:
+        actual_html_data = html_file.readlines()
     # iterate line by line in the html data to check whether they
     # are equal
     for actual_html_line, expected_html_line in zip(

@@ -100,8 +100,8 @@ class BaseFlow:
         """Method to show html output of the flowchart"""
         raise NotImplementedError
 
-    def generate_html(self):
-        return FlowChartGenerator().generate_html(self)
+    def generate_html(self, save_file=False):
+        return FlowChartGenerator().generate_html(self, save_file)
 
 
 @dataclass
