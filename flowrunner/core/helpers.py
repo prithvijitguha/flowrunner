@@ -286,7 +286,16 @@ class FlowChartGenerator:
 
     @classmethod
     def generate_html(cls, flow_instance):
-        """Class method to generate html output from a BaseFlow instance"""
+        """Class method to generate html output from a BaseFlow instance
+
+        We use the templates/base.html to create the flow html diagram.
+
+        Args:
+            flow_instance: An instance of BaseFlow subclass object
+
+        Returns:
+            content: The html data containing the flow diagram
+        """
         mermaid_js_string = cls._create_flowchart(flow_instance=flow_instance)
 
         root = os.path.dirname(os.path.abspath(__file__))
@@ -308,7 +317,7 @@ class FlowChartGenerator:
             logger.debug("Saving file: %s", filename)
             message.write(content)
             logger.debug("Saved file %s", filename)
-
+        print(content)
         return content
 
     def display(cls, flow_instance):

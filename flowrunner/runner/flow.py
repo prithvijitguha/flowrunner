@@ -101,7 +101,7 @@ class BaseFlow:
         raise NotImplementedError
 
     def generate_html(self):
-        FlowChartGenerator().generate_html(self)
+        return FlowChartGenerator().generate_html(self)
 
 
 @dataclass
