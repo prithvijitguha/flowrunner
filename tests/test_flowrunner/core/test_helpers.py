@@ -14,7 +14,7 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 @pytest.fixture(scope="module")
 def expected_html_data():
     """Fixture for how the html final data should look"""
-    with open("examplepandas.html") as html_file:
+    with open("tests/test_flowrunner/core/examplepandas.html") as html_file:
         html_data = html_file.read()
 
     return html_data
