@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 """Module for cli commands
-Usage: cli.py [OPTIONS] COMMAND [ARGS]...
+Usage: python -m flowrunner [OPTIONS] COMMAND [ARGS]...
+
+  Welcome to FlowRunner! 🚀
+
+  FlowRunner is a lightweight package to organize and represent Data
+  Engineering/Science workflows. Its designed to be integrated with any pre-
+  existing framework like pandas or PySpark
+
+  Main FeaturesEasy BaseFlow to use to build Flows off ofSimple
+  decorators to convert methods to Flow methodsCommand Line Interface for
+  running Flows
 
 Options:
   --help  Show this message and exit.
@@ -9,6 +19,8 @@ Commands:
   run       Command to run a Flow
   show      Command to show the order of iteration of a Flow
   validate  Command to validate a Flow
+
+
 """
 import inspect
 from pydoc import importfile
@@ -21,7 +33,17 @@ from flowrunner.system.logger import logger
 
 @click.group()
 def cli():
-    click.echo("Welcome to FlowRunner!")
+    """Welcome to FlowRunner! 🚀
+
+    FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows. Its designed to be
+    integrated with any pre-existing framework like pandas or PySpark
+
+    Main Features
+    - Easy BaseFlow to use to build Flows off of
+    - Simple decorators to convert methods to Flow methods
+    - Command Line Interface for running Flows
+    """
+    pass
 
 
 @cli.command()
@@ -30,13 +52,13 @@ def validate(filepath: str):
     """Command to validate a Flow
 
     Examples:
-        - python -m flowrunner validate /my_path/to/flow_file.py
+        python -m flowrunner validate /my_path/to/flow_file.py
 
     Args:
-        - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
+        filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
 
     Returns:
-        - Output regarding the validation of the flow
+        Output regarding the validation of the flow
     """
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
@@ -50,13 +72,13 @@ def show(filepath: str):
     """Command to show the order of iteration of a Flow
 
     Examples:
-        - python -m flowrunner show /my_path/to/flow_file.py
+        python -m flowrunner show /my_path/to/flow_file.py
 
     Args:
-        - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
+        filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
 
     Returns:
-        - Shows the order of iteration and explaination of Flow
+        Shows the order of iteration and explaination of Flow
     """
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
@@ -70,13 +92,13 @@ def run(filepath: str):
     """Command to run a Flow
 
     Examples:
-        - python -m flowrunner run /my_path/to/flow_file.py
+        python -m flowrunner run /my_path/to/flow_file.py
 
     Args:
-        - filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
+        filepath: A string value of python file containing a Flow i.e subclass of BaseFlow
 
     Returns:
-        - Runs the Flow
+        Runs the Flow
     """
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
@@ -89,10 +111,10 @@ def _read_python_file(file_path: str) -> BaseFlow:
     An internal function that is used to read a file from a string value.
 
     Args:
-        - file_path: A string value of file path
+        file_path: A string value of file path
 
     Returns:
-        - flows: A list value of all subclasses of BaseFlow except for BaseFlow itself
+        flows: A list value of all subclasses of BaseFlow except for BaseFlow itself
     """
     module = importfile(
         file_path
