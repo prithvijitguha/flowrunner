@@ -43,7 +43,7 @@ def cli():
     - Simple decorators to convert methods to Flow methods
     - Command Line Interface for running Flows
     """
-    pass
+    pass  # pylint: disable=unnecessary-pass
 
 
 @cli.command()
@@ -121,7 +121,7 @@ def _read_python_file(file_path: str) -> BaseFlow:
     )  # importfile is the best way to handle importing a module from a string
     module_elements_dict = vars(
         module
-    )  # get module elements in dict eg. {'BaseFlow': <class 'flowrunner.runner.flow.BaseFlow'>, 'ExampleFlow': <class 'testing.ExampleFlow'>}
+    )  # get module elements in dict eg. {'BaseFlow': <class 'flowrunner.runner.flow.BaseFlow'>, 'ExampleFlow': <class 'testing.ExampleFlow'>} # pylint: disable=line-too-long
     # iterate over all and check if subclass of BaseFlow unless its __name__ is BaseFlow itself
     # flows = [] # a list to store all the subclass of BaseFlow
     flows = [
