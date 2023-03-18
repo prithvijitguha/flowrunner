@@ -7,6 +7,7 @@ from flowrunner.cli import flowchart, run, show, validate
 
 
 def test_validate():
+    """Test to check cli::validate function"""
     runner = CliRunner()
     result = runner.invoke(validate, ["examples/example.py"])
     assert result.exit_code == 0
@@ -19,12 +20,14 @@ def test_show():
 
 
 def test_run():
+    """Test to check cli::run function"""
     runner = CliRunner()
     result = runner.invoke(run, ["examples/example.py"])
     assert result.exit_code == 0
 
 
-def generate_flowchart():
+def test_flowchart():
+    """Test to check cli::flowchart function"""
     runner = CliRunner()
     result = runner.invoke(flowchart, ["examples/example.py"])
     assert result.exit_code == 0

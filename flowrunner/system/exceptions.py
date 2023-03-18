@@ -5,4 +5,6 @@ exceptions
 
 
 class InvalidFlowException(Exception):
+    """Exception when there is an Invalid flow detected"""
+
     pass
