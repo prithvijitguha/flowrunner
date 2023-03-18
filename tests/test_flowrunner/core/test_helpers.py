@@ -64,9 +64,91 @@ def bad_flow_example():
     return BadFlowExample
 
 
+@pytest.fixture(scope="module")
+def bad_flow_example2():
+    """Function to return a BadFlowExample for testing"""
+
+    class BadFlowExample(BaseFlow):
+        @step(next=["method_2"])
+        def method_1(self):
+            return None
+
+        @step(next=["method_3"])
+        def method_2(self):
+            return None
+
+        @end
+        @step
+        def method_3(self):
+            return None
+
+    return BadFlowExample
+
+
+@pytest.fixture(scope="module")
+def bad_flow_example3():
+    """Function to return a BadFlowExample for testing"""
+
+    class BadFlowExample(BaseFlow):
+        @start
+        @step(next=["method_3"])
+        def method_1(self):
+            return None
+
+
+        @end
+        @step
+        def method_3(self):
+            return None
+
+    return BadFlowExample
+
+
+@pytest.fixture(scope="module")
+def bad_flow_example4():
+    """Function to return a BadFlowExample for testing"""
+
+    class BadFlowExample(BaseFlow):
+        @start
+        @step(next=["method_2"])
+        def method_1(self):
+            return None
+
+        @step(next=["method_3"])
+        def method_2(self):
+            return None
+
+        @step
+        def method_3(self):
+            return None
+
+    return BadFlowExample
+
+
 def test_graph_validator(bad_flow_example):
     with pytest.raises(InvalidFlowException):
         bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
+        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
+        GraphValidator(graph=bad_flow_graph).run_validations_raise_error(terminal_output=True)
+
+
+def test_graph_validator_start_len(bad_flow_example2):
+    with pytest.raises(InvalidFlowException):
+        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example2)
+        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
+        GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
+
+
+def test_graph_validator_middle_nodes(bad_flow_example3):
+    with pytest.raises(InvalidFlowException):
+        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example3)
+        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
+        GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
+
+
+def test_graph_validator_end_nodes(bad_flow_example4):
+    with pytest.raises(InvalidFlowException):
+        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example4)
         bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
         GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
 
