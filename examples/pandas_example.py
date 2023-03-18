@@ -67,4 +67,4 @@ class ExamplePandas(BaseFlow):
         return self.final_df
 
 
-ExamplePandas().display()
+ExamplePandas().generate_html()
