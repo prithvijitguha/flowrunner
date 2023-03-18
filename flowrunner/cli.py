@@ -2,9 +2,9 @@
 """Module for cli commands
 Usage: python -m flowrunner [OPTIONS] COMMAND [ARGS]...
 
-  Welcome to FlowRunner! 🚀
+  Welcome to flowRunner! 🚀
 
-  FlowRunner is a lightweight package to organize and represent Data
+  flowRunner is a lightweight package to organize and represent Data
   Engineering/Science workflows. Its designed to be integrated with any pre-
   existing framework like pandas or PySpark
 
@@ -33,9 +33,9 @@ from flowrunner.system.logger import logger
 
 @click.group()
 def cli():
-    """Welcome to FlowRunner! 🚀
+    """Welcome to flowRunner! 🚀
 
-    FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows. Its designed to be
+    flowRunner is a lightweight package to organize and represent Data Engineering/Science workflows. Its designed to be
     integrated with any pre-existing framework like pandas or PySpark
 
     Main Features

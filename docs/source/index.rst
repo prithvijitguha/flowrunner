@@ -1,4 +1,4 @@
-Welcome to FlowRunner's documentation!
+Welcome to flowrunner's documentation!
 ======================================
 
 .. toctree::
@@ -10,7 +10,7 @@ Welcome to FlowRunner's documentation!
    pandas_example
 
 .. toctree::
-   :caption: Contributing to FlowRunner
+   :caption: Contributing to flowrunner
    :maxdepth: 1
 
    creating_your_development_environment

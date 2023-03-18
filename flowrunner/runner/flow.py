@@ -88,20 +88,34 @@ class BaseFlow:
         we use the FlowRunner class to run it
 
         Args:
-            - None
+            None
 
         Returns:
-            - None
+            None
         """
         FlowRunner().validate(flow_instance=self, terminal_output=False)
         FlowRunner().show(flow_instance=self)
 
     def display(self):
         """Method to show html output of the flowchart"""
-        raise NotImplementedError
+        return FlowChartGenerator().display(flow_instance=self)
 
-    def generate_html(self, save_file=False):
-        return FlowChartGenerator().generate_html(self, save_file)
+    def generate_html(self, save_file: bool = False, path: str = None):
+        """Method to generate html flowchart for Flow
+
+        We first run a validation check without raising an error and do not show the output. Then
+        we use the FlowRunner class to run it
+
+        Args:
+            save_file: Optional Bool value to save file or not
+            path: Optional path to provide to save file, if path is provided, save_file is True implicitly
+
+        Returns:
+            content: HTMl data in the form of string
+        """
+        return FlowChartGenerator().generate_html(
+            flow_instance=self, save_file=save_file, path=path
+        )
 
 
 @dataclass
@@ -126,9 +140,6 @@ class FlowRunner:
         """
         base_flow = flow_instance.__class__
         graph_options = GraphOptions(base_flow)
-        # self.graph_instance = (
-        #     graph_options.base_flow_instance
-        # )  # we store the same graph instance attribute of GraphOptions
         graph = Graph(graph_options=graph_options)
         return graph
 

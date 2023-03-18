@@ -5,10 +5,13 @@ GraphValidator: A class for validating any subclass of BaseFlow
 """
 
 
+import base64
 import os
 from dataclasses import dataclass
 
 import click
+import matplotlib.pyplot as plt  # we have to import matplotlib so that we can use display()
+from IPython.display import Image, display
 from jinja2 import Environment, FileSystemLoader
 
 from flowrunner.runner.flow import Graph
@@ -271,7 +274,7 @@ class FlowChartGenerator:
         """
         graph = flow_instance.graph  # get the graph attribute which is Graph object
         mermaid_js_string = (
-            "graph TD;\n"  # this will be passed to mermaid-js for rendering
+            """graph TD;\n"""  # this will be passed to mermaid-js for rendering
         )
         # iterate through graph levels
         for level in graph.levels:
@@ -279,16 +282,17 @@ class FlowChartGenerator:
             for node in level:  # each node is an actual Node object
                 for next_node in node.next:
                     # edge string represents a connection in mermaid js
-                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node})\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
+                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node});\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
                     mermaid_js_string += edge_string
 
         return mermaid_js_string
 
     @classmethod
-    def generate_html(cls, flow_instance, save_file: bool = False):
+    def generate_html(cls, flow_instance, save_file: bool = False, path: str = None):
         """Class method to generate html output from a BaseFlow instance
 
-        We use the templates/base.html to create the flow html diagram.
+        We use the Flow class to generate a flowchart and return the html content. This method can
+        be used to save locally or use the html content elsewhere
 
         Args:
             flow_instance: An instance of BaseFlow subclass object
@@ -308,13 +312,21 @@ class FlowChartGenerator:
 
         flow_name = flow_instance.__class__.__name__  # Output eg.'ExamplePandas'
 
+        # if path is provided, we use that also
+
         filename = f"{flow_name.lower()}.html"  # Output eg. examplepandas.html
+
+        if path:  # path has a value
+            filename += path
+            # if path has a value we can safely assume that they want to save to that path
+            save_file = True  # we change the value to True to make sure we save i
 
         content = template.render(
             flow_name=flow_name, mermaid_js_string=mermaid_js_string
         )
 
-        if save_file:  # save_file is bool argument
+        # if save_file is true we save the file in the local directory from where it is running
+        if save_file:  # if save_file is true
             with open(filename, mode="w", encoding="utf-8") as message:
                 logger.debug("Saving file: %s", filename)
                 message.write(content)
@@ -322,6 +334,28 @@ class FlowChartGenerator:
 
         return content
 
+    @classmethod
     def display(cls, flow_instance):
-        """Class method to display the html data"""
-        raise NotImplementedError
+        """Class method to display a flowchart of the Flow
+
+        This method only works in IPython style notebooks. Does not work in script
+        This method displays the flowchart of the Flow based the Flow class itself.
+
+        Args
+            None
+
+        Returns:
+            None: display the flowchart of the Flow
+        """
+
+        # get the flowchart mermaid js
+        # in the form of eg. output:
+        # """
+        # graph LR;
+        #   A--> B & C & D;
+        # """"
+        graph = cls._create_flowchart(flow_instance=flow_instance)
+        graphbytes = graph.encode("ascii")
+        base64_bytes = base64.b64encode(graphbytes)
+        base64_string = base64_bytes.decode("ascii")
+        display(Image(url="https://mermaid.ink/img/" + base64_string))

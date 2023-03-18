@@ -9,6 +9,7 @@ from flowrunner.system.exceptions import InvalidFlowException
 from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
 # TODO: Need to add more validation failures based on each method in validation suite
+# TODO: FlowChartGenerator().display() only checks if it works, if needs to also assert some output so we can verify works as required
 
 
 @pytest.fixture(scope="module")
@@ -16,20 +17,20 @@ def expected_js_string_tuple():
     """Fixture to test the structure of js string"""
     js_string = """
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1)
-    create_data(create_data)==>transformation_function_2(transformation_function_2)
-    transformation_function_2(transformation_function_2)==>append_data(append_data)
-    transformation_function_1(transformation_function_1)==>append_data(append_data)
-    append_data(append_data)==>show_data(show_data)
+    create_data(create_data)==>transformation_function_1(transformation_function_1);
+    create_data(create_data)==>transformation_function_2(transformation_function_2);
+    transformation_function_2(transformation_function_2)==>append_data(append_data);
+    transformation_function_1(transformation_function_1)==>append_data(append_data);
+    append_data(append_data)==>show_data(show_data);
     """
 
     js_string2 = """
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1)
-    create_data(create_data)==>transformation_function_2(transformation_function_2)
-    transformation_function_1(transformation_function_1)==>append_data(append_data)
-    transformation_function_2(transformation_function_2)==>append_data(append_data)
-    append_data(append_data)==>show_data(show_data)
+    create_data(create_data)==>transformation_function_1(transformation_function_1);
+    create_data(create_data)==>transformation_function_2(transformation_function_2);
+    transformation_function_1(transformation_function_1)==>append_data(append_data);
+    transformation_function_2(transformation_function_2)==>append_data(append_data);
+    append_data(append_data)==>show_data(show_data);
     """
     return (js_string, js_string2)
 
@@ -76,3 +77,10 @@ def test_flowchart_generator(expected_js_string_tuple):
         or actual_js_string.strip()
         == expected_js_string2.strip()  # for this we need to add an OR condition so we account for both conditions
     )
+
+
+def test_display():
+    """Check the display() method and make sure it works. Future we should add a test
+    that asserts its output as well"""
+    flow_instance = ExamplePandas()
+    FlowChartGenerator().display(flow_instance)

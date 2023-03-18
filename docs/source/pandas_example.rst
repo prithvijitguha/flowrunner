@@ -127,7 +127,7 @@ You should see the following output:
 
 .. code-block:: console
 
-    Welcome to FlowRunner!
+    Welcome to flowrunner!
     2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] INFO Found flow ExamplePandas
     2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] DEBUG Validating flow for ExamplePandas
     ✅ Validated number of start nodes
@@ -221,6 +221,28 @@ You should see the following output
 
 
 .. _pandas_example.run:
+
+Display our Flow
+-------------------
+
+This requires IPython style interactive notebooks
+
+.. code-block:: python
+
+    ExamplePandas().display()
+
+
+.. mermaid::
+
+    graph TD;
+        create_data(create_data) --> transformation_function_1(transformation_function_1);
+        create_data(create_data) --> transformation_function_2(transformation_function_2);
+        transformation_function_1(transformation_function_1) --> append_data(append_data);
+        transformation_function_2(transformation_function_2) --> append_data(append_data);
+        append_data(append_data) --> show_data(show_data);
+
+
+
 
 Conclusion
 --------------

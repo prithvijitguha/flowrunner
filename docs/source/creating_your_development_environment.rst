@@ -60,8 +60,8 @@ Install the required packages using `pip`
 
 Following are commands depending on what part of FlowRunner you are working on
 
-
-Create an editable install of FlowRunner
+The `-e` or `--editable` creates an editable installation of `flowrunner` so you can make changes and test your code with a
+faster feedback loop
 
 .. code-block:: powershell
 
@@ -86,6 +86,3 @@ Create an editable install of FlowRunner
         .. code-block:: powershell
 
             pip install -e .[doc]
-
-.. note::
-   You will need to repeat the step each time you have made a change to the codebase

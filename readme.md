@@ -1,4 +1,4 @@
-# FlowRunner: A lightweight Data Engineering/Science Flow package
+# flowrunner: A lightweight Data Engineering/Science Flow package
 
 [![codecov](https://codecov.io/gh/prithvijitguha/FlowRunner/branch/main/graph/badge.svg?token=0B8X2WF0OA)](https://codecov.io/gh/prithvijitguha/FlowRunner)
 ![build](https://github.com/prithvijitguha/FlowRunner/actions/workflows/build.yml/badge.svg?branch=main)&nbsp;
@@ -10,7 +10,7 @@
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)&nbsp;
 
 ## What is it?
-**FlowRunner** is a lightweight package to organize and represent Data Engineering/Science workflows. Its designed to be
+**flowrunner** is a lightweight package to organize and represent Data Engineering/Science workflows. Its designed to be
 integrated with any pre-existing framework like pandas or PySpark
 
 ## Main Features
@@ -18,13 +18,13 @@ integrated with any pre-existing framework like pandas or PySpark
 - Simple decorators to convert methods to Flow `step`
 - Run flows with CLI or python class methods
 
-## Installing FlowRunner
-To install FlowRunner, following commands will work
+## Installing flowrunner
+To install flowrunner, following commands will work
 
-Source code is hosted at https://github.com/prithvijitguha/FlowRunner
+Source code is hosted at https://github.com/prithvijitguha/flowRunner
 
 ```sh
-$ pip install git+https://github.com/prithvijitguha/FlowRunner@main
+$ pip install git+https://github.com/prithvijitguha/flowRunner@main
 ```
 
 ## Usage
@@ -61,6 +61,23 @@ You can run the flow with the following command
 $ python -m flowrunner run example.py
 output of flow is: 7
 ```
+
+
+## Display your flow
+
+```python
+ExampleFlow().display()
+```
+
+```mermaid
+
+graph TD;
+    method1(method1) --> method2(method2);
+    method1(method1) --> method3(method3);
+    method2(method2) --> method4(method4)
+    method3(method3) --> method4(method4)
+```
+
 
 ## Documentation
 Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
