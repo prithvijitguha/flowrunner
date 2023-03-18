@@ -44,5 +44,3 @@ $ python -m flowrunner example.py
 
 from flowrunner.core.decorators import end, start, step
 from flowrunner.runner.flow import BaseFlow, FlowRunner
-
-__version__ = "0.0.1"
