@@ -222,6 +222,20 @@ You should see the following output
 
 .. _pandas_example.run:
 
+Display our Flow
+-------------------
+
+This requires IPython style interactive notebooks
+
+.. code-block:: python
+    ExamplePandas().display()
+
+
+.. mermaid::
+
+
+
+
 Conclusion
 --------------
 

@@ -23,7 +23,7 @@ Currently FlowRunner is only available through source
 
 .. code-block:: powershell
 
-    pip install git+https://github.com/prithvijitguha/FlowRunner@main
+    pip install git+https://github.com/prithvijitguha/flowrunner@main
 
 .. _getting_started.installing_flowrunner:
 

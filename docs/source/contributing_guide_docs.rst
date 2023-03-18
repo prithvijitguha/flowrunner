@@ -8,14 +8,14 @@ Contributing Guide - Documentation
 
 Forking
 -------
-You will need your own fork to work on the code. Go to the `FlowRunner project page <https://github.com/prithvijitguha/FlowRunner>`_ and hit the ``Fork`` button. You will
+You will need your own fork to work on the code. Go to the `flowrunner project page <https://github.com/prithvijitguha/flowrunner>`_ and hit the ``Fork`` button. You will
 want to clone your fork to your machine
 
 .. code-block:: bash
 
-    git clone https://github.com/prithvijitguha/FlowRunner.git FlowRunner-username
-    cd FlowRunner-username
-    git remote add upstream https://github.com/prithvijitguha/FlowRunner.git
+    git clone https://github.com/prithvijitguha/flowrunner.git flowrunner-username
+    cd flowrunner-username
+    git remote add upstream https://github.com/prithvijitguha/flowrunner.git
 
 .. _contributing_guide_docs.forking:
 
@@ -42,7 +42,7 @@ The above can be simplified to
 Building the documentation
 ---------------------------
 
-while cd'd into ``FlowRunner``, type the following command to build the documentation.
+while cd'd into ``flowrunner``, type the following command to build the documentation.
 
 .. code-block:: bash
 
