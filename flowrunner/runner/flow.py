@@ -98,7 +98,7 @@ class BaseFlow:
 
     def display(self):
         """Method to show html output of the flowchart"""
-        raise NotImplementedError
+        return FlowChartGenerator().display(flow_instance=self)
 
     def generate_html(self, save_file: bool = False, path: str = None):
         """Method to generate html flowchart for Flow
@@ -113,7 +113,9 @@ class BaseFlow:
         Returns:
             content: HTMl data in the form of string
         """
-        return FlowChartGenerator().generate_html(self, save_file=save_file, path=path)
+        return FlowChartGenerator().generate_html(
+            flow_instance=self, save_file=save_file, path=path
+        )
 
 
 @dataclass

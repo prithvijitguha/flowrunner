@@ -5,10 +5,12 @@ GraphValidator: A class for validating any subclass of BaseFlow
 """
 
 
+import base64
 import os
 from dataclasses import dataclass
 
 import click
+from IPython.display import Image, display
 from jinja2 import Environment, FileSystemLoader
 
 from flowrunner.runner.flow import Graph
@@ -271,7 +273,7 @@ class FlowChartGenerator:
         """
         graph = flow_instance.graph  # get the graph attribute which is Graph object
         mermaid_js_string = (
-            "graph TD;\n"  # this will be passed to mermaid-js for rendering
+            """graph TD;\n"""  # this will be passed to mermaid-js for rendering
         )
         # iterate through graph levels
         for level in graph.levels:
@@ -288,7 +290,8 @@ class FlowChartGenerator:
     def generate_html(cls, flow_instance, save_file: bool = False, path: str = None):
         """Class method to generate html output from a BaseFlow instance
 
-        We use the templates/base.html to create the flow html diagram.
+        We use the Flow class to generate a flowchart and return the html content. This method can
+        be used to save locally or use the html content elsewhere
 
         Args:
             flow_instance: An instance of BaseFlow subclass object
@@ -332,5 +335,30 @@ class FlowChartGenerator:
 
     @classmethod
     def display(cls, flow_instance):
-        """Class method to display the html data"""
-        raise NotImplementedError
+        """Class method to display a flowchart of the Flow
+
+        This method only works in IPython style notebooks. Does not work in script
+        This method displays the flowchart of the Flow based the Flow class itself.
+
+        Args
+            None
+
+        Returns:
+            None: display the flowchart of the Flow
+        """
+
+        # get the flowchart mermaid js
+        # in the form of eg. output:
+        # """
+        # graph LR;
+        #   A--> B & C & D;
+        # """"
+        mermaid_js_string = cls._create_flowchart(flow_instance=flow_instance)
+        graphbytes = mermaid_js_string.encode(
+            "ascii"
+        )  # convert string -> ascii code bytes
+        base64_bytes = base64.b64encode(
+            graphbytes
+        )  # convert bytes like object to bytes
+        base64_string = base64_bytes.decode("ascii")  # decode string
+        display(data=Image(url="https://mermaid.ink/img/" + base64_string))
