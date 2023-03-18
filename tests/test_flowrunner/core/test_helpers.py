@@ -15,7 +15,7 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
 @pytest.fixture(scope="module")
 def expected_html_content():
-    with open("examplepandas.html") as f:
+    with open("tests/test_flowrunner/core/examplepandas.html") as f:
         return f.readlines()
 
 
