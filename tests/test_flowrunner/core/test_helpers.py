@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pandas as pd
 import pytest
 
 from flowrunner.core.base import Graph, GraphOptions
@@ -42,115 +43,86 @@ def expected_js_string_tuple():
     return (js_string, js_string2)
 
 
-@pytest.fixture(scope="module")
-def bad_flow_example():
-    """Function to return a BadFlowExample for testing"""
 
-    class BadFlowExample(BaseFlow):
-        @start
-        @step
-        def method_1(self):
-            return None
+class BadFlowExample(BaseFlow):
+    """Bad Example of flow, there are missing next parameters"""
+    @start
+    @step
+    def method_1(self):
+        return None
 
-        @step(next=["method_3"])
-        def method_2(self):
-            return None
+    @step(next=["method_3"])
+    def method_2(self):
+        return None
 
-        @end
-        @step
-        def method_3(self):
-            return None
-
-    return BadFlowExample
+    @end
+    @step
+    def method_3(self):
+        return None
 
 
-@pytest.fixture(scope="module")
-def bad_flow_example2():
-    """Function to return a BadFlowExample for testing"""
-
-    class BadFlowExample(BaseFlow):
-        @step(next=["method_2"])
-        def method_1(self):
-            return None
-
-        @step(next=["method_3"])
-        def method_2(self):
-            return None
-
-        @end
-        @step
-        def method_3(self):
-            return None
-
-    return BadFlowExample
 
 
-@pytest.fixture(scope="module")
-def bad_flow_example3():
-    """Function to return a BadFlowExample for testing"""
 
-    class BadFlowExample(BaseFlow):
-        @start
-        @step(next=["method_3"])
-        def method_1(self):
-            return None
+class BadFlowExample2(BaseFlow):
+    """Bad Example of flow, there is no 'start' method"""
+    @step(next=["method_2"])
+    def method_1(self):
+        return None
 
+    @step(next=["method_3"])
+    def method_2(self):
+        return None
 
-        @end
-        @step
-        def method_3(self):
-            return None
-
-    return BadFlowExample
+    @end
+    @step
+    def method_3(self):
+        return None
 
 
-@pytest.fixture(scope="module")
-def bad_flow_example4():
-    """Function to return a BadFlowExample for testing"""
 
-    class BadFlowExample(BaseFlow):
-        @start
-        @step(next=["method_2"])
-        def method_1(self):
-            return None
-
-        @step(next=["method_3"])
-        def method_2(self):
-            return None
-
-        @step
-        def method_3(self):
-            return None
-
-    return BadFlowExample
+class BadFlowExample3(BaseFlow):
+    """Bad Example of flow, there are no 'middle' nodes"""
+    @start
+    @step(next=["method_3"])
+    def method_1(self):
+        return None
 
 
+    @end
+    @step
+    def method_3(self):
+        return None
+
+
+
+
+class BadFlowExample4(BaseFlow):
+    """Bad Example of flow, there is no 'end' method"""
+    @start
+    @step(next=["method_2"])
+    def method_1(self):
+        return None
+
+    @step(next=["method_3"])
+    def method_2(self):
+        return None
+
+    @step
+    def method_3(self):
+        return None
+
+
+
+
+
+@pytest.mark.parametrize("bad_flow_example", [BadFlowExample, BadFlowExample2, BadFlowExample3, BadFlowExample4])
 def test_graph_validator(bad_flow_example):
+    """We add all the bad flows based on validation we want to fail"""
     with pytest.raises(InvalidFlowException):
         bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
         bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
         GraphValidator(graph=bad_flow_graph).run_validations_raise_error(terminal_output=True)
-
-
-def test_graph_validator_start_len(bad_flow_example2):
-    with pytest.raises(InvalidFlowException):
-        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example2)
-        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
-        GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
-
-
-def test_graph_validator_middle_nodes(bad_flow_example3):
-    with pytest.raises(InvalidFlowException):
-        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example3)
-        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
-        GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
-
-
-def test_graph_validator_end_nodes(bad_flow_example4):
-    with pytest.raises(InvalidFlowException):
-        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example4)
-        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
-        GraphValidator(graph=bad_flow_graph).run_validations_raise_error()
 
 
 def test_flowchart_generator(expected_js_string_tuple):

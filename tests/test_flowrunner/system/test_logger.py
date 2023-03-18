@@ -9,7 +9,7 @@ def fixture_logger():
     """Fixture to run logging methods"""
     return logger
 
-def test_reconnection_fails(fixture_logger, caplog):
+def test_logger_output(fixture_logger, caplog):
     fixture_logger.info("hello world info")
     fixture_logger.warning("hello world warn")
     fixture_logger.debug("hello world debug")
