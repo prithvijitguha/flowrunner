@@ -137,9 +137,6 @@ class FlowRunner:
         """
         base_flow = flow_instance.__class__
         graph_options = GraphOptions(base_flow)
-        # self.graph_instance = (
-        #     graph_options.base_flow_instance
-        # )  # we store the same graph instance attribute of GraphOptions
         graph = Graph(graph_options=graph_options)
         return graph
 
