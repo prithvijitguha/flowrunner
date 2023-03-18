@@ -10,16 +10,16 @@ authors = [
 ]
 description = "FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows"
 readme = "readme.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 keywords = ["Data Engineering", "Data Science"]
 license = {file = "LICENSE"}
 classifiers = [
     "Framework :: FlowRunner",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.8",
 ]
 dependencies = [
     'requests',
-    'importlib-metadata; python_version<="3.9"',
+    'importlib-metadata; python_version<="3.8"',
     'click>=8.1.3',
     'Jinja2>=3.1.2',
     'coloredlogs>=15.0.1'
