@@ -62,6 +62,23 @@ $ python -m flowrunner run example.py
 output of flow is: 7
 ```
 
+
+## Display your flow
+
+```python
+ExampleFlow().display()
+```
+
+```mermaid
+
+graph TD;
+    method1(method1) --> method2(method2);
+    method1(method1) --> method3(method3);
+    method2(method2) --> method4(method4)
+    method3(method3) --> method4(method4)
+```
+
+
 ## Documentation
 Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
 
