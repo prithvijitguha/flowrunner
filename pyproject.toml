@@ -129,10 +129,6 @@ max-line-length=145
 fail-under=8
 
 
-[tool.isort]
-profile = "black"
-
-
 [tool.black]
 target-version = ['py38', 'py39']
 required-version = '23.1.0'
