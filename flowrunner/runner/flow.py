@@ -100,7 +100,7 @@ class BaseFlow:
         """Method to show html output of the flowchart"""
         raise NotImplementedError
 
-    def generate_html(self, save_file=False):
+    def generate_html(self, save_file: bool = False, path: str = None):
         """Method to generate html flowchart for Flow
 
         We first run a validation check without raising an error and do not show the output. Then
@@ -108,11 +108,12 @@ class BaseFlow:
 
         Args:
             save_file: Optional Bool value to save file or not
+            path: Optional path to provide to save file, if path is provided, save_file is True implicitly
 
         Returns:
             content: HTMl data in the form of string
         """
-        return FlowChartGenerator().generate_html(self, save_file)
+        return FlowChartGenerator().generate_html(self, save_file=save_file, path=path)
 
 
 @dataclass
