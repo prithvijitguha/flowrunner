@@ -16,20 +16,20 @@ def expected_js_string_tuple():
     """Fixture to test the structure of js string"""
     js_string = """
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1)
-    create_data(create_data)==>transformation_function_2(transformation_function_2)
-    transformation_function_2(transformation_function_2)==>append_data(append_data)
-    transformation_function_1(transformation_function_1)==>append_data(append_data)
-    append_data(append_data)==>show_data(show_data)
+    create_data(create_data)==>transformation_function_1(transformation_function_1);
+    create_data(create_data)==>transformation_function_2(transformation_function_2);
+    transformation_function_2(transformation_function_2)==>append_data(append_data);
+    transformation_function_1(transformation_function_1)==>append_data(append_data);
+    append_data(append_data)==>show_data(show_data);
     """
 
     js_string2 = """
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1)
-    create_data(create_data)==>transformation_function_2(transformation_function_2)
-    transformation_function_1(transformation_function_1)==>append_data(append_data)
-    transformation_function_2(transformation_function_2)==>append_data(append_data)
-    append_data(append_data)==>show_data(show_data)
+    create_data(create_data)==>transformation_function_1(transformation_function_1);
+    create_data(create_data)==>transformation_function_2(transformation_function_2);
+    transformation_function_1(transformation_function_1)==>append_data(append_data);
+    transformation_function_2(transformation_function_2)==>append_data(append_data);
+    append_data(append_data)==>show_data(show_data);
     """
     return (js_string, js_string2)
 

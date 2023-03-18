@@ -10,6 +10,7 @@ import os
 from dataclasses import dataclass
 
 import click
+import matplotlib.pyplot as plt  # we have to import matplotlib so that we can use display()
 from IPython.display import Image, display
 from jinja2 import Environment, FileSystemLoader
 
@@ -281,7 +282,7 @@ class FlowChartGenerator:
             for node in level:  # each node is an actual Node object
                 for next_node in node.next:
                     # edge string represents a connection in mermaid js
-                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node})\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
+                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node});\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
                     mermaid_js_string += edge_string
 
         return mermaid_js_string
@@ -353,12 +354,8 @@ class FlowChartGenerator:
         # graph LR;
         #   A--> B & C & D;
         # """"
-        mermaid_js_string = cls._create_flowchart(flow_instance=flow_instance)
-        graphbytes = mermaid_js_string.encode(
-            "ascii"
-        )  # convert string -> ascii code bytes
-        base64_bytes = base64.b64encode(
-            graphbytes
-        )  # convert bytes like object to bytes
-        base64_string = base64_bytes.decode("ascii")  # decode string
-        display(data=Image(url="https://mermaid.ink/img/" + base64_string))
+        graph = cls._create_flowchart(flow_instance=flow_instance)
+        graphbytes = graph.encode("ascii")
+        base64_bytes = base64.b64encode(graphbytes)
+        base64_string = base64_bytes.decode("ascii")
+        display(Image(url="https://mermaid.ink/img/" + base64_string))
