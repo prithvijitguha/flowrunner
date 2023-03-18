@@ -123,13 +123,13 @@ addopts = [
 
 [tool.coverage.run]
 branch = true
-omit =  ["*/__init__.py", "tests/*", "flowrunner/__main__.py"]
+omit =  ["*/__init__.py", "tests/*", "tests/*.py", "flowrunner/__main__.py"]
 source = ["flowrunner"]
 
 [tool.coverage.report]
 ignore_errors = false
 show_missing = true
-omit =  ["*/__init__.py", "tests/*" ,"flowrunner/__main__.py"]
+omit =  ["*/__init__.py", "tests/*", "tests/*.py" ,"flowrunner/__main__.py"]
 
 [tool.pylint.checker]
 ignore-paths = ["tests/*py", "examples/*.py"]
