@@ -131,9 +131,11 @@ ignore_errors = false
 show_missing = true
 omit =  ["*/__init__.py", "tests/*" ,"flowrunner/__main__.py"]
 
+[tool.pylint.checker]
+ignore-paths = ["tests/*py", "examples/*.py"]
+
 
 [tool.pylint.format]
-
 max-line-length=145
 
 [tool.pylint.main]
