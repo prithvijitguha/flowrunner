@@ -30,3 +30,8 @@ repos:
     rev: 23.1.0
     hooks:
     -   id: black
+
+-   repo: https://github.com/PyCQA/pylint
+    rev: v2.17.0
+    hooks:
+    -   id: pylint
