@@ -136,5 +136,9 @@ def _read_python_file(file_path: str) -> BaseFlow:
     return flows
 
 
+def flowchart():
+    raise NotImplementedError
+
+
 if __name__ == "__main__":
     cli()

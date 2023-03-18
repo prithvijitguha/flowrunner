@@ -100,7 +100,7 @@ class BaseFlow:
         """Method to show html output of the flowchart"""
         return FlowChartGenerator().display(flow_instance=self)
 
-    def generate_html(self, save_file: bool = False, path: str = None):
+    def flowchart(self, save_file: bool = False, path: str = None):
         """Method to generate html flowchart for Flow
 
         We first run a validation check without raising an error and do not show the output. Then
@@ -113,7 +113,7 @@ class BaseFlow:
         Returns:
             content: HTMl data in the form of string
         """
-        return FlowChartGenerator().generate_html(
+        return FlowChartGenerator().flowchart(
             flow_instance=self, save_file=save_file, path=path
         )
 
