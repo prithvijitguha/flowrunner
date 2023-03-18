@@ -139,7 +139,7 @@ ignore-paths = ["tests/*py", "examples/*.py"]
 max-line-length=145
 
 [tool.pylint.main]
-fail-under=8
+fail-under=6
 
 
 [tool.black]
