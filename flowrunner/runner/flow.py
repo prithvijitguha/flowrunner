@@ -88,10 +88,10 @@ class BaseFlow:
         we use the FlowRunner class to run it
 
         Args:
-            - None
+            None
 
         Returns:
-            - None
+            None
         """
         FlowRunner().validate(flow_instance=self, terminal_output=False)
         FlowRunner().show(flow_instance=self)
@@ -101,6 +101,17 @@ class BaseFlow:
         raise NotImplementedError
 
     def generate_html(self, save_file=False):
+        """Method to generate html flowchart for Flow
+
+        We first run a validation check without raising an error and do not show the output. Then
+        we use the FlowRunner class to run it
+
+        Args:
+            save_file: Optional Bool value to save file or not
+
+        Returns:
+            content: HTMl data in the form of string
+        """
         return FlowChartGenerator().generate_html(self, save_file)
 
 
