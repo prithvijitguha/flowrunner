@@ -10,6 +10,9 @@ repos:
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: check-toml
+    -   id: check-docstring-first
+    -   id: debug-statements
+    -   id: fix-encoding-pragma
 
 # python specific hooks
 -   repo: https://github.com/pre-commit/pygrep-hooks
@@ -27,17 +30,3 @@ repos:
     rev: 23.1.0
     hooks:
     -   id: black
-
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
-    -   id: check-docstring-first
-    -   id: debug-statements
-    -   id: fix-encoding-pragma
-
-
-# html checks
--   repo: https://github.com/thibaudcolas/curlylint
-    rev: v0.13.1
-    hooks:
-    -   id: curlylint

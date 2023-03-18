@@ -18,7 +18,10 @@ keywords = ["Data Engineering", "Data Science"]
 license = {file = "LICENSE"}
 classifiers = [
     "Framework :: flowrunner",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9:",
+    "Topic :: Scientific/Engineering"
 ]
 dependencies = [
     'requests',
@@ -35,7 +38,9 @@ dependencies = [
 
 [project.urls]
 homepage = "https://github.com/prithvijitguha/flowrunner"
+documentation = "https://flowrunner.readthedocs.io/en/latest/"
 issues = "https://github.com/prithvijitguha/flowrunner/issues"
+
 
 
 
@@ -122,3 +127,13 @@ max-line-length=145
 
 [tool.pylint.main]
 fail-under=8
+
+
+[tool.isort]
+profile = "black"
+
+
+[tool.black]
+target-version = ['py38', 'py39']
+required-version = '23.1.0'
+include = ["flowrunner/*.py", "tests/*.py"]
