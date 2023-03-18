@@ -43,7 +43,7 @@ def cli():
     - Simple decorators to convert methods to Flow methods
     - Command Line Interface for running Flows
     """
-    pass  # pylint: disable=unnecessary-pass
+    pass
 
 
 @cli.command()
