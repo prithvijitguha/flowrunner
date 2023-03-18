@@ -142,6 +142,7 @@ def pandas_expected_df():
 
 
 def test_pandas_example(pandas_expected_df):
+    """Checks to see if the pandas examples as expected"""
     pandas_example = ExamplePandas()
     pandas_example.run()
     assert pandas_example.final_df.equals(
@@ -149,7 +150,20 @@ def test_pandas_example(pandas_expected_df):
     )  # check if both dataframes are equal
 
 
+def test_data_store(pandas_expected_df):
+    """Checks to see if the pandas examples as expected"""
+    pandas_example = ExamplePandas()
+    pandas_example.run()
+
+    assert pandas_example.data_store["show_data"].equals(pandas_expected_df)
+    assert pandas_example.data_store["create_data"] == None
+    assert pandas_example.data_store["transformation_function_1"] == None
+    assert pandas_example.data_store["transformation_function_2"] == None
+    assert pandas_example.data_store["append_data"] == None
+
+
 def test_data_store():
+    """Test to check the BaseFlow().data_store attribute"""
     param_store = {"hello_there": "general_kenobi"}
 
     pandas_example = ExamplePandas(param_store=param_store)

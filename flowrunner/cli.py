@@ -136,5 +136,27 @@ def _read_python_file(file_path: str) -> BaseFlow:
     return flows
 
 
+@cli.command()
+@click.option("--path")
+@click.argument("filepath")
+def flowchart(filepath: str, path: str = None):
+    """Command to create a flowchart in html format from
+    a Flow python file
+
+    Examples:
+        python -m flowrunner flowchart /my_path/to/flow_file.py
+
+    Args:
+        path: A string value of path to save flow in. Defaults to current directory
+
+    Returns:
+        Runs the Flow
+    """
+    flow_list = _read_python_file(filepath)
+    for flow_class in flow_list:
+        logger.info("Creating flowchart for flow %s", flow_class.__name__)
+        flow_class().flowchart(path=path)
+
+
 if __name__ == "__main__":
     cli()

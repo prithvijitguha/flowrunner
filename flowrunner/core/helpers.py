@@ -251,7 +251,7 @@ class FlowChartGenerator:
     """Class to build html flowcharts from graphs"""
 
     @classmethod
-    def _create_flowchart(cls, flow_instance):
+    def _create_flowchart(cls, flow_instance) -> str:
         """Class method to create the base graph for mermaid js
 
         We iterate over the Graph.levels to understand the order of iteration. Then
@@ -288,8 +288,8 @@ class FlowChartGenerator:
         return mermaid_js_string
 
     @classmethod
-    def generate_html(cls, flow_instance, save_file: bool = False, path: str = None):
-        """Class method to generate html output from a BaseFlow instance
+    def flowchart(cls, flow_instance, save_file: bool = False, path: str = None) -> str:
+        """Class method to generate flowchart from Flow in the form of html output
 
         We use the Flow class to generate a flowchart and return the html content. This method can
         be used to save locally or use the html content elsewhere
@@ -335,7 +335,7 @@ class FlowChartGenerator:
         return content
 
     @classmethod
-    def display(cls, flow_instance):
+    def display(cls, flow_instance) -> None:
         """Class method to display a flowchart of the Flow
 
         This method only works in IPython style notebooks. Does not work in script

@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+<meta name="description" content="Diagram showing the FlowChart for ExamplePandas"/>
+<style>
+  .mermaid {
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+</style>
+</head>
+<title>Tree Example</title>
+<body>
+<div class="mermaid">
+graph TD;
+    create_data(create_data)==>transformation_function_1(transformation_function_1);
+    create_data(create_data)==>transformation_function_2(transformation_function_2);
+    transformation_function_1(transformation_function_1)==>append_data(append_data);
+    transformation_function_2(transformation_function_2)==>append_data(append_data);
+    append_data(append_data)==>show_data(show_data);
+
+</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+</script>
+  </body>
+</html>
+</body>
+</html>

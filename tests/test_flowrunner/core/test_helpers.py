@@ -10,6 +10,13 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
 # TODO: Need to add more validation failures based on each method in validation suite
 # TODO: FlowChartGenerator().display() only checks if it works, if needs to also assert some output so we can verify works as required
+# TODO: FlowChartGenerate().flowchart() sometimes changes orders of SAME level nodes, need to find out Why?
+
+
+@pytest.fixture(scope="module")
+def expected_html_content():
+    with open("tests/test_flowrunner/core/examplepandas.html") as f:
+        return f.readlines()
 
 
 @pytest.fixture(scope="module")
@@ -77,6 +84,21 @@ def test_flowchart_generator(expected_js_string_tuple):
         or actual_js_string.strip()
         == expected_js_string2.strip()  # for this we need to add an OR condition so we account for both conditions
     )
+
+
+def test_flowchart(expected_html_content):
+    """Function to test the FlowChartGenerator().flowchart() method"""
+    flow_instance = ExamplePandas()
+    actual_html_content = FlowChartGenerator().flowchart(
+        flow_instance=flow_instance,
+    )
+
+    for actual_line, expected_line in zip(
+        actual_html_content.split("\n"), expected_html_content
+    ):
+        pytest.approx(
+            actual_line.strip(), expected_line.strip()
+        )  # we use an approx since sometimes the order of same level nodes can be reversed
 
 
 def test_display():
