@@ -35,8 +35,6 @@ class ExampleNodeFlow(BaseFlow):
         return None
 
 
-
-
 class ExampleNodeFlow2(BaseFlow):
     @start
     @step(next=["method_3"])
@@ -59,8 +57,6 @@ class ExampleNodeFlow2(BaseFlow):
         return None
 
 
-
-
 @pytest.fixture(scope="session")
 def example_node_flow():
     """Method to return example flow"""
@@ -71,7 +67,6 @@ def example_node_flow():
 def example_node_flow_2():
     """Method to return example flow"""
     return ExampleNodeFlow2
-
 
 
 class TestNodeGraphGraphOptions:
@@ -130,8 +125,10 @@ class TestNodeGraphGraphOptions:
 
     def test_repr_string(self, example_graph_options):
         """Method to check the graph options string representation"""
-        assert str(example_graph_options) == "Start=[method_1]\nMiddle Nodes=[method_2, method_3]\nEnd=[method_4]"
-
+        assert (
+            str(example_graph_options)
+            == "Start=[method_1]\nMiddle Nodes=[method_2, method_3]\nEnd=[method_4]"
+        )
 
     def test_graph_options_2(self, example_node_flow_2, example_graph_options_2):
         assert len(example_graph_options_2.start) == 2
@@ -168,10 +165,10 @@ class TestNodeGraphGraphOptions:
         assert len(graph_levels) == 3
 
 
-
 class ExampleBadFlow(BaseFlow):
     """Example of Bad Flow, the next has different type of values
     in `method_2`"""
+
     @start
     @step(next=["bad_method_2", "bad_method_3"])
     def bad_method_1(self):
@@ -195,6 +192,7 @@ class ExampleBadFlow(BaseFlow):
 class ExampleBadFlow2(BaseFlow):
     """Example of Bad Flow, the next has a dict value
     as `next` in `bad_method_2`"""
+
     @start
     @step(next=["bad_method_2", "bad_method_3"])
     def bad_method_1(self):
@@ -215,12 +213,12 @@ class ExampleBadFlow2(BaseFlow):
         return None
 
 
-
 class ExampleBadFlow3(BaseFlow):
     """Example of Bad Flow, the next has duplicate values in
     method `bad_method2
 
     as `next` in `bad_method_2`"""
+
     @start
     @step(next=["bad_method_2", "bad_method_3"])
     def bad_method_1(self):
@@ -246,6 +244,7 @@ class ExampleBadFlow4(BaseFlow):
     node name
 
     as `next` in `bad_method_2`"""
+
     @start
     @step(next=["bad_method_2", "bad_method_3"])
     def bad_method_1(self):
@@ -270,6 +269,7 @@ class ExampleBadFlow5(BaseFlow):
     """Example of Bad Flow, `bad_method_4` has
     start, end and step decorator
     """
+
     @start
     @step(next=["bad_method_2", "bad_method_3"])
     def bad_method_1(self):
@@ -292,8 +292,8 @@ class ExampleBadFlow5(BaseFlow):
 
 
 class ExampleBadFlow6(BaseFlow):
-    """Example of stranded node, not linked, but added as a step
-    """
+    """Example of stranded node, not linked, but added as a step"""
+
     @start
     @step(next=["bad_method_2", "bad_method_3"])
     def bad_method_1(self):
@@ -318,9 +318,6 @@ class ExampleBadFlow6(BaseFlow):
         return None
 
 
-
-
-
 @pytest.mark.parametrize(
     "flow, expectation",
     [
@@ -332,7 +329,7 @@ class ExampleBadFlow6(BaseFlow):
         (ExampleBadFlow6, does_not_raise()),
         (ExampleNodeFlow, does_not_raise()),
         (ExampleNodeFlow2, does_not_raise()),
-    ]
+    ],
 )
 def test_bad_flows_node_errors(flow, expectation):
     """Test to make sure we pick up errors that can break a

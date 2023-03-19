@@ -79,7 +79,10 @@ class TestNodeGraphGraphOptions:
 
     def test_repr_string(self, example_graph_options):
         """Method to check the graph options string representation"""
-        assert str(example_graph_options) == "Start=[method_1]\nMiddle Nodes=[method_2, method_3]\nEnd=[method_4]"
+        assert (
+            str(example_graph_options)
+            == "Start=[method_1]\nMiddle Nodes=[method_2, method_3]\nEnd=[method_4]"
+        )
 
 
 @pytest.fixture(scope="session")
