@@ -266,6 +266,59 @@ class ExampleBadFlow4(BaseFlow):
         return None
 
 
+class ExampleBadFlow5(BaseFlow):
+    """Example of Bad Flow, `bad_method_4` has
+    start, end and step decorator
+    """
+    @start
+    @step(next=["bad_method_2", "bad_method_3"])
+    def bad_method_1(self):
+        """Test Docstring sample"""
+        return None
+
+    @step(next=["bad_method_4"])
+    def bad_method_2(self):
+        return None
+
+    @step(next=["bad_method_4"])
+    def bad_method_3(self):
+        return None
+
+    @end
+    @start
+    @step
+    def bad_method_4(self):
+        return None
+
+
+class ExampleBadFlow6(BaseFlow):
+    """Example of stranded node, not linked, but added as a step
+    """
+    @start
+    @step(next=["bad_method_2", "bad_method_3"])
+    def bad_method_1(self):
+        """Test Docstring sample"""
+        return None
+
+    @step(next=["bad_method_4"])
+    def bad_method_2(self):
+        return None
+
+    @step(next=["bad_method_4"])
+    def bad_method_3(self):
+        return None
+
+    @step
+    def stranded_node(self):
+        return None
+
+    @end
+    @step
+    def bad_method_4(self):
+        return None
+
+
+
 
 
 @pytest.mark.parametrize(
@@ -275,6 +328,8 @@ class ExampleBadFlow4(BaseFlow):
         (ExampleBadFlow2, pytest.raises(TypeError)),
         (ExampleBadFlow3, pytest.raises(ValueError)),
         (ExampleBadFlow4, pytest.raises(ValueError)),
+        (ExampleBadFlow5, pytest.raises(ValueError)),
+        (ExampleBadFlow6, does_not_raise()),
         (ExampleNodeFlow, does_not_raise()),
         (ExampleNodeFlow2, does_not_raise()),
     ]

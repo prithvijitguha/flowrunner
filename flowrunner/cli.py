@@ -43,7 +43,7 @@ def cli():
     - Simple decorators to convert methods to Flow methods
     - Command Line Interface for running Flows
     """
-    pass
+
 
 
 @cli.command()
@@ -154,7 +154,7 @@ def flowchart(filepath: str, path: str = None):
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
         logger.info("Creating flowchart for flow %s", flow_class.__name__)
-        flow_class().flowchart(path=path)
+        flow_class().flowchart(save_file=True, path=path)
 
 
 if __name__ == "__main__":

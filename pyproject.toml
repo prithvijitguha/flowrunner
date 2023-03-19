@@ -134,6 +134,11 @@ ignore_errors = false
 show_missing = true
 omit =  ["*/__init__.py", "tests/*", "tests/**/*" ,"flowrunner/__main__.py"]
 
+exclude_lines = [
+    # Do not complain if non runnable code isn't run
+    "if __name__ == .__main__.:",
+]
+
 [tool.pylint.main]
 fail-under=6
 ignore-paths = [
