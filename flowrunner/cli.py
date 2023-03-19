@@ -62,7 +62,6 @@ def validate(filepath: str):
     """
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
-        logger.info("Validating flow %s", flow_class.__name__)
         flow_class().validate()
 
 
@@ -126,10 +125,10 @@ def _read_python_file(file_path: str) -> BaseFlow:
     # flows = [] # a list to store all the subclass of BaseFlow
     flows = [
         element
-        for element in module_elements_dict.values()
-        if inspect.isclass(element)
-        and issubclass(element, BaseFlow)
-        and element.__name__ != BaseFlow.__name__
+        for element in module_elements_dict.values() # iterate over all the elements in the file
+        if inspect.isclass(element) # check if the element we are iterating over is a class
+        and issubclass(element, BaseFlow)  # check if subclass of BaseFlow
+        and element.__name__ != BaseFlow.__name__  # we make sure we pick only the subclass of BaseFlow and not BaseFlow itself
     ]
     flow_names = [flow.__name__ for flow in flows]
     logger.info("Found Flows: %s", flow_names)

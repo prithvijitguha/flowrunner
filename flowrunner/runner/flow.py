@@ -18,16 +18,26 @@ class BaseFlow:
     """BaseFlow is the base class on which all flows are
     derived from
 
-    Attributes:
-        - data_store: A dict that is meant to be used to store data by method name and output eg. {'method_name': 4}
-        - param_store: A dict that stores parameter values eg. {'snapshot_date': '2023-01-01}
+    These are not meant to be used directly, but subclass/parent class for any Flow
+
+    Attrs:
+        data_store: A dict that is meant to be used to store data by method name and output eg. {'dataframe1': DataFrame}.
+        param_store: A dict that stores parameter values eg. {'snapshot_date': '2023-01-01}.
+
     """
 
-    data_store: dict = field(default_factory=lambda: dict())
-    param_store: dict = field(default_factory=lambda: dict())
+    data_store: dict = field(default_factory=lambda: {}) # a way to store any data and output from methods if any
+    param_store: dict = field(default_factory=lambda: {}) # a way to store any input params to the Flow
 
     def __post_init__(self):
-        """Post init to add attributes like levels"""
+        """Post init to add attributes like levels
+
+        Args:
+            None
+
+        Returns:
+            None: But we
+        """
         graph = FlowRunner()._get_details(self)
         self.graph = graph
 
@@ -35,12 +45,13 @@ class BaseFlow:
         """Method to validate a flow
 
         We use the FlowRunner class to run the validation checks.
+
         Args:
-            - flow_instance: An instance of the Flow class
-            - terminal_ouput: An optional bool value of whether to display the terminal output
+            flow_instance: An instance of the Flow class
+            terminal_ouput: An optional bool value of whether to display the terminal output
                for validate we choose to show the output, defaults to True
         Returns:
-            - None
+            None
         """
         FlowRunner().validate(flow_instance=self, terminal_output=terminal_output)
 
@@ -49,14 +60,14 @@ class BaseFlow:
 
         We use the FlowRunner class to run the validation checks.
         Args:
-            - flow_instance: An instance of the Flow class
-            - terminal_ouput: An optional bool value of whether to display the terminal output
+            flow_instance: An instance of the Flow class
+            terminal_ouput: An optional bool value of whether to display the terminal output
                for validate we choose to show the output, defaults to True
         Returns:
-            - None
+            None
 
         Raises:
-            - InvalidFlowException: If an invalid flow is detected
+            InvalidFlowException: If an invalid flow is detected
         """
         FlowRunner().validate_with_error(
             flow_instance=self, terminal_output=terminal_output
@@ -69,12 +80,12 @@ class BaseFlow:
         we use the FlowRunner class to run it
 
         Args:
-            - None
+            None
         Returns:
-            - None
+            None
 
         Raises:
-            - InvalidFlowException: If an invalid flow is detected
+            InvalidFlowException: If an invalid flow is detected
         """
         FlowRunner().validate_with_error(
             flow_instance=self, terminal_output=False
@@ -97,7 +108,15 @@ class BaseFlow:
         FlowRunner().show(flow_instance=self)
 
     def display(self):
-        """Method to show html output of the flowchart"""
+        """Method to show html output of the flowchart
+
+        Args:
+            None
+
+        Returns:
+            None: displays an html flowchart of the Flow
+
+        """
         return FlowChartGenerator().display(flow_instance=self)
 
     def flowchart(self, save_file: bool = False, path: str = None):
@@ -150,10 +169,10 @@ class FlowRunner:
         We use the GraphValidator to do the heavy lifting for this part
 
         Args:
-            - flow_instance: An instance of the Flow class
-            - terminal_output: An optional bool value to show output in terminal, defaults to False
+            flow_instance: An instance of the Flow class
+            terminal_output: An optional bool value to show output in terminal, defaults to False
         Returns:
-            - None
+            None
 
         """
         logger.debug("Validating flow for %s", flow_instance)
@@ -169,14 +188,14 @@ class FlowRunner:
         if validation check fails
 
         Args:
-            - flow_instance: An instance of the Flow class
-            - terminal_output: An optional bool value to show output in terminal, defaults to False
+            flow_instance: An instance of the Flow class
+            terminal_output: An optional bool value to show output in terminal, defaults to False
 
         Returns:
-            - None
+            None
 
         Raises:
-            - InvalidFlow: Raised if ANY of the validation checks are failed
+            InvalidFlow: Raised if ANY of the validation checks are failed
         """
         logger.debug("Validating flow for %s", flow_instance)
         logger.warning(
@@ -206,13 +225,13 @@ class FlowRunner:
             }
 
         Args:
-            - flow_instance: An instance of the Flow class
+            flow_instance: An instance of the Flow class
 
         Returns:
-            - None
+            None
 
         Raises:
-            - InvalidFlow: Raised if ANY of the validation checks are failed
+            InvalidFlow: Raised if ANY of the validation checks are failed
         """
         logger.debug("Running flow for %s", flow_instance)
         graph = cls._get_details(flow_instance=flow_instance)
@@ -236,10 +255,10 @@ class FlowRunner:
         run the actual method but just uses the 'docstring' and '__name__' to show the Flow.
 
         Args:
-            - flow_instance: An instance of the Flow class
+            flow_instance: An instance of the Flow class
 
         Returns:
-            - None
+            None
         """
         logger.debug("Show flow for %s", flow_instance)
         graph = cls._get_details(flow_instance=flow_instance)

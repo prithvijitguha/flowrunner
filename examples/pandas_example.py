@@ -65,6 +65,3 @@ class ExamplePandas(BaseFlow):
         """
         print(self.final_df)
         return self.final_df
-
-
-ExamplePandas().flowchart(save_file=True)

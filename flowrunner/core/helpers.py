@@ -38,7 +38,7 @@ class GraphValidator:
     of the output message.
 
     Attributes:
-        - graph: An instance of Graph class to be checked
+        graph: An instance of Graph class to be checked
     """
 
     graph: Graph
@@ -49,10 +49,10 @@ class GraphValidator:
         We make sure that there is atleast one start node
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
         """
         # check that the len of start is more than 1
@@ -66,10 +66,10 @@ class GraphValidator:
         We make sure that each of the nodes specified has a next
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message
         """
         # check that all the start have a next value
@@ -88,10 +88,10 @@ class GraphValidator:
         We make sure that there is atleast one start node
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
         """
         # check that the len of start is more than 1
@@ -108,10 +108,10 @@ class GraphValidator:
         We make sure that each of the nodes specified has a next
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message
         """
         # check that all the start have a next value
@@ -133,10 +133,10 @@ class GraphValidator:
         We make sure that there is atleast one end node
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
         """
         # check that the len of start is more than 1
@@ -150,10 +150,10 @@ class GraphValidator:
         We make sure that each of the nodes specified does have a next value
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message
         """
         # check that all the start have a next value
