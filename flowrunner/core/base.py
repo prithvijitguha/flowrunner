@@ -46,30 +46,26 @@ class Node:
         # if next has value
         if self.function_reference.next:
             if isinstance(self.function_reference.next, list):
-                # we do a check to see that all elements in the list
-                # are a string
-                element_types = [
-                    type(element) for element in self.function_reference.next
-                ]
-                elements_unique = list(set(element_types))
-                # we make sure that the types are uniform
-                # if the len of the set is more than 1 then we raise an error
-                if len(elements_unique) > 1:
-                    raise TypeError(
-                        f"More than 1 type of element found, next can be str or list of str, found: {elements_unique}"
-                    )
-                # if all the elements are uniform, we make sure that
-                # they are all of string type
-                if isinstance(type(elements_unique[0]), str):
-                    raise TypeError(
-                        f"'next' value can only be 'list of str' or 'str', found: {type(elements_unique[0])}"
-                    )
+                # iterate over each elment in the list and peform checks on them
+                # we stop these errors at Node level as they can break the GraphOptions and Graph objects
+                for next_node in self.function_reference.next:
+                    if not isinstance(next_node, str): # if its not string raise a Type Error
+                        raise TypeError(f"Elements of 'next' can only be 'str' type, found {type(next_node)} for {next_node}")
+                    if self.function_reference.next.count(next_node) > 1: # if the count it means its a duplicate next node
+                        raise ValueError(
+                        f"'next' values are not unique, got duplicate values for '{next_node}'"
+                        )
 
-                # then we assign the next
                 self.next = self.function_reference.next
             elif isinstance(self.function_reference.next, str):
                 # we make sure that the next is put in a list
+                print(self.function_reference.next)
                 self.next = [self.function_reference.next]
+
+            else: # We do not allow any other types other than list and str
+                raise TypeError(
+                        f"'next' value can only be 'list of str' or 'str', found: {type(self.function_reference.next)}"
+                    )
         else:
             self.next = []
 
@@ -169,33 +165,32 @@ class GraphOptions:
         # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
         for name_func, func in self.functions.items():
             if callable(func):
-                # the ones with step, start and end in them
-                if (  # IF 'is_step' NO 'is_start' NO 'is_end' THEN 'middle_nodes'
-                    hasattr(func, "is_step")
-                    and not hasattr(func, "is_start")
-                    and not hasattr(func, "is_end")
-                ):
-                    self.middle_nodes.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(
-                    func, "is_start"
-                ):  # IF 'is_step' YES 'is_start' NO 'is_end' THEN 'start'
-                    self.start.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(
-                    func, "is_end"
-                ):  # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
-                    self.end.append(Node(name_func, func))
+                # we check if it has 'is_step' in the attribute
+                # then we do other checks on it
+                if hasattr(func, "is_step"):
+                    if hasattr(func, "is_start") and not hasattr(func, "is_end"):  # IF 'is_step'== YES 'is_start'== NO 'is_end' THEN 'start'
+                        self.start.append(Node(name_func, func))
 
-        # self.base_flow_instance = (
-        #     self.base_flow()
-        # )  # we store an instance of the class for reference for later BaseFlow()
+                    elif not hasattr(func, "is_start") and not hasattr(func, "is_end"): # IF 'is_step'== YES AND 'is_start' NO 'is_end' == NO THEN 'middle_nodes'
+                        self.middle_nodes.append(Node(name_func, func))
+
+                    elif hasattr(func, "is_start") and hasattr(func, "is_end"): # edge case if has step and start and end
+                        raise ValueError(f"Not cannot have both start and end, {func}")
+
+                    elif hasattr(func, "is_end") and not hasattr(func, "is_start"):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
+                        self.end.append(Node(name_func, func))
+                        if func.next:
+                            raise ValueError(f"End nodes cannot have next attribute {func}") # check if there is next attribute, if it is, then raise an error
+
+
 
     def __repr__(self):
         """String representation of class
         Args:
-            - None
+            None
 
         Returns:
-            - A string representation of the GraphOptions instance
+            A string representation of the GraphOptions instance
 
         Examples:
             >>> print(graph_options_instance)
@@ -210,6 +205,7 @@ class GraphOptions:
 @dataclass
 class Graph:
     """A class containing an arranged collection of Nodes from start, middle, end in Graph.levels
+
     Attributes:
         graph_options: An instance of GraphOptions class
         start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
@@ -235,17 +231,17 @@ class Graph:
         In addition, we assign the following attributes.
 
         Attributes:
-            - start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
-            - middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
-            - end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
-            - nodes: A list of all the nodes start + middle_nodes + end
-            - node_map: A dict of {node.name: node} for reference for later
+            start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
+            middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
+            end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
+            nodes: A list of all the nodes start + middle_nodes + end
+            node_map: A dict of {node.name: node} for reference for later
 
         Args:
-            - None
+            None
 
         Returns:
-            - None
+            None
         """
         self.start = self.graph_options.start
         self.middle_nodes = self.graph_options.middle_nodes
@@ -262,10 +258,10 @@ class Graph:
         node and append them to each level.
 
         Args:
-            - None
+            None
 
         Returns:
-            - None
+            None
         """
         # TODO: Maybe in the future there may be a need to add 'end' node or a later node in 'middle_nodes' to the 'next' of 'start'. Need to add
         # check to remove any function in end and mentioned in middle nodes

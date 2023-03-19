@@ -47,6 +47,10 @@ def test_base_flow_run_flow():
     ExampleFlow().run()
 
 
+def test_base_flow_display():
+    ExampleFlow().display()
+
+
 def test_data_store():
     """Test to check if data store actually stores output"""
     flow_instance = ExampleFlow()

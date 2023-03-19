@@ -28,7 +28,6 @@ class GraphValidator:
     - There should be atleast 1 middle
     - All start nodes have a next value
     - All middle nodes have a next value
-    - No end nodes have a next value
     - Any step that is not a next for any function
     - Any start function that is mentioned in another next
     - Validate each node, makes sure it has a return statement at the end
@@ -38,7 +37,7 @@ class GraphValidator:
     of the output message.
 
     Attributes:
-        - graph: An instance of Graph class to be checked
+        graph: An instance of Graph class to be checked
     """
 
     graph: Graph
@@ -49,10 +48,10 @@ class GraphValidator:
         We make sure that there is atleast one start node
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
         """
         # check that the len of start is more than 1
@@ -66,10 +65,10 @@ class GraphValidator:
         We make sure that each of the nodes specified has a next
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message
         """
         # check that all the start have a next value
@@ -88,10 +87,10 @@ class GraphValidator:
         We make sure that there is atleast one start node
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
         """
         # check that the len of start is more than 1
@@ -108,10 +107,10 @@ class GraphValidator:
         We make sure that each of the nodes specified has a next
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message
         """
         # check that all the start have a next value
@@ -133,10 +132,10 @@ class GraphValidator:
         We make sure that there is atleast one end node
 
         Args:
-            - None
+            None
 
         Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
         """
         # check that the len of start is more than 1
@@ -144,30 +143,6 @@ class GraphValidator:
             return (False, "No end present, please specify with '@end'")
         return (True, "Validated end nodes")
 
-    def validate_end_nodes_no_next(self) -> tuple[bool, str]:
-        """Method to check that the end nodes specified are valid.
-
-        We make sure that each of the nodes specified does have a next value
-
-        Args:
-            - None
-
-        Returns:
-            - A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
-                of the output message
-        """
-        # check that all the start have a next value
-        # All start nodes have a next value
-        bad_end_nodes = []
-        for end_node in self.graph.end:
-            if end_node.function_reference.next:
-                bad_end_nodes.append(end_node.name)
-        if bad_end_nodes:
-            return (
-                False,
-                f"Nodes {bad_end_nodes} have next, end nodes cannot have 'next' value",
-            )
-        return (True, "Validated start nodes 'next' values")
 
     def get_validation_suite(self):
         """Define validation suite, more methods
@@ -188,8 +163,7 @@ class GraphValidator:
             self.validate_start_next_nodes,
             self.validate_length_middle_nodes,
             self.validate_middle_next_nodes,
-            self.validate_length_end_nodes,
-            self.validate_end_nodes_no_next,
+            self.validate_length_end_nodes
         ]
         return validation_suite
 
@@ -317,7 +291,8 @@ class FlowChartGenerator:
         filename = f"{flow_name.lower()}.html"  # Output eg. examplepandas.html
 
         if path:  # path has a value
-            filename += path
+            os.makedirs(path, exist_ok=True) # create the directory if it does not exit
+            filename = path + filename
             # if path has a value we can safely assume that they want to save to that path
             save_file = True  # we change the value to True to make sure we save i
 

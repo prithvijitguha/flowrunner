@@ -209,6 +209,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+example_flowchart/
 
 # Translations
 *.mo
