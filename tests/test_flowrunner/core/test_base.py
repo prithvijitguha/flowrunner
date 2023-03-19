@@ -9,24 +9,24 @@ from flowrunner.runner.flow import BaseFlow
 
 
 class ExampleNodeFlow(BaseFlow):
-        @start
-        @step(next=["method_2", "method_3"])
-        def method_1(self):
-            """Test Docstring sample"""
-            return None
+    @start
+    @step(next=["method_2", "method_3"])
+    def method_1(self):
+        """Test Docstring sample"""
+        return None
 
-        @step(next="method_4")
-        def method_2(self):
-            return None
+    @step(next="method_4")
+    def method_2(self):
+        return None
 
-        @step(next=["method_4"])
-        def method_3(self):
-            return None
+    @step(next=["method_4"])
+    def method_3(self):
+        return None
 
-        @end
-        @step
-        def method_4(self):
-            return None
+    @end
+    @step
+    def method_4(self):
+        return None
 
 
 
@@ -164,49 +164,101 @@ class TestNodeGraphGraphOptions:
 
 
 class ExampleBadFlow(BaseFlow):
-    """Example of Bad Flow, the next has duplicate values
+    """Example of Bad Flow, the next has different type of values
     in `method_2`"""
     @start
-    @step(next=["method_2", "method_3"])
-    def method_1(self):
+    @step(next=["bad_method_2", "bad_method_3"])
+    def bad_method_1(self):
         """Test Docstring sample"""
         return None
 
-    @step(next=["method_4", "method_4"])
-    def method_2(self):
+    @step(next=["bad_method_4", 4])
+    def bad_method_2(self):
         return None
 
-    @step(next=["method_4"])
-    def method_3(self):
+    @step(next=["bad_method_4"])
+    def bad_method_3(self):
         return None
 
     @end
     @step
-    def method_4(self):
+    def bad_method_4(self):
         return None
 
 
 class ExampleBadFlow2(BaseFlow):
     """Example of Bad Flow, the next has a dict value
-    as `next` in `method_2`"""
+    as `next` in `bad_method_2`"""
     @start
-    @step(next=["method_2", "method_3"])
-    def method_1(self):
+    @step(next=["bad_method_2", "bad_method_3"])
+    def bad_method_1(self):
         """Test Docstring sample"""
         return None
 
-    @step(next={"method_4": "test"})
-    def method_2(self):
+    @step(next=("bad_method_4"))
+    def bad_method_2(self):
         return None
 
-    @step(next=["method_4"])
-    def method_3(self):
+    @step(next={"bad_method_4": "test"})
+    def bad_method_3(self):
         return None
 
     @end
     @step
-    def method_4(self):
+    def bad_method_4(self):
         return None
+
+
+
+class ExampleBadFlow3(BaseFlow):
+    """Example of Bad Flow, the next has duplicate values in
+    method `bad_method2
+
+    as `next` in `bad_method_2`"""
+    @start
+    @step(next=["bad_method_2", "bad_method_3"])
+    def bad_method_1(self):
+        """Test Docstring sample"""
+        return None
+
+    @step(next=["bad_method_4", "bad_method_4"])
+    def bad_method_2(self):
+        return None
+
+    @step(next=["bad_method_4"])
+    def bad_method_3(self):
+        return None
+
+    @end
+    @step
+    def bad_method_4(self):
+        return None
+
+
+class ExampleBadFlow4(BaseFlow):
+    """Example of Bad Flow, the value of next is the current
+    node name
+
+    as `next` in `bad_method_2`"""
+    @start
+    @step(next=["bad_method_2", "bad_method_3"])
+    def bad_method_1(self):
+        """Test Docstring sample"""
+        return None
+
+    @step(next=["bad_method_2", "bad_method_4"])
+    def bad_method_2(self):
+        return None
+
+    @step(next=["bad_method_4"])
+    def bad_method_3(self):
+        return None
+
+    @end
+    @step
+    def bad_method_4(self):
+        return None
+
 
 
 
@@ -215,6 +267,8 @@ class ExampleBadFlow2(BaseFlow):
     [
         (ExampleBadFlow, pytest.raises(TypeError)),
         (ExampleBadFlow2, pytest.raises(TypeError)),
+        (ExampleBadFlow3, pytest.raises(ValueError)),
+        (ExampleBadFlow4, pytest.raises(ValueError)),
         (ExampleNodeFlow, does_not_raise()),
         (ExampleNodeFlow2, does_not_raise()),
     ]
@@ -225,4 +279,5 @@ def test_bad_flows_node_errors(flow, expectation):
     """
     with expectation:
         graph_options = GraphOptions(base_flow=flow)
+        print(graph_options)
         graph = Graph(graph_options=graph_options)

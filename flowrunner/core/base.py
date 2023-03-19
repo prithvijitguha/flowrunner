@@ -46,30 +46,25 @@ class Node:
         # if next has value
         if self.function_reference.next:
             if isinstance(self.function_reference.next, list):
-                # we do a check to see that all elements in the list
-                # are a string
-                element_types = [
-                    type(element) for element in self.function_reference.next
-                ]
-                elements_unique = list(set(element_types))
-                # we make sure that the types are uniform
-                # if the len of the set is more than 1 then we raise an error
-                if len(elements_unique) > 1:
-                    raise TypeError(
-                        f"More than 1 type of element found, next can be str or list of str, found: {elements_unique}"
-                    )
-                # if all the elements are uniform, we make sure that
-                # they are all of string type
-                if isinstance(type(elements_unique[0]), str):
-                    raise TypeError(
-                        f"'next' value can only be 'list of str' or 'str', found: {type(elements_unique[0])}"
-                    )
+                # iterate over each elment in the list and peform checks on them
+                # we stop these errors at Node level as they can break the GraphOptions and Graph objects
+                for next_node in self.function_reference.next:
+                    if not isinstance(next_node, str): # if its not string raise a Type Error
+                        raise TypeError(f"Elements of 'next' can only be 'str' type, found {type(next_node)} for {next_node}")
+                    if self.function_reference.next.count(next_node) > 1: # if the count it means its a duplicate next node
+                        raise ValueError(
+                        f"'next' values are not unique, got duplicate values for '{next_node}'"
+                        )
 
-                # then we assign the next
                 self.next = self.function_reference.next
             elif isinstance(self.function_reference.next, str):
                 # we make sure that the next is put in a list
                 self.next = [self.function_reference.next]
+
+            else: # We do not allow any other types other than list and str
+                raise TypeError(
+                        f"'next' value can only be 'list of str' or 'str', found: {type(self.function_reference.next)}"
+                    )
         else:
             self.next = []
 
