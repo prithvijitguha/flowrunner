@@ -23,6 +23,12 @@ class ExampleNodeFlow(BaseFlow):
     def method_3(self):
         return None
 
+    def example_method(self):
+        """This method is there to make
+        sure that our GraphOptions are being filtered correctly for
+        @step, @end and @start methods"""
+        return None
+
     @end
     @step
     def method_4(self):

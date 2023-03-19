@@ -164,21 +164,22 @@ class GraphOptions:
         # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
         for name_func, func in self.functions.items():
             if callable(func):
-                # the ones with step, start and end in them
-                if (  # IF 'is_step' NO 'is_start' NO 'is_end' THEN 'middle_nodes'
-                    hasattr(func, "is_step")
-                    and not hasattr(func, "is_start")
-                    and not hasattr(func, "is_end")
-                ):
-                    self.middle_nodes.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(
-                    func, "is_start"
-                ):  # IF 'is_step' YES 'is_start' NO 'is_end' THEN 'start'
-                    self.start.append(Node(name_func, func))
-                elif hasattr(func, "is_step") and hasattr(
+                # we check if it has 'is_step' in the attribute
+                # then we do other checks on it
+                if hasattr(func, "is_step"):
+                    if hasattr(
+                        func, "is_start"
+                    ):  # IF 'is_step'== YES 'is_start'== NO 'is_end' THEN 'start'
+                        self.start.append(Node(name_func, func))
+
+                    elif hasattr(
                     func, "is_end"
-                ):  # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
-                    self.end.append(Node(name_func, func))
+                    ):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
+                        self.end.append(Node(name_func, func))
+
+                    elif not hasattr(func, "is_start") and not hasattr(func, "is_end"): # IF 'is_step'== YES AND 'is_start' NO 'is_end' == NO THEN 'middle_nodes'
+                        self.middle_nodes.append(Node(name_func, func))
+
 
 
     def __repr__(self):
