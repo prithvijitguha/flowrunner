@@ -154,7 +154,7 @@ def flowchart(filepath: str, path: str = None):
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
         logger.info("Creating flowchart for flow %s", flow_class.__name__)
-        flow_class().flowchart(save_file=True, path=path)
+        flow_class().flowchart(save_file=True, path=path) # we keep save file as True, assumption being if we are running through cli then we are going to save
 
 
 if __name__ == "__main__":

@@ -317,7 +317,8 @@ class FlowChartGenerator:
         filename = f"{flow_name.lower()}.html"  # Output eg. examplepandas.html
 
         if path:  # path has a value
-            filename += path
+            os.makedirs(path, exist_ok=True) # create the directory if it does not exit
+            filename = path + filename
             # if path has a value we can safely assume that they want to save to that path
             save_file = True  # we change the value to True to make sure we save i
 

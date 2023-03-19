@@ -29,7 +29,7 @@ def test_run():
 def test_flowchart():
     """Test to check cli::flowchart function"""
     runner = CliRunner()
-    result = runner.invoke(flowchart, ["examples/example.py"])
+    result = runner.invoke(flowchart, ["examples/example.py", "--path=example_flowchart/"])
     assert result.exit_code == 0
 
 
