@@ -28,7 +28,6 @@ class GraphValidator:
     - There should be atleast 1 middle
     - All start nodes have a next value
     - All middle nodes have a next value
-    - No end nodes have a next value
     - Any step that is not a next for any function
     - Any start function that is mentioned in another next
     - Validate each node, makes sure it has a return statement at the end
@@ -144,30 +143,6 @@ class GraphValidator:
             return (False, "No end present, please specify with '@end'")
         return (True, "Validated end nodes")
 
-    def validate_end_nodes_no_next(self) -> tuple[bool, str]:
-        """Method to check that the end nodes specified are valid.
-
-        We make sure that each of the nodes specified does have a next value
-
-        Args:
-            None
-
-        Returns:
-            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
-                of the output message
-        """
-        # check that all the start have a next value
-        # All start nodes have a next value
-        bad_end_nodes = []
-        for end_node in self.graph.end:
-            if end_node.function_reference.next:
-                bad_end_nodes.append(end_node.name)
-        if bad_end_nodes:
-            return (
-                False,
-                f"Nodes {bad_end_nodes} have next, end nodes cannot have 'next' value",
-            )
-        return (True, "Validated start nodes 'next' values")
 
     def get_validation_suite(self):
         """Define validation suite, more methods
@@ -188,8 +163,7 @@ class GraphValidator:
             self.validate_start_next_nodes,
             self.validate_length_middle_nodes,
             self.validate_middle_next_nodes,
-            self.validate_length_end_nodes,
-            self.validate_end_nodes_no_next,
+            self.validate_length_end_nodes
         ]
         return validation_suite
 

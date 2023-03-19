@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from contextlib import nullcontext as does_not_raise
+
 import pandas as pd
 import pytest
 
@@ -108,31 +110,61 @@ class BadFlowExample4(BaseFlow):
     def method_3(self):
         return None
 
+class BadFlowExample5(BaseFlow):
+    """Bad Example of flow, end has a next value"""
+
+    @start
+    @step(next=["method_2"])
+    def method_1(self):
+        return None
+
+    @step(next=["method_3"])
+    def method_2(self):
+        return None
+
+    @end
+    @step(next=["tests"])
+    def method_3(self):
+        return None
+
+
+
 @pytest.mark.parametrize(
-    "bad_flow_example",
-    [BadFlowExample, BadFlowExample2, BadFlowExample3, BadFlowExample4],
+    "bad_flow_example, expectations",
+    [
+        (BadFlowExample, does_not_raise()),
+        (BadFlowExample2, does_not_raise()),
+        (BadFlowExample3, does_not_raise()),
+        (BadFlowExample4, does_not_raise()),
+        (BadFlowExample5, pytest.raises(ValueError))
+
+    ],
 )
-def test_graph_validator(bad_flow_example):
+def test_graph_validator(bad_flow_example, expectations):
     """We add all the bad flows based on validation we want to fail"""
-    bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
-    bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
-    GraphValidator(graph=bad_flow_graph).run_validations(
-        terminal_output=True
-    )
-
-
-
+    with expectations:
+        bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
+        bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
+        GraphValidator(graph=bad_flow_graph).run_validations(
+            terminal_output=True
+        )
 
 
 
 
 @pytest.mark.parametrize(
-    "bad_flow_example",
-    [BadFlowExample, BadFlowExample2, BadFlowExample3, BadFlowExample4],
+    "bad_flow_example, expectations",
+    [
+    (BadFlowExample, pytest.raises(InvalidFlowException)),
+    (BadFlowExample2,pytest.raises(InvalidFlowException)),
+    (BadFlowExample3, pytest.raises(InvalidFlowException)),
+    (BadFlowExample4, pytest.raises(InvalidFlowException)),
+    (BadFlowExample5, pytest.raises(ValueError))
+    ],
 )
-def test_graph_validator_with_error(bad_flow_example):
+def test_graph_validator_with_error(bad_flow_example, expectations):
     """We add all the bad flows based on validation we want to fail"""
-    with pytest.raises(InvalidFlowException):
+    with expectations:
         bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
         bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
         GraphValidator(graph=bad_flow_graph).run_validations_raise_error(

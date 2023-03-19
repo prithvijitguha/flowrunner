@@ -59,6 +59,7 @@ class Node:
                 self.next = self.function_reference.next
             elif isinstance(self.function_reference.next, str):
                 # we make sure that the next is put in a list
+                print(self.function_reference.next)
                 self.next = [self.function_reference.next]
 
             else: # We do not allow any other types other than list and str
@@ -170,14 +171,16 @@ class GraphOptions:
                     if hasattr(func, "is_start") and not hasattr(func, "is_end"):  # IF 'is_step'== YES 'is_start'== NO 'is_end' THEN 'start'
                         self.start.append(Node(name_func, func))
 
-                    elif hasattr(func, "is_end") and not hasattr(func, "is_start"):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
-                        self.end.append(Node(name_func, func))
-
                     elif not hasattr(func, "is_start") and not hasattr(func, "is_end"): # IF 'is_step'== YES AND 'is_start' NO 'is_end' == NO THEN 'middle_nodes'
                         self.middle_nodes.append(Node(name_func, func))
 
                     elif hasattr(func, "is_start") and hasattr(func, "is_end"): # edge case if has step and start and end
                         raise ValueError(f"Not cannot have both start and end, {func}")
+
+                    elif hasattr(func, "is_end") and not hasattr(func, "is_start"):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
+                        self.end.append(Node(name_func, func))
+                        if func.next:
+                            raise ValueError(f"End nodes cannot have next attribute {func}") # check if there is next attribute, if it is, then raise an error
 
 
 
