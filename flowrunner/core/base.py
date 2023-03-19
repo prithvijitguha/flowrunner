@@ -185,17 +185,14 @@ class GraphOptions:
                 ):  # IF 'is_step' NO 'is_start' YES 'is_end' THEN 'end'
                     self.end.append(Node(name_func, func))
 
-        # self.base_flow_instance = (
-        #     self.base_flow()
-        # )  # we store an instance of the class for reference for later BaseFlow()
 
     def __repr__(self):
         """String representation of class
         Args:
-            - None
+            None
 
         Returns:
-            - A string representation of the GraphOptions instance
+            A string representation of the GraphOptions instance
 
         Examples:
             >>> print(graph_options_instance)
@@ -210,6 +207,7 @@ class GraphOptions:
 @dataclass
 class Graph:
     """A class containing an arranged collection of Nodes from start, middle, end in Graph.levels
+
     Attributes:
         graph_options: An instance of GraphOptions class
         start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
@@ -235,17 +233,17 @@ class Graph:
         In addition, we assign the following attributes.
 
         Attributes:
-            - start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
-            - middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
-            - end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
-            - nodes: A list of all the nodes start + middle_nodes + end
-            - node_map: A dict of {node.name: node} for reference for later
+            start: A list of start nodes, we take this from GraphOptions.start, A list of nodes decorated with @start
+            middle_nodes: A list of middle nodes, we take this from GraphOptions.middle_nodes, A list of nodes decorated with @step only
+            end: A list of end nodes, we take this from GraphOptions.end, A list of nodes decorated with @end
+            nodes: A list of all the nodes start + middle_nodes + end
+            node_map: A dict of {node.name: node} for reference for later
 
         Args:
-            - None
+            None
 
         Returns:
-            - None
+            None
         """
         self.start = self.graph_options.start
         self.middle_nodes = self.graph_options.middle_nodes
@@ -262,10 +260,10 @@ class Graph:
         node and append them to each level.
 
         Args:
-            - None
+            None
 
         Returns:
-            - None
+            None
         """
         # TODO: Maybe in the future there may be a need to add 'end' node or a later node in 'middle_nodes' to the 'next' of 'start'. Need to add
         # check to remove any function in end and mentioned in middle nodes
