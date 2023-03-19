@@ -22,7 +22,7 @@ class TestDecorators:
         that attributes are being correctly"""
         assert example_node_flow.method_2.is_step == True
         assert example_node_flow.method_3.is_step == True
-        assert example_node_flow.method_2.next == "method_4"
+        assert example_node_flow.method_2.next == ["method_4"]
         assert example_node_flow.method_3.next == ["method_4"]
         assert hasattr(example_node_flow.method_3, "end") == False
         assert hasattr(example_node_flow.method_3, "start") == False

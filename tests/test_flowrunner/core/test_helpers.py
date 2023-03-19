@@ -108,12 +108,29 @@ class BadFlowExample4(BaseFlow):
     def method_3(self):
         return None
 
-
 @pytest.mark.parametrize(
     "bad_flow_example",
     [BadFlowExample, BadFlowExample2, BadFlowExample3, BadFlowExample4],
 )
 def test_graph_validator(bad_flow_example):
+    """We add all the bad flows based on validation we want to fail"""
+    bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
+    bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
+    GraphValidator(graph=bad_flow_graph).run_validations(
+        terminal_output=True
+    )
+
+
+
+
+
+
+
+@pytest.mark.parametrize(
+    "bad_flow_example",
+    [BadFlowExample, BadFlowExample2, BadFlowExample3, BadFlowExample4],
+)
+def test_graph_validator_with_error(bad_flow_example):
     """We add all the bad flows based on validation we want to fail"""
     with pytest.raises(InvalidFlowException):
         bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
