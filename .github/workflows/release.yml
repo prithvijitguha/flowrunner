@@ -4,12 +4,19 @@ on:
   workflow_dispatch # has to be triggered manually only
 
 jobs:
-  build:
-    name: Release
+    name: release
     runs-on: ubuntu-latest
     steps:
-    - name: Publish Package to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Deploy to TestPyPI
+      run: |
+        pip install build>=0.10.0
+        pip install --upgrade twine
+        python -m build
+        python -m twine upload --repository testpypi dist/*
       with:
+        username: ${{ secrets.TEST_PYPI_USERNAME }}
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository-url: https://test.pypi.org/legacy/
+    - name: Test successful deployment to PyPI
+      run: |
+        pip install -i https://test.pypi.org/simple/ flowrunner
+        python -m flowrunner

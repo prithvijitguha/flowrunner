@@ -17,11 +17,10 @@ requires-python = ">=3.8"
 keywords = ["Data Engineering", "Data Science"]
 license = {file = "LICENSE"}
 classifiers = [
-    "Framework :: flowrunner",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9:",
-    "Topic :: Scientific/Engineering"
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Scientific/Engineering',
 ]
 dependencies = [
     'requests',
