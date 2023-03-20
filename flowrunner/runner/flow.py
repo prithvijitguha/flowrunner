@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 import click
 
 from flowrunner.core.base import Graph, GraphOptions
-from flowrunner.core.helpers import FlowChartGenerator, GraphValidator
+from flowrunner.core.helpers import DAGGenerator, GraphValidator
 from flowrunner.system.logger import logger
 
 
@@ -117,9 +117,9 @@ class BaseFlow:
             None: displays an html flowchart of the Flow
 
         """
-        return FlowChartGenerator().display(flow_instance=self)
+        return DAGGenerator().display(flow_instance=self)
 
-    def flowchart(self, save_file: bool = False, path: str = None):
+    def dag(self, save_file: bool = False, path: str = None):
         """Method to generate html flowchart for Flow
 
         We first run a validation check without raising an error and do not show the output. Then
@@ -132,7 +132,7 @@ class BaseFlow:
         Returns:
             content: HTMl data in the form of string
         """
-        return FlowChartGenerator().flowchart(
+        return DAGGenerator().dag(
             flow_instance=self, save_file=save_file, path=path
         )
 

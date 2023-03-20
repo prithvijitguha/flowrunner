@@ -221,18 +221,18 @@ class GraphValidator:
             raise InvalidFlowException("Invalid Flow detected")
 
 
-class FlowChartGenerator:
-    """Class to build html flowcharts from graphs"""
+class DAGGenerator:
+    """Class to flowrunner DAGs based on Flow"""
 
     @classmethod
-    def _create_flowchart(cls, flow_instance) -> str:
+    def _create_dag(cls, flow_instance) -> str:
         """Class method to create the base graph for mermaid js
 
         We iterate over the Graph.levels to understand the order of iteration. Then
         we find the 'next' of each to make the edge connections. The final string should look like:
 
         Examples:
-            >>> FlowChartGenerator()._create_flowchart(flow_instance)
+            >>> FlowChartGenerator()._create_dag(flow_instance)
             graph TD;
                 create_data(create_data)==>transformation_function_1(transformation_function_1)
                 create_data(create_data)==>transformation_function_2(transformation_function_2)
@@ -262,8 +262,8 @@ class FlowChartGenerator:
         return mermaid_js_string
 
     @classmethod
-    def flowchart(cls, flow_instance, save_file: bool = False, path: str = None) -> str:
-        """Class method to generate flowchart from Flow in the form of html output
+    def dag(cls, flow_instance, save_file: bool = False, path: str = None) -> str:
+        """Class method to generate DAG from Flow in the form of html output
 
         We use the Flow class to generate a flowchart and return the html content. This method can
         be used to save locally or use the html content elsewhere
@@ -275,7 +275,7 @@ class FlowChartGenerator:
         Returns:
             content: The html data containing the flow diagram
         """
-        mermaid_js_string = cls._create_flowchart(flow_instance=flow_instance)
+        mermaid_js_string = cls._create_dag(flow_instance=flow_instance)
 
         root = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(root, "templates")
@@ -311,7 +311,7 @@ class FlowChartGenerator:
 
     @classmethod
     def display(cls, flow_instance) -> None:
-        """Class method to display a flowchart of the Flow
+        """Class method to display the DAG of the Flow
 
         This method only works in IPython style notebooks. Does not work in script
         This method displays the flowchart of the Flow based the Flow class itself.
@@ -329,7 +329,7 @@ class FlowChartGenerator:
         # graph LR;
         #   A--> B & C & D;
         # """"
-        graph = cls._create_flowchart(flow_instance=flow_instance)
+        graph = cls._create_dag(flow_instance=flow_instance)
         graphbytes = graph.encode("ascii")
         base64_bytes = base64.b64encode(graphbytes)
         base64_string = base64_bytes.decode("ascii")
