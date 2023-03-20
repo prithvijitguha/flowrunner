@@ -4,7 +4,7 @@ on:
   workflow_dispatch # has to be triggered manually only
 
 jobs:
-  build:
+  Release-TestPyPI:
     name: release
     runs-on: ubuntu-latest
     steps:
