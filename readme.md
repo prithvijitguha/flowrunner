@@ -67,20 +67,19 @@ output of flow is: 7
 ```
 
 
-## Display your flow
+## Visualize Flow as DAG(Directed Acyclical Graph)
 
 ```python
-ExampleFlow().display()
+ExamplePandas().display()
 ```
 
-```mermaid
+## Show your Flow
 
-graph TD;
-    method1(method1) --> method2(method2);
-    method1(method1) --> method3(method3);
-    method2(method2) --> method4(method4)
-    method3(method3) --> method4(method4)
+```python
+ExamplePandas().show()
 ```
+
+
 
 ## Pandas Example
 
@@ -155,21 +154,7 @@ class ExamplePandas(BaseFlow):
         return self.final_df
 ```
 
-Visualize your dag
 
-```python
-
-ExamplePandas().display()
-```
-<div class="mermaid">
-graph TD;
-    create_data(create_data) --> transformation_function_1(transformation_function_1);
-    create_data(create_data) --> transformation_function_2(transformation_function_2);
-    transformation_function_1(transformation_function_1) --> append_data(append_data);
-    transformation_function_2(transformation_function_2) --> append_data(append_data);
-    append_data(append_data) --> show_data(show_data);
-</div>
-<script>mermaid.initialize({startOnLoad:true});</script>
 
 
 ## Documentation
