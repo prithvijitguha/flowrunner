@@ -138,12 +138,12 @@ def _read_python_file(file_path: str) -> BaseFlow:
 @cli.command()
 @click.option("--path")
 @click.argument("filepath")
-def flowchart(filepath: str, path: str = None):
-    """Command to create a flowchart in html format from
-    a Flow python file
+def dag(filepath: str, path: str = None):
+    """Command to create a Flowrunner Directed Acyclical Graph in html format
+    based on a Flow python file
 
     Examples:
-        python -m flowrunner flowchart /my_path/to/flow_file.py
+        python -m flowrunner dag /my_path/to/flow_file.py
 
     Args:
         path: A string value of path to save flow in. Defaults to current directory
@@ -153,8 +153,8 @@ def flowchart(filepath: str, path: str = None):
     """
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
-        logger.info("Creating flowchart for flow %s", flow_class.__name__)
-        flow_class().flowchart(save_file=True, path=path) # we keep save file as True, assumption being if we are running through cli then we are going to save
+        logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
+        flow_class().dag(save_file=True, path=path) # we keep save file as True, assumption being if we are running through cli then we are going to save
 
 
 if __name__ == "__main__":
