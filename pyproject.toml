@@ -95,11 +95,6 @@ pandas = [
 ]
 
 
-
-[project.scripts]
-cli = "flowrunner.cli:cli"
-
-
 [options]
 package_dir=[
     "flowrunner"
@@ -110,6 +105,10 @@ package_dir=[
 where=[
     "flowrunner"
 ]
+
+
+[project.scripts]
+cli = "flowrunner.cli:cli"
 
 [tool.pytest.ini_options]
 pythonpath = [
