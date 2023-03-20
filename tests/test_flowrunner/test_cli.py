@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 """Commands to check the cli"""
 
+import pytest
 from click.testing import CliRunner
 
 from flowrunner.cli import cli, display, run, show, validate
 
+
+@pytest.fixture(scope="session")
+def temp_directory_fixture(tmp_path_factory):
+    folder = tmp_path_factory.mktemp("example_flowchart")
+    return folder
 
 def test_validate():
     """Test to check cli::validate function"""
@@ -26,11 +32,12 @@ def test_run():
     assert result.exit_code == 0
 
 
-def test_display():
-    """Test to check cli::flowchart function"""
+def test_display(temp_directory_fixture):
+    """Test to check cli::flowchart function, we use a temporary directory
+    fixture for saving"""
     runner = CliRunner()
     result = runner.invoke(
-        display, ["examples/example.py", "--path=example_flowchart/"]
+        display, ["examples/example.py", f"--path={temp_directory_fixture}"]
     )
     assert result.exit_code == 0
 
