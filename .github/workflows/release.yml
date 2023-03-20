@@ -14,7 +14,7 @@ jobs:
         pip install --upgrade twine
         python -m build
         python -m twine upload --repository testpypi dist/*
-      with:
+      env:
         username: ${{ secrets.TEST_PYPI_USERNAME }}
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
     - name: Test successful deployment to PyPI
