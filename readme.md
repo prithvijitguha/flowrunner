@@ -161,17 +161,16 @@ Visualize your dag
 
 ExamplePandas().display()
 ```
+<div class="mermaid">
+graph TD;
+    create_data(create_data) --> transformation_function_1(transformation_function_1);
+    create_data(create_data) --> transformation_function_2(transformation_function_2);
+    transformation_function_1(transformation_function_1) --> append_data(append_data);
+    transformation_function_2(transformation_function_2) --> append_data(append_data);
+    append_data(append_data) --> show_data(show_data);
+</div>
+<script>mermaid.initialize({startOnLoad:true});</script>
 
-
-```mermaid
-    graph TD;
-        create_data(create_data) --> transformation_function_1(transformation_function_1);
-        create_data(create_data) --> transformation_function_2(transformation_function_2);
-        transformation_function_1(transformation_function_1) --> append_data(append_data);
-        transformation_function_2(transformation_function_2) --> append_data(append_data);
-        append_data(append_data) --> show_data(show_data);
-
-```
 
 ## Documentation
 Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
