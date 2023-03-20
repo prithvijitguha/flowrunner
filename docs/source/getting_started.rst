@@ -112,6 +112,40 @@ The output runs validation checks on your Flow with ✅ for passed and ❌ for f
 
 .. _getting_started.validate_flow:
 
+
+``display`` your Flow
+^^^^^^^^^^^^^^^^^^^^^^
+
+We can use ``display`` command to visualize your Flow DAG in a notebook or the CLI to save it to the current folder
+
+.. tabs::
+   .. group-tab::  cli
+
+      .. code-block:: powershell
+
+         python -m flowrunner display example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+         # we create an instance of the class and run its corresponding method
+         ExampleFlow().display()
+
+
+.. mermaid::
+
+    graph TD;
+        method_1(method_1) --> method_2(method_2);
+        method_1(method_1) --> method_3(method_3);
+        method_2(method_2) --> method_4(method_4);
+        method_3(method_3) --> method_4(method_4);
+
+
+.. _getting_started.display:
+
+
+
 ``show`` your Flow
 ^^^^^^^^^^^^^^^^^^^^^^
 

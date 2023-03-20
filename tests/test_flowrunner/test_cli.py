@@ -3,7 +3,7 @@
 
 from click.testing import CliRunner
 
-from flowrunner.cli import cli, dag, run, show, validate
+from flowrunner.cli import cli, display, run, show, validate
 
 
 def test_validate():
@@ -26,11 +26,11 @@ def test_run():
     assert result.exit_code == 0
 
 
-def test_dag():
+def test_display():
     """Test to check cli::flowchart function"""
     runner = CliRunner()
     result = runner.invoke(
-        dag, ["examples/example.py", "--path=example_flowchart/"]
+        display, ["examples/example.py", "--path=example_flowchart/"]
     )
     assert result.exit_code == 0
 

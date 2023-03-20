@@ -138,11 +138,11 @@ def _read_python_file(file_path: str) -> BaseFlow:
 @cli.command()
 @click.option("--path")
 @click.argument("filepath")
-def dag(filepath: str, path: str = None):
+def display(filepath: str, path: str = None):
     """Command to visualize a Flow as Directed Acyclical Graph
 
     Examples:
-        python -m flowrunner dag /my_path/to/flow_file.py
+        python -m flowrunner display /my_path/to/flow_file.py
 
     Args:
         path: A string value of path to save flow in. Defaults to current directory
