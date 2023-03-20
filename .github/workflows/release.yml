@@ -1,7 +1,6 @@
 name: "Release to PyPI"
 
 on: workflow_dispatch # has to be triggered manually only
-branches: [ main ] # only with main branch
 
 jobs:
   build:
