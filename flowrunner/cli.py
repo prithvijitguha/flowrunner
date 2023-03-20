@@ -139,8 +139,7 @@ def _read_python_file(file_path: str) -> BaseFlow:
 @click.option("--path")
 @click.argument("filepath")
 def dag(filepath: str, path: str = None):
-    """Command to create a Flowrunner Directed Acyclical Graph in html format
-    based on a Flow python file
+    """Command to visualize a Flow as Directed Acyclical Graph
 
     Examples:
         python -m flowrunner dag /my_path/to/flow_file.py
