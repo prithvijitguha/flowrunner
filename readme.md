@@ -66,7 +66,7 @@ $ python -m flowrunner run example.py
 output of flow is: 7
 ```
 
-Or in a notebook/script like this: 
+Or in a notebook/script like this:
 
 ```python
 ExampleFlow.run()
@@ -79,13 +79,13 @@ ExampleFlow.run()
 ExampleFlow().display()
 ```
 
-Your output will look like this. 
+Your output will look like this.
 
 ![image](https://user-images.githubusercontent.com/71138854/226654270-fb4ed128-e6d4-45cf-872c-03a6ad6b8c38.png)
 
-Or can be run in cli like this: 
+Or can be run in cli like this:
 
-```sh 
+```sh
 python -m flowrunner display example.py
 ```
 
@@ -126,9 +126,9 @@ method3
   Next=method4
 ```
 
-Or through CLI like below 
-```console 
-python -m flowrunner show example.py 
+Or through CLI like below
+```console
+python -m flowrunner show example.py
 ```
 
 ## Pandas Example
