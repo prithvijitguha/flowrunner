@@ -1,4 +1,4 @@
-name: "Release to PyPI"
+name: "Release to TestPyPI"
 
 on:
   workflow_dispatch # has to be triggered manually only
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-n-publish:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI
+    name: Build and publish Python 🐍 distributions 📦 to TestPyPI
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -28,8 +28,8 @@ jobs:
         --wheel
         --outdir dist/
         .
-    - name: Publish distribution 📦 to PyPI
-      if: startsWith(github.ref, 'refs/tags')
+    - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
