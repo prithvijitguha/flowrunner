@@ -8,6 +8,7 @@ GraphValidator: A class for validating any subclass of BaseFlow
 import base64
 import os
 from dataclasses import dataclass
+from typing import Tuple
 
 import click
 import matplotlib.pyplot as plt  # we have to import matplotlib so that we can use display()
@@ -42,7 +43,7 @@ class GraphValidator:
 
     graph: Graph
 
-    def validate_length_start_nodes(self) -> tuple[bool, str]:
+    def validate_length_start_nodes(self) -> Tuple[bool, str]:
         """Method to validate the length of start nodes.
 
         We make sure that there is atleast one start node
@@ -59,7 +60,7 @@ class GraphValidator:
             return (False, "No start nodes present, please specify with '@start'")
         return (True, "Validated number of start nodes")
 
-    def validate_start_next_nodes(self) -> tuple[bool, str]:
+    def validate_start_next_nodes(self) -> Tuple[bool, str]:
         """Method to check that the start nodes specified are valid.
 
         We make sure that each of the nodes specified has a next
@@ -81,7 +82,7 @@ class GraphValidator:
             return (False, f"Nodes {bad_start_nodes} do not have next")
         return (True, "Validated start nodes 'next' values")
 
-    def validate_length_middle_nodes(self) -> tuple[bool, str]:
+    def validate_length_middle_nodes(self) -> Tuple[bool, str]:
         """Method to validate the length of middle nodes.
 
         We make sure that there is atleast one start node
@@ -101,7 +102,7 @@ class GraphValidator:
             )
         return (True, "Validate number of middle_nodes")
 
-    def validate_middle_next_nodes(self) -> tuple[bool, str]:
+    def validate_middle_next_nodes(self) -> Tuple[bool, str]:
         """Method to check that the middle nodes specified are valid.
 
         We make sure that each of the nodes specified has a next
@@ -126,7 +127,7 @@ class GraphValidator:
             return (False, f"Nodes {bad_middle_nodes} do not have next")
         return (True, "Validated middle_nodes 'next' values")
 
-    def validate_length_end_nodes(self) -> tuple[bool, str]:
+    def validate_length_end_nodes(self) -> Tuple[bool, str]:
         """Method to validate the length of end nodes.
 
         We make sure that there is atleast one end node
