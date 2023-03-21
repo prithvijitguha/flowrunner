@@ -70,15 +70,54 @@ output of flow is: 7
 ## Visualize Flow as DAG(Directed Acyclical Graph)
 
 ```python
-ExamplePandas().display()
+ExampleFlow().display()
 ```
+
+![image](https://user-images.githubusercontent.com/71138854/226654270-fb4ed128-e6d4-45cf-872c-03a6ad6b8c38.png)
 
 ## Show your Flow
 
 ```python
-ExamplePandas().show()
+ExampleFlow().show()
 ```
 
+```console-session
+
+
+   2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] INFO Found flow ExampleFlow
+   2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] DEBUG Validating flow for ExampleFlow
+   ✅ Validated number of start nodes
+   ✅ Validated start nodes 'next' values
+   ✅ Validate number of middle_nodes
+   ✅ Validated middle_nodes 'next' values
+   ✅ Validated end nodes
+   ✅ Validated start nodes 'next' values
+   2023-03-08 22:35:24 LAPTOP  flowrunner.system.logger[12692] DEBUG Show flow for ExampleFlow
+   method1
+
+   ?
+      Next=method2, method3
+
+
+   method2
+
+   ?
+      Next=method4
+
+
+   method3
+
+   ?
+      Next=method4
+
+
+   method4
+
+   ?
+      Next=
+
+
+```
 
 
 ## Pandas Example
@@ -155,6 +194,7 @@ class ExamplePandas(BaseFlow):
 ```
 
 
+![image](https://user-images.githubusercontent.com/71138854/226653878-104a4fc1-63ed-4ff1-bf4d-ff86da2c2b50.png)
 
 
 ## Documentation
