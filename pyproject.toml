@@ -9,7 +9,7 @@ authors = [
     {name = "Prithvijit Guha", email = "prithvijit_guha2@hotmail.com"},
 ]
 
-version = "0.0.9"
+version = "0.1.0"
 
 
 description = "FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows"
