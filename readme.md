@@ -65,6 +65,11 @@ You can run the flow with the following command
 $ python -m flowrunner run example.py
 output of flow is: 7
 ```
+Or in a notebook/script like this: 
+
+```python
+ExampleFlow.run()
+```
 
 
 ## Visualize Flow as DAG(Directed Acyclical Graph)
@@ -73,7 +78,17 @@ output of flow is: 7
 ExampleFlow().display()
 ```
 
+Your output will look like this. 
+
 ![image](https://user-images.githubusercontent.com/71138854/226654270-fb4ed128-e6d4-45cf-872c-03a6ad6b8c38.png)
+
+
+```sh 
+python -m flowrunner display example.py
+```
+
+
+For CLI usage we create a file called `exampleflow.html` in the current directory with the same output
 
 ## Show your Flow
 
@@ -81,44 +96,38 @@ ExampleFlow().display()
 ExampleFlow().show()
 ```
 
-```console-session
+```console
+2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] INFO Found flow ExampleFlow
+2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] DEBUG Validating flow for ExampleFlow
+✅ Validated number of start nodes
+✅ Validated start nodes 'next' values
+✅ Validate number of middle_nodes
+✅ Validated middle_nodes 'next' values
+✅ Validated end nodes
+✅ Validated start nodes 'next' values
+2023-03-08 22:35:24 LAPTOP  flowrunner.system.logger[12692] DEBUG Show flow for ExampleFlow
+method1
+
+?
+  Next=method2, method3
 
 
-   2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] INFO Found flow ExampleFlow
-   2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] DEBUG Validating flow for ExampleFlow
-   ✅ Validated number of start nodes
-   ✅ Validated start nodes 'next' values
-   ✅ Validate number of middle_nodes
-   ✅ Validated middle_nodes 'next' values
-   ✅ Validated end nodes
-   ✅ Validated start nodes 'next' values
-   2023-03-08 22:35:24 LAPTOP  flowrunner.system.logger[12692] DEBUG Show flow for ExampleFlow
-   method1
+method2
 
-   ?
-      Next=method2, method3
+?
+  Next=method4
 
 
-   method2
+method3
 
-   ?
-      Next=method4
-
-
-   method3
-
-   ?
-      Next=method4
-
-
-   method4
-
-   ?
-      Next=
-
-
+?
+  Next=method4
 ```
 
+Or through CLI like below 
+```console 
+python -m flowrunner show example.py 
+```
 
 ## Pandas Example
 
