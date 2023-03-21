@@ -9,7 +9,8 @@ authors = [
     {name = "Prithvijit Guha", email = "prithvijit_guha2@hotmail.com"},
 ]
 
-version = "0.0.0"
+version = "0.1.0"
+
 
 description = "FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows"
 readme = "readme.md"
@@ -17,11 +18,10 @@ requires-python = ">=3.8"
 keywords = ["Data Engineering", "Data Science"]
 license = {file = "LICENSE"}
 classifiers = [
-    "Framework :: flowrunner",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9:",
-    "Topic :: Scientific/Engineering"
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Scientific/Engineering',
 ]
 dependencies = [
     'requests',

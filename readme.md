@@ -66,20 +66,69 @@ $ python -m flowrunner run example.py
 output of flow is: 7
 ```
 
+Or in a notebook/script like this:
 
-## Display your flow
+```python
+ExampleFlow.run()
+```
+
+
+## Visualize Flow as DAG(Directed Acyclical Graph)
 
 ```python
 ExampleFlow().display()
 ```
 
-```mermaid
+Your output will look like this.
 
-graph TD;
-    method1(method1) --> method2(method2);
-    method1(method1) --> method3(method3);
-    method2(method2) --> method4(method4)
-    method3(method3) --> method4(method4)
+![image](https://user-images.githubusercontent.com/71138854/226654270-fb4ed128-e6d4-45cf-872c-03a6ad6b8c38.png)
+
+Or can be run in cli like this:
+
+```sh
+python -m flowrunner display example.py
+```
+
+
+For CLI usage we create a file called `exampleflow.html` in the current directory with the same output
+
+## Show your Flow
+
+```python
+ExampleFlow().show()
+```
+
+```console
+2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] INFO Found flow ExampleFlow
+2023-03-08 22:35:24 LAPTOP flowrunner.system.logger[12692] DEBUG Validating flow for ExampleFlow
+✅ Validated number of start nodes
+✅ Validated start nodes 'next' values
+✅ Validate number of middle_nodes
+✅ Validated middle_nodes 'next' values
+✅ Validated end nodes
+✅ Validated start nodes 'next' values
+2023-03-08 22:35:24 LAPTOP  flowrunner.system.logger[12692] DEBUG Show flow for ExampleFlow
+method1
+
+?
+  Next=method2, method3
+
+
+method2
+
+?
+  Next=method4
+
+
+method3
+
+?
+  Next=method4
+```
+
+Or through CLI like below
+```console
+python -m flowrunner show example.py
 ```
 
 ## Pandas Example
@@ -155,23 +204,9 @@ class ExamplePandas(BaseFlow):
         return self.final_df
 ```
 
-Visualize your dag
 
-```python
+![image](https://user-images.githubusercontent.com/71138854/226653878-104a4fc1-63ed-4ff1-bf4d-ff86da2c2b50.png)
 
-ExamplePandas().display()
-```
-
-
-```mermaid
-    graph TD;
-        create_data(create_data) --> transformation_function_1(transformation_function_1);
-        create_data(create_data) --> transformation_function_2(transformation_function_2);
-        transformation_function_1(transformation_function_1) --> append_data(append_data);
-        transformation_function_2(transformation_function_2) --> append_data(append_data);
-        append_data(append_data) --> show_data(show_data);
-
-```
 
 ## Documentation
 Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
