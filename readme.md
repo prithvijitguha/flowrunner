@@ -65,6 +65,7 @@ You can run the flow with the following command
 $ python -m flowrunner run example.py
 output of flow is: 7
 ```
+
 Or in a notebook/script like this: 
 
 ```python
@@ -82,6 +83,7 @@ Your output will look like this.
 
 ![image](https://user-images.githubusercontent.com/71138854/226654270-fb4ed128-e6d4-45cf-872c-03a6ad6b8c38.png)
 
+Or can be run in cli like this: 
 
 ```sh 
 python -m flowrunner display example.py
