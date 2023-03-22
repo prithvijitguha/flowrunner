@@ -45,6 +45,65 @@ def expected_js_string_tuple():
     return (js_string, js_string2)
 
 
+
+@pytest.fixture(scope="module")
+def expected_descriptive_js_string():
+    """Fixture for an example of pandas descriptive string"""
+    expected_js_descriptive = '''
+    graph TD;
+    subgraph create-data
+    create_data(create_data) ~~~ create_data_description[["""
+    This method we create the dataset we are going use. In real use cases,
+    you'll have to read from a source (csv, parquet, etc)
+
+    For this example we create two dataframes for students ranked by marked scored
+    for when they attempted the example on 1st January 2023 and 12th March 2023
+
+    After creating the dataset we pass it to the next methods
+
+    - transformation_function_1
+    - transformation_function_2"""]];
+    end
+
+    subgraph transformation-function-1
+    transformation_function_1(transformation_function_1) ~~~ transformation_function_1_description[["""
+    Here we add a snapshot_date to the input dataframe of 2023-03-12
+    """]];
+    end
+
+    subgraph transformation-function-2
+    transformation_function_2(transformation_function_2) ~~~ transformation_function_2_description[["""
+    Here we add a snapshot_date to the input dataframe of 2023-01-01
+    """]];
+    end
+
+    subgraph append-data
+    append_data(append_data) ~~~ append_data_description[["""
+    Here we append the two dataframe together
+    """]];
+    end
+
+    subgraph show-data
+    show_data_description[["""
+    Here we show the new final dataframe of aggregated data. However in real use cases. It would
+    be more likely to write the data to some final layer/format
+    """]]
+    end
+
+
+    transformation_function_1_description ==> append_data(append_data);
+    transformation_function_2_description ==> append_data(append_data);
+
+    create_data_description ==> transformation_function_1(transformation_function_1)
+    create_data_description ==> transformation_function_2(transformation_function_2)
+
+    append_data_description==>show_data(show_data);
+
+    show_data ==> show_data_description
+    '''
+    return expected_js_descriptive
+
+
 class BadFlowExample(BaseFlow):
     """Bad Example of flow, there are missing next parameters"""
 
@@ -207,3 +266,15 @@ def test_display():
     that asserts its output as well"""
     flow_instance = ExamplePandas()
     DAGGenerator().display(flow_instance)
+
+
+
+def test_create_descriptive_dag(expected_descriptive_js_string):
+    """Test to check the functionality of descriptive dag
+    which has a subgraph and description"""
+    flow_instance = ExamplePandas()
+    actual_descriptive_js_string = DAGGenerator()._create_descriptive_dag(flow_instance)
+    assert (
+        actual_descriptive_js_string.strip()
+        == expected_descriptive_js_string.strip()  # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+    )

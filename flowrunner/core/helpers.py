@@ -269,6 +269,16 @@ class DAGGenerator:
 
         We use subgraphs to enclose a function and its accompanying description in them
         """
+        # base mermaid js string start
+        # we iterate over the graph levels
+            # subgraph name will be the node name replacing underscores with -
+            # node.name(node.name) += ~~~ node.docstring() or None
+            # end
+            # node.docstring() or node.name ==> next_node
+            # add this edge string to main string
+
+        # return the mermaid js string
+
         raise NotImplementedError
 
     @classmethod
