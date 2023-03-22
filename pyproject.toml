@@ -147,6 +147,11 @@ ignore-paths = [
     "^examples/.*$",
     "^docs/source/.*$",
 ]
+ignored-modules=[
+    "pandas",
+    "pytest"
+]
+
 
 [tool.pylint.format]
 max-line-length=145
