@@ -19,7 +19,15 @@ Getting Started
 Installing FlowRunner
 --------------------------
 
-Currently FlowRunner is only available through source
+Currently FlowRunner is available through PyPI
+
+.. code-block:: powershell
+
+   pip install flowrunner
+
+
+To install the latest development version
+
 
 .. code-block:: powershell
 
