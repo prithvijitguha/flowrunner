@@ -269,6 +269,13 @@ class DAGGenerator:
         """This method is used to create a more descriptive graph from a Flow instance
 
         We use subgraphs to enclose a function and its accompanying description in them
+
+        Args:
+            flow_instance(BaseFlow): An instance of subclass of BaseFlow
+            descriptive(bool): A bool value to add description to DAG display, defaults to True
+
+        Returns:
+            mermaid_js_string(str): A string value of mermaid js string
         """
         # base mermaid js string start
         graph = flow_instance.graph  # get the graph attribute which is Graph object
@@ -304,7 +311,7 @@ class DAGGenerator:
         return mermaid_js_string
 
     @classmethod
-    def dag(cls, flow_instance, save_file: bool = False, path: str = None) -> str:
+    def dag(cls, flow_instance, save_file: bool = False, path: str = None, description: bool= True) -> str:
         """Class method to generate DAG from Flow in the form of html output
 
         We use the Flow class to generate a flowchart and return the html content. This method can
@@ -313,11 +320,16 @@ class DAGGenerator:
         Args:
             flow_instance: An instance of BaseFlow subclass object
             save_file: Bool value to save file, defaults to False
+            path: A path to save file
+            description: Bool value of saving description of class
 
         Returns:
             content: The html data containing the flow diagram
         """
-        mermaid_js_string = cls._create_dag(flow_instance=flow_instance)
+        if description:
+            mermaid_js_string = cls._create_descriptive_dag(flow_instance=flow_instance)
+        else:
+            mermaid_js_string = cls._create_dag(flow_instance=flow_instance)
 
         root = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(root, "templates")
@@ -352,14 +364,15 @@ class DAGGenerator:
         return content
 
     @classmethod
-    def display(cls, flow_instance) -> None:
+    def display(cls, flow_instance, description:bool =False) -> None:
         """Class method to display the DAG of the Flow
 
         This method only works in IPython style notebooks. Does not work in script
         This method displays the flowchart of the Flow based the Flow class itself.
 
         Args
-            None
+            flow_instance: An instance of subclass of BaseFlow
+            description: A bool value of descriptive, descriptive on adds docstring to DAG
 
         Returns:
             None: display the flowchart of the Flow
@@ -371,7 +384,7 @@ class DAGGenerator:
         # graph LR;
         #   A--> B & C & D;
         # """"
-        graph = cls._create_dag(flow_instance=flow_instance)
+        graph = cls._create_dag(flow_instance=flow_instance, description=description)
         graphbytes = graph.encode("ascii")
         base64_bytes = base64.b64encode(graphbytes)
         base64_string = base64_bytes.decode("ascii")

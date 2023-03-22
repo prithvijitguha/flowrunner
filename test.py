@@ -27,7 +27,7 @@ class ExampleFlow(BaseFlow):
 
 example_flow = ExampleFlow()
 
-graph = DAGGenerator()._create_descriptive_dag(example_flow)
+graph = DAGGenerator()._create_descriptive_dag(example_flow, descriptive=False)
 
 
 print(graph)

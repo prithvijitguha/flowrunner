@@ -137,8 +137,9 @@ def _read_python_file(file_path: str) -> BaseFlow:
 
 @cli.command()
 @click.option("--path")
+@click.option("--description", default=True)
 @click.argument("filepath")
-def display(filepath: str, path: str = None):
+def display(filepath: str, path: str = None, description:bool = True):
     """Command to visualize a Flow as Directed Acyclical Graph
 
     Examples:
@@ -153,7 +154,7 @@ def display(filepath: str, path: str = None):
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
         logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
-        flow_class().dag(save_file=True, path=path) # we keep save file as True, assumption being if we are running through cli then we are going to save
+        flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
 
 
 if __name__ == "__main__":

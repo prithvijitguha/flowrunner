@@ -119,7 +119,7 @@ class BaseFlow:
         """
         return DAGGenerator().display(flow_instance=self)
 
-    def dag(self, save_file: bool = False, path: str = None):
+    def dag(self, save_file: bool = False, path: str = None, description: bool = True):
         """Method to generate html flowchart for Flow
 
         We first run a validation check without raising an error and do not show the output. Then
@@ -133,7 +133,7 @@ class BaseFlow:
             content: HTMl data in the form of string
         """
         return DAGGenerator().dag(
-            flow_instance=self, save_file=save_file, path=path
+            flow_instance=self, save_file=save_file, path=path, description=description
         )
 
 

@@ -18,8 +18,9 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
 @pytest.fixture(scope="module")
 def expected_html_content():
-    with open("tests/test_flowrunner/core/examplepandas.html") as f:
-        return f.readlines()
+    """Expected html output for dags"""
+    with open("tests/test_flowrunner/core/examplepandas.html", encoding="utf-8") as html_output_file:
+        return html_output_file.readlines()
 
 
 @pytest.fixture(scope="module")
@@ -76,6 +77,40 @@ def expected_string_descriptive_output():
     """
 
     return expected_js_descriptive
+
+
+
+@pytest.fixture(scope="module")
+def expected_string_descriptive_output_false():
+    """Fixture for an example of pandas descriptive string"""
+    expected_js_descriptive_false = """
+    graph TD;
+    subgraph Step: method1;
+    method1(method1);
+    end;
+
+    method1_description ==> method2;
+
+    subgraph Step: method1;
+    method1(method1);
+    end;
+
+    method1 ==> method3;
+
+    subgraph Step: method2;
+    method2(method2);
+    end;
+
+    method2 ==> method4;
+
+    subgraph Step: method2;
+    method3(method3);
+    end;
+
+    method3 ==> method4;
+    """
+
+    return expected_js_descriptive_false
 
 class DescriptionExampleFlow(BaseFlow):
     @start
@@ -264,14 +299,25 @@ def test_create_descriptive_dag(expected_string_descriptive_output):
     flow_instance = DescriptionExampleFlow()
     actual_descriptive_js_string = DAGGenerator()._create_descriptive_dag(flow_instance)
 
-    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
-
-    expected_string_descriptive_output
-
-
     for actual_line, expected_line in zip(
         actual_descriptive_js_string.strip().split(),
         expected_string_descriptive_output.strip().split(),
 
+    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
     ):
+        pytest.approx(actual_line, expected_line)
+
+
+def test_create_descriptive_dag_false(expected_string_descriptive_output_false):
+    """Test to check the functionality of descriptive dag
+    which has a subgraph and description"""
+    flow_instance = DescriptionExampleFlow()
+    actual_descriptive_js_string = DAGGenerator()._create_descriptive_dag(flow_instance=flow_instance, descriptive=False)
+
+
+    for actual_line, expected_line in zip(
+        actual_descriptive_js_string.strip().split(),
+        expected_string_descriptive_output_false.strip().split(),
+
+    ):# there is a bug in the FlowRunner class where order between functions at same level is misplaced
         pytest.approx(actual_line, expected_line)
