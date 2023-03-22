@@ -1,0 +1,76 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+<meta name="description" content="Diagram showing the FlowChart for ExamplePandas"/>
+<style>
+  .mermaid {
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+</style>
+</head>
+<title>Tree Example</title>
+<body>
+<div class="mermaid">
+graph TD;
+    subgraph create-data
+    create_data(create_data) ~~~ create_data_description[["""
+    This method we create the dataset we are going use. In real use cases,
+    you'll have to read from a source (csv, parquet, etc)
+
+    For this example we create two dataframes for students ranked by marked scored
+    for when they attempted the example on 1st January 2023 and 12th March 2023
+
+    After creating the dataset we pass it to the next methods
+
+    - transformation_function_1
+    - transformation_function_2"""]];
+    end
+
+    subgraph transformation-function-1
+    transformation_function_1(transformation_function_1) ~~~ transformation_function_1_description[["""
+    Here we add a snapshot_date to the input dataframe of 2023-03-12
+    """]];
+    end
+
+    subgraph transformation-function-2
+    transformation_function_2(transformation_function_2) ~~~ transformation_function_2_description[["""
+    Here we add a snapshot_date to the input dataframe of 2023-01-01
+    """]];
+    end
+
+    subgraph append-data
+    append_data(append_data) ~~~ append_data_description[["""
+    Here we append the two dataframe together
+    """]];
+    end
+
+    subgraph show-data
+    show_data_description[["""
+    Here we show the new final dataframe of aggregated data. However in real use cases. It would
+    be more likely to write the data to some final layer/format
+    """]]
+    end
+
+
+    transformation_function_1_description ==> append_data(append_data);
+    transformation_function_2_description ==> append_data(append_data);
+
+    create_data_description ==> transformation_function_1(transformation_function_1)
+    create_data_description ==> transformation_function_2(transformation_function_2)
+
+    append_data_description==>show_data(show_data);
+
+    show_data ==> show_data_description
+
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+</script>
+  </body>
+</html>
+</body>
+</html>

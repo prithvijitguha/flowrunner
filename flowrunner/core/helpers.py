@@ -262,6 +262,15 @@ class DAGGenerator:
 
         return mermaid_js_string
 
+
+    @classmethod
+    def _create_descriptive_dag(cls, flowinstance):
+        """This method is used to create a more descriptive graph from a Flow instance
+
+        We use subgraphs to enclose a function and its accompanying description in them
+        """
+        raise NotImplementedError
+
     @classmethod
     def dag(cls, flow_instance, save_file: bool = False, path: str = None) -> str:
         """Class method to generate DAG from Flow in the form of html output
