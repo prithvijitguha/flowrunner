@@ -19,7 +19,15 @@ Getting Started
 Installing FlowRunner
 --------------------------
 
-Currently FlowRunner is only available through source
+Currently FlowRunner is available through PyPI
+
+.. code-block:: powershell
+
+   pip install flowrunner
+
+
+To install the latest development version
+
 
 .. code-block:: powershell
 
@@ -37,30 +45,9 @@ Create a file called ``example.py`` containing the below code. Make sure to ``cd
 contains ``example.py``
 
 
-.. code-block:: python
 
-   # example.py
-   from flowrunner import BaseFlow, step, start, end
-
-   class ExampleFlow(BaseFlow):
-      @start
-      @step(next=['method2', 'method3'])
-      def method1(self):
-         self.a = 1
-
-      @step(next=['method4'])
-      def method2(self):
-         self.a += 1
-
-      @step(next=['method4'])
-      def method3(self):
-         self.a += 2
-
-      @end
-      @step
-      def method4(self):
-         self.a += 3
-         print(self.a)
+.. literalinclude:: ../../examples/example.py
+   :language: python
 
 .. _getting_started.create_first_flow:
 

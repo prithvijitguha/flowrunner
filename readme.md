@@ -1,10 +1,11 @@
 # flowrunner: A lightweight Data Engineering/Science Flow package
 
-[![codecov](https://codecov.io/gh/prithvijitguha/FlowRunner/branch/main/graph/badge.svg?token=0B8X2WF0OA)](https://codecov.io/gh/prithvijitguha/FlowRunner)
+[![codecov](https://codecov.io/gh/prithvijitguha/FlowRunner/branch/main/graph/badge.svg?token=0B8X2WF0OA)](https://codecov.io/gh/prithvijitguha/FlowRunner)&nbsp;
 ![build](https://github.com/prithvijitguha/FlowRunner/actions/workflows/build.yml/badge.svg?branch=main)&nbsp;
 ![tests](https://github.com/prithvijitguha/FlowRunner/actions/workflows/tests.yml/badge.svg?branch=main)&nbsp;
 ![documentation](https://github.com/prithvijitguha/FlowRunner/actions/workflows/docs.yml/badge.svg?branch=main)&nbsp;
-[![Documentation Status](https://readthedocs.org/projects/flowrunner/badge/?version=latest)](https://flowrunner.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/flowrunner/badge/?version=latest)](https://flowrunner.readthedocs.io/en/latest/?badge=latest)&nbsp;
+[![Python 3.8](https://img.shields.io/badge/python-3.8-%2334D058.svg)](https://www.python.org/downloads/release/python-380/)&nbsp;
 [![Python 3.9](https://img.shields.io/badge/python-3.9-%2334D058.svg)](https://www.python.org/downloads/release/python-390/)&nbsp;
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)&nbsp;
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)&nbsp;
@@ -28,8 +29,14 @@ To install flowrunner, following commands will work
 Source code is hosted at https://github.com/prithvijitguha/flowRunner
 
 ```sh
-$ pip install git+https://github.com/prithvijitguha/flowRunner@main
+$ pip install flowrunner
 ```
+
+Or install from source
+```sh
+$ pip install git+https://github.com/prithvijitguha/flowrunner@main
+```
+
 
 ## Usage
 
@@ -203,6 +210,8 @@ class ExamplePandas(BaseFlow):
         print(self.final_df)
         return self.final_df
 ```
+
+Now when you run `ExamplePandas().display()` you get the following output
 
 
 ![image](https://user-images.githubusercontent.com/71138854/226653878-104a4fc1-63ed-4ff1-bf4d-ff86da2c2b50.png)
