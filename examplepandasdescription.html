@@ -14,6 +14,32 @@
 <title>Tree Example</title>
 <body>
 <div class="mermaid">
+  graph TD;
+  subgraph step-method1
+  method1(method1) ~~~ method1_description[[Testing the docstring]]
+  end
+  method1_description ==> method2
+
+  subgraph step-method1
+  method1(method1) ~~~ method1_description[[Testing the docstring]]
+  end
+  method1_description ==> method3
+
+  subgraph step-method3
+  method3(method3)
+  end
+  method3 ==> method4
+
+  subgraph step-method2
+  method2(method2)
+  end
+  method2 ==> method4
+
+
+
+</div>
+
+<div class="mermaid">
 graph TD;
     subgraph create-data
     create_data(create_data) ~~~ create_data_description[["""

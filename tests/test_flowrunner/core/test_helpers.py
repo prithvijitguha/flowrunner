@@ -51,57 +51,56 @@ def expected_descriptive_js_string():
     """Fixture for an example of pandas descriptive string"""
     expected_js_descriptive = '''
     graph TD;
-    subgraph create-data
-    create_data(create_data) ~~~ create_data_description[["""
-    This method we create the dataset we are going use. In real use cases,
-    you'll have to read from a source (csv, parquet, etc)
+    subgraph Step: method1;
+        method1(method1) ~~~ method1_description[[Testing the docstring]];
+    end;
 
-    For this example we create two dataframes for students ranked by marked scored
-    for when they attempted the example on 1st January 2023 and 12th March 2023
+    method1_description ==> method2;
 
-    After creating the dataset we pass it to the next methods
+    subgraph Step: method1;
+        method1(method1) ~~~ method1_description[[Testing the docstring]];
+    end;
 
-    - transformation_function_1
-    - transformation_function_2"""]];
-    end
+    method1_description ==> method3;
 
-    subgraph transformation-function-1
-    transformation_function_1(transformation_function_1) ~~~ transformation_function_1_description[["""
-    Here we add a snapshot_date to the input dataframe of 2023-03-12
-    """]];
-    end
+    subgraph Step: method3;
+        method3(method3);
+    end;
 
-    subgraph transformation-function-2
-    transformation_function_2(transformation_function_2) ~~~ transformation_function_2_description[["""
-    Here we add a snapshot_date to the input dataframe of 2023-01-01
-    """]];
-    end
+    method3 ==> method4;
 
-    subgraph append-data
-    append_data(append_data) ~~~ append_data_description[["""
-    Here we append the two dataframe together
-    """]];
-    end
+    subgraph Step: method2;
+        method2(method2);
+    end;
 
-    subgraph show-data
-    show_data_description[["""
-    Here we show the new final dataframe of aggregated data. However in real use cases. It would
-    be more likely to write the data to some final layer/format
-    """]]
-    end
-
-
-    transformation_function_1_description ==> append_data(append_data);
-    transformation_function_2_description ==> append_data(append_data);
-
-    create_data_description ==> transformation_function_1(transformation_function_1)
-    create_data_description ==> transformation_function_2(transformation_function_2)
-
-    append_data_description==>show_data(show_data);
-
-    show_data ==> show_data_description
+    method2 ==> method4;
     '''
     return expected_js_descriptive
+
+
+
+class DescriptionExampleFlow(BaseFlow):
+    @start
+    @step(next=["method2", "method3"])
+    def method1(self):
+        """Testing the docstring"""
+        self.a = 1
+
+    @step(next=["method4"])
+    def method2(self):
+        self.a += 1
+
+    @step(next=["method4"])
+    def method3(self):
+        self.a += 2
+
+    @end
+    @step
+    def method4(self):
+        self.a += 3
+        print(self.a)
+
+
 
 
 class BadFlowExample(BaseFlow):
@@ -272,8 +271,9 @@ def test_display():
 def test_create_descriptive_dag(expected_descriptive_js_string):
     """Test to check the functionality of descriptive dag
     which has a subgraph and description"""
-    flow_instance = ExamplePandas()
+    flow_instance = DescriptionExampleFlow()
     actual_descriptive_js_string = DAGGenerator()._create_descriptive_dag(flow_instance)
+    print(actual_descriptive_js_string)
     assert (
         actual_descriptive_js_string.strip()
         == expected_descriptive_js_string.strip()  # there is a bug in the FlowRunner class where order between functions at same level is misplaced

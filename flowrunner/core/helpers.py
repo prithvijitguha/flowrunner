@@ -2,6 +2,7 @@
 """Modules for any helpers for any base.py classes
 
 GraphValidator: A class for validating any subclass of BaseFlow
+DAGGenerator: A class for creating dags based on a subclass of BaseFlow
 """
 
 
@@ -264,22 +265,43 @@ class DAGGenerator:
 
 
     @classmethod
-    def _create_descriptive_dag(cls, flowinstance):
+    def _create_descriptive_dag(cls, flow_instance) -> str:
         """This method is used to create a more descriptive graph from a Flow instance
 
         We use subgraphs to enclose a function and its accompanying description in them
         """
         # base mermaid js string start
+        graph = flow_instance.graph  # get the graph attribute which is Graph object
+        mermaid_js_string = (
+            """graph TD;\n"""  # this will be passed to mermaid-js for rendering
+        )
+
         # we iterate over the graph levels
-            # subgraph name will be the node name replacing underscores with -
-            # node.name(node.name) += ~~~ node.docstring() or None
-            # end
-            # node.docstring() or node.name ==> next_node
-            # add this edge string to main string
+        for level in graph.levels:
+            # iterate over each node in level
+            for node in level:
+                for next_node in node.next: # iterate over the next of the node
+                    edge_subgraph = f"subgraph Step: {node.name.replace('_', '-')};\n" # subgraph name will be the node name replacing underscores with -
+                    # node.name(node.name) += ~~~ node.docstring() or None
+                    node_name_edge = f"   {node.name}({node.name})"
+                    if node.docstring: # if docstring is present we create an invisible link with `~~~` notation
+                        node_docstring_edge = f" ~~~ {node.name}_description[[{node.docstring}]];\n"
+                    else: #otherwise just skip to the next string
+                        node_docstring_edge = ";\n"
 
-        # return the mermaid js string
+                    end_subgraph = "end;\n\n" # end the subgraph
+                    # add the next edge connection node.docstring() or node.name ==> next_node
+                    if node.docstring: # if docstring is present then we assign that as the next connection
+                        next_node_edge = f"{node.name}_description ==> {next_node};\n\n"
+                    else: # otherwise the connection is direct from the node to the next
+                        next_node_edge = f"{node.name} ==> {next_node};\n\n"
 
-        raise NotImplementedError
+
+                    edge_string = edge_subgraph + node_name_edge + node_docstring_edge + end_subgraph + next_node_edge # put all the strings together
+
+                    mermaid_js_string += edge_string
+
+        return mermaid_js_string
 
     @classmethod
     def dag(cls, flow_instance, save_file: bool = False, path: str = None) -> str:
