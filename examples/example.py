@@ -6,6 +6,8 @@ class ExampleFlow(BaseFlow):
     @start
     @step(next=["method2", "method3"])
     def method1(self):
+        """Example of a method with a docstring which
+        will become description"""
         self.a = 1
 
     @step(next=["method4"])

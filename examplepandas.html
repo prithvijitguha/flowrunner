@@ -13,67 +13,32 @@
 </head>
 <title>Tree Example</title>
 <body>
+
 <div class="mermaid">
-graph TD;
-subgraph Step: create-data;
-   create_data(create_data) ~~~ create_data_description[[
-        This method we create the dataset we are going use. In real use cases,
-        you'll have to read from a source (csv, parquet, etc)
+  graph TD;
+  subgraph Step: method1;
+     method1(method1) ~~~ method1_description[[Testing the docstring]];
+  end;
 
-        For this example we create two dataframes for students ranked by marked scored
-        for when they attempted the example on 1st January 2023 and 12th March 2023
+  method1_description ==> method2;
 
-        After creating the dataset we pass it to the next methods
+  subgraph Step: method1;
+     method1(method1) ~~~ method1_description[[Testing the docstring]];
+  end;
 
-        - transformation_function_1
-        - transformation_function_2
-        ]];
-end;
+  method1_description ==> method3;
 
-create_data_description ==> transformation_function_1;
+  subgraph Step: method3;
+     method3(method3);
+  end;
 
-subgraph Step: create-data;
-   create_data(create_data) ~~~ create_data_description[[
-        This method we create the dataset we are going use. In real use cases,
-        you'll have to read from a source (csv, parquet, etc)
+  method3 ==> method4;
 
-        For this example we create two dataframes for students ranked by marked scored
-        for when they attempted the example on 1st January 2023 and 12th March 2023
+  subgraph Step: method2;
+     method2(method2);
+  end;
 
-        After creating the dataset we pass it to the next methods
-
-        - transformation_function_1
-        - transformation_function_2
-        ]];
-end;
-
-create_data_description ==> transformation_function_2;
-
-subgraph Step: transformation-function-1;
-   transformation_function_1(transformation_function_1) ~~~ transformation_function_1_description[[
-        Here we add a snapshot_date to the input dataframe of 2023-03-12
-        ]];
-end;
-
-transformation_function_1_description ==> append_data;
-
-subgraph Step: transformation-function-2;
-   transformation_function_2(transformation_function_2) ~~~ transformation_function_2_description[[
-        Here we add a snapshot_date to the input dataframe of 2023-01-01
-        ]];
-end;
-
-transformation_function_2_description ==> append_data;
-
-subgraph Step: append-data;
-   append_data(append_data) ~~~ append_data_description[[
-        Here we append the two dataframe together
-        ]];
-end;
-
-append_data_description ==> show_data;
-
-
+  method2 ==> method4;
 </div>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';

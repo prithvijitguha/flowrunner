@@ -283,6 +283,8 @@ class DAGGenerator:
             """graph TD;\n"""  # this will be passed to mermaid-js for rendering
         )
 
+
+
         # we iterate over the graph levels
         for level in graph.levels:
             # iterate over each node in level
@@ -292,7 +294,7 @@ class DAGGenerator:
                     # node.name(node.name) += ~~~ node.docstring() or None
                     node_name_edge = f"   {node.name}({node.name})"
                     if node.docstring: # if docstring is present we create an invisible link with `~~~` notation
-                        node_docstring_edge = f" ~~~ {node.name}_description[[{node.docstring}]];\n"
+                        node_docstring_edge = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'
                     else: #otherwise just skip to the next string
                         node_docstring_edge = ";\n"
 
@@ -307,6 +309,8 @@ class DAGGenerator:
                     edge_string = edge_subgraph + node_name_edge + node_docstring_edge + end_subgraph + next_node_edge # put all the strings together
 
                     mermaid_js_string += edge_string
+
+
 
         return mermaid_js_string
 
