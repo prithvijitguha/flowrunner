@@ -234,7 +234,7 @@ class DAGGenerator:
 
         Args:
             flow_instance(BaseFlow): An instance of subclass of BaseFlow
-            descriptive(bool): A bool value to add description to DAG display, defaults to True
+            description(bool): A bool value to add description to DAG display, defaults to True
 
         Returns:
             mermaid_js_string(str): A string value of mermaid js string
@@ -254,7 +254,7 @@ class DAGGenerator:
                 subgraph_string = 'subgraph ' # create the subgraph
                 subgraph_string += f'Step: {node.name};\n' # subgraph name
                 subgraph_string += f'{node.name}({node.name})' # add the actual node_name
-                if node.docstring and description: # if there is a docstring we that as an edge
+                if node.docstring and description: # if there is a docstring we that as an edge and if description is set to True
                     subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
                     subgraph_edge = f'{node.name}_description' # keep track of the edge start
                     subgraph_string += subgraph_description
