@@ -269,10 +269,11 @@ def test_graph_validator_with_error(bad_flow_example, expectations):
 
 
 def test_dag_generator(expected_js_non_descriptive):
-    """Function to test the DAGGenerator()._create_dag()
+    """Function to test the DAGGenerator()._create_descriptive_dag() with description
+    as false which will be non -descriptive
     We iterate line by line to find differences
     """
-    actual_js_non_descriptive_string = DAGGenerator()._create_dag(ExamplePandas())
+    actual_js_non_descriptive_string = DAGGenerator()._create_descriptive_dag(ExamplePandas(), description=False)
 
 
     for actual_line, expected_line in zip(
@@ -323,7 +324,7 @@ def test_choose_dag(expected_string_descriptive_output, expected_non_descriptive
     """Test to check if functionality of choosing dag
     works as expected"""
     flow_instance = DescriptionExampleFlow()
-    actual_descriptive_js_string =  DAGGenerator()._choose_dag(flow_instance)
+    actual_descriptive_js_string =  DAGGenerator()._create_descriptive_dag(flow_instance)
 
     for actual_line, expected_line in zip(
         actual_descriptive_js_string.strip().split(),
@@ -333,7 +334,7 @@ def test_choose_dag(expected_string_descriptive_output, expected_non_descriptive
     ):
         pytest.approx(actual_line, expected_line)
 
-    actual_non_descriptive_output = DAGGenerator()._choose_dag(flow_instance, description=False)
+    actual_non_descriptive_output = DAGGenerator()._create_descriptive_dag(flow_instance, description=False)
 
     for actual_line_non_descrip, expected_line_non_descrip in zip(
         actual_non_descriptive_output.strip().split(),

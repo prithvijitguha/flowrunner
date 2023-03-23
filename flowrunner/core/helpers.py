@@ -227,51 +227,7 @@ class DAGGenerator:
     """Class to flowrunner DAGs based on Flow"""
 
     @classmethod
-    def _create_dag(cls, flow_instance) -> str:
-        """Class method to create the base graph for mermaid js
-
-        We iterate over the Graph.levels to understand the order of iteration. Then
-        we find the 'next' of each to make the edge connections. The final string should look like:
-
-        Examples:
-            >>> FlowChartGenerator()._create_dag(flow_instance)
-            graph TD;
-                create_data(create_data)==>transformation_function_1(transformation_function_1)
-                create_data(create_data)==>transformation_function_2(transformation_function_2)
-                transformation_function_2(transformation_function_2)==>append_data(append_data)
-                transformation_function_1(transformation_function_1)==>append_data(append_data)
-                append_data(append_data)==>show_data(show_data)
-
-        Args:
-            flow_instance: An instance of BaseFlow
-
-        Returns:
-            mermaid_js_string: A string render of the javascript string for mermaid js
-        """
-        graph = flow_instance.graph  # get the graph attribute which is Graph object
-        mermaid_js_string = (
-            """graph TD;\n"""  # this will be passed to mermaid-js for rendering
-        )
-        # iterate through graph levels
-        for level in graph.levels:
-            # iterate through each node in the list of levels [node1, node2]
-            for node in level:  # each node is an actual Node object
-                subgraph_string = f"subgraph Step: {node.name}\n"# add subgraph
-                subgraph_string += f'{node.name}({node.name});\n'# add end subgraph
-                subgraph_string += "end\n"
-                for next_node in node.next:
-                    # edge string represents a connection in mermaid js
-                    edge_string = f"    {node.name}({node.name})==>{next_node}({next_node});\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
-
-                    subgraph_string += edge_string
-
-                mermaid_js_string += subgraph_string
-
-        return mermaid_js_string
-
-
-    @classmethod
-    def _create_descriptive_dag(cls, flow_instance) -> str:
+    def _create_descriptive_dag(cls, flow_instance, description=True) -> str:
         """This method is used to create a more descriptive graph from a Flow instance
 
         We use subgraphs to enclose a function and its accompanying description in them
@@ -298,7 +254,7 @@ class DAGGenerator:
                 subgraph_string = 'subgraph ' # create the subgraph
                 subgraph_string += f'Step: {node.name};\n' # subgraph name
                 subgraph_string += f'{node.name}({node.name})' # add the actual node_name
-                if node.docstring: # if there is a docstring we that as an edge
+                if node.docstring and description: # if there is a docstring we that as an edge
                     subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
                     subgraph_edge = f'{node.name}_description' # keep track of the edge start
                     subgraph_string += subgraph_description
@@ -338,7 +294,7 @@ class DAGGenerator:
             content: The html data containing the flow diagram
         """
 
-        mermaid_js_string = cls._choose_dag(flow_instance=flow_instance, description=description)
+        mermaid_js_string = cls._create_descriptive_dag(flow_instance=flow_instance, description=description)
 
         root = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(root, "templates")
@@ -393,28 +349,8 @@ class DAGGenerator:
         # graph LR;
         #   A--> B & C & D;
         # """"
-        graph = cls._choose_dag(flow_instance=flow_instance, description=description)
+        graph = cls._create_descriptive_dag(flow_instance=flow_instance, description=description)
         graphbytes = graph.encode("ascii")
         base64_bytes = base64.b64encode(graphbytes)
         base64_string = base64_bytes.decode("ascii")
         display(Image(url="https://mermaid.ink/img/" + base64_string))
-
-
-    @classmethod
-    def _choose_dag(cls, flow_instance, description:bool=True):
-        """
-        A factory method to choose which dag type to use, by default we use the descriptive dag
-
-        Its better to write as a seperate method than to rewrite this logic again and again
-        at seperate points
-
-        Args:
-            flow_instance: An instance of a subclass of BaseFlow
-            description: A bool value to choose between descriptive or non_descriptive_dag
-
-        Returns:
-            None: This will method will choose the correct dag creation method to use
-        """
-        if description:
-            return cls._create_descriptive_dag(flow_instance)
-        return cls._create_dag(flow_instance)
