@@ -297,7 +297,8 @@ class DAGGenerator:
                     subgraph_edge = f'{node.name}_description' # keep track of the edge start
                     subgraph_string += subgraph_description
                 else:
-                    subgraph_string += f'\n{node.name}\n'
+                    #subgraph_string += f'\n{node.name}\n'
+                    subgraph_string += '\n'
                     subgraph_edge =  f'{node.name}'# if there is no docstring then the ending node is made as the edge
                 subgraph_string += 'end;\n' # end the subgraph
                 for next_node in node.next: # iterate over the next of the node

@@ -59,17 +59,14 @@ def expected_string_descriptive_output():
     method1_description ==> method3(method3);
     subgraph Step: method3;
     method3(method3)
-    method3
     end;
     method3 ==> method4(method4);
     subgraph Step: method2;
     method2(method2)
-    method2
     end;
     method2 ==> method4(method4);
     subgraph Step: method4;
     method4(method4)
-    method4
     end;
     '''
     return expected_js_descriptive
