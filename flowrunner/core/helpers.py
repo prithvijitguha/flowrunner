@@ -256,10 +256,16 @@ class DAGGenerator:
         for level in graph.levels:
             # iterate through each node in the list of levels [node1, node2]
             for node in level:  # each node is an actual Node object
+                subgraph_string = f"subgraph Step: {node.name}\n"# add subgraph
+                subgraph_string += f'{node.name}({node.name});\n'# add end subgraph
+                subgraph_string += "end\n"
                 for next_node in node.next:
                     # edge string represents a connection in mermaid js
                     edge_string = f"    {node.name}({node.name})==>{next_node}({next_node});\n"  # this will look create_data(create_data)==>transformation_function_2(transformation_function_2)
-                    mermaid_js_string += edge_string
+
+                    subgraph_string += edge_string
+
+                mermaid_js_string += subgraph_string
 
         return mermaid_js_string
 

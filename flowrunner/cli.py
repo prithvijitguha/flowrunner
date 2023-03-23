@@ -147,6 +147,7 @@ def display(filepath: str, path: str = None, description:bool = True):
 
     Args:
         path: A string value of path to save flow in. Defaults to current directory
+        description: Optional argument for descriptive or non descriptive dag, default is descriptive
 
     Returns:
         Runs the Flow

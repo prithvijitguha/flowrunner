@@ -24,26 +24,33 @@ def expected_html_content():
 
 
 @pytest.fixture(scope="module")
-def expected_js_string_tuple():
+def expected_js_non_descriptive():
     """Fixture to test the structure of js string"""
     js_string = """
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1);
-    create_data(create_data)==>transformation_function_2(transformation_function_2);
-    transformation_function_2(transformation_function_2)==>append_data(append_data);
-    transformation_function_1(transformation_function_1)==>append_data(append_data);
-    append_data(append_data)==>show_data(show_data);
+    subgraph Step: create_data
+    create_data(create_data);
+    end
+        create_data(create_data)==>transformation_function_1(transformation_function_1);
+        create_data(create_data)==>transformation_function_2(transformation_function_2);
+    subgraph Step: transformation_function_2
+    transformation_function_2(transformation_function_2);
+    end
+        transformation_function_2(transformation_function_2)==>append_data(append_data);
+    subgraph Step: transformation_function_1
+    transformation_function_1(transformation_function_1);
+    end
+        transformation_function_1(transformation_function_1)==>append_data(append_data);
+    subgraph Step: append_data
+    append_data(append_data);
+    end
+        append_data(append_data)==>show_data(show_data);
+    subgraph Step: show_data
+    show_data(show_data);
+    end
     """
 
-    js_string2 = """
-    graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1);
-    create_data(create_data)==>transformation_function_2(transformation_function_2);
-    transformation_function_1(transformation_function_1)==>append_data(append_data);
-    transformation_function_2(transformation_function_2)==>append_data(append_data);
-    append_data(append_data)==>show_data(show_data);
-    """
-    return (js_string, js_string2)
+    return js_string
 
 
 @pytest.fixture(scope="module")
@@ -261,20 +268,19 @@ def test_graph_validator_with_error(bad_flow_example, expectations):
         )
 
 
-def test_dag_generator(expected_js_string_tuple):
+def test_dag_generator(expected_js_non_descriptive):
     """Function to test the DAGGenerator()._create_dag()
     We iterate line by line to find differences
     """
-    expected_js_string1 = expected_js_string_tuple[0]
-    expected_js_string2 = expected_js_string_tuple[1]
-    actual_js_string = DAGGenerator()._create_dag(ExamplePandas())
-    assert (
-        actual_js_string.strip()
-        == expected_js_string1.strip()  # there is a bug in the FlowRunner class where order between functions at same level is misplaced
-        or actual_js_string.strip()
-        == expected_js_string2.strip()  # for this we need to add an OR condition so we account for both conditions
-    )
+    actual_js_non_descriptive_string = DAGGenerator()._create_dag(ExamplePandas())
 
+
+    for actual_line, expected_line in zip(
+        actual_js_non_descriptive_string.split("\n"), expected_js_non_descriptive.split("\n")
+    ):
+        pytest.approx(
+            actual_line.strip(), expected_line.strip()
+        )
 
 def test_dag(expected_html_content):
     """Function to test the DAGGenerator().dag() method"""
