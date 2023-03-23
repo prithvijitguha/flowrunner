@@ -9,10 +9,10 @@ authors = [
     {name = "Prithvijit Guha", email = "prithvijit_guha2@hotmail.com"},
 ]
 
-version = "0.1.0"
+version = "0.2.0"
 
 
-description = "FlowRunner is a lightweight package to organize and represent Data Engineering/Science workflows"
+description = "Flowrunner is a lightweight package to organize and represent Data Engineering/Science workflows"
 readme = "readme.md"
 requires-python = ">=3.8"
 keywords = ["Data Engineering", "Data Science"]
@@ -147,6 +147,11 @@ ignore-paths = [
     "^examples/.*$",
     "^docs/source/.*$",
 ]
+ignored-modules=[
+    "pandas",
+    "pytest"
+]
+
 
 [tool.pylint.format]
 max-line-length=145

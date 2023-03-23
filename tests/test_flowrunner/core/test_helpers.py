@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""Module for flowrunner.core.helpers module
+
+These are all functions that help in validation, dag generation, etc.
+"""
 from contextlib import nullcontext as does_not_raise
 
 import pandas as pd
@@ -11,38 +15,135 @@ from flowrunner.runner.flow import BaseFlow
 from flowrunner.system.exceptions import InvalidFlowException
 from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
-# TODO: Need to add more validation failures based on each method in validation suite
-# TODO: DAGGenerator().display() only checks if it works, if needs to also assert some output so we can verify works as required
-# TODO: FlowChartGenerate().dag() sometimes changes orders of SAME level nodes, need to find out Why?
-
 
 @pytest.fixture(scope="module")
 def expected_html_content():
-    with open("tests/test_flowrunner/core/examplepandas.html") as f:
-        return f.readlines()
+    """Expected html output for dags"""
+    with open("tests/test_flowrunner/core/examplepandas.html", encoding="utf-8") as html_output_file:
+        return html_output_file.readlines()
 
 
 @pytest.fixture(scope="module")
-def expected_js_string_tuple():
+def expected_js_non_descriptive():
     """Fixture to test the structure of js string"""
     js_string = """
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1);
-    create_data(create_data)==>transformation_function_2(transformation_function_2);
-    transformation_function_2(transformation_function_2)==>append_data(append_data);
-    transformation_function_1(transformation_function_1)==>append_data(append_data);
-    append_data(append_data)==>show_data(show_data);
+    subgraph Step: create_data
+    create_data(create_data);
+    end
+        create_data(create_data)==>transformation_function_1(transformation_function_1);
+        create_data(create_data)==>transformation_function_2(transformation_function_2);
+    subgraph Step: transformation_function_2
+    transformation_function_2(transformation_function_2);
+    end
+        transformation_function_2(transformation_function_2)==>append_data(append_data);
+    subgraph Step: transformation_function_1
+    transformation_function_1(transformation_function_1);
+    end
+        transformation_function_1(transformation_function_1)==>append_data(append_data);
+    subgraph Step: append_data
+    append_data(append_data);
+    end
+        append_data(append_data)==>show_data(show_data);
+    subgraph Step: show_data
+    show_data(show_data);
+    end
     """
 
-    js_string2 = """
+    return js_string
+
+
+@pytest.fixture(scope="module")
+def expected_string_descriptive_output():
+    """Fixture for an example of pandas descriptive string"""
+    expected_js_descriptive = '''
     graph TD;
-    create_data(create_data)==>transformation_function_1(transformation_function_1);
-    create_data(create_data)==>transformation_function_2(transformation_function_2);
-    transformation_function_1(transformation_function_1)==>append_data(append_data);
-    transformation_function_2(transformation_function_2)==>append_data(append_data);
-    append_data(append_data)==>show_data(show_data);
+    subgraph Step: method1;
+    method1(method1) ~~~ method1_description[["""Example of a method with a docstring which
+    will become description"""]];
+    end;
+    method1_description ==> method2(method2);
+    method1_description ==> method3(method3);
+    subgraph Step: method3;
+    method3(method3)
+    end;
+    method3 ==> method4(method4);
+    subgraph Step: method2;
+    method2(method2)
+    end;
+    method2 ==> method4(method4);
+    subgraph Step: method4;
+    method4(method4)
+    end;
+    '''
+    return expected_js_descriptive
+
+@pytest.fixture(scope="module")
+def expected_non_descriptive_string_output():
+    """Fixture for non descriptive output for
+    DescriptiveExampleFlow"""
+    non_descriptive_string = """
+    graph TD;
+    method1(method1)==>method2(method2);
+    method1(method1)==>method3(method3);
+    method2(method2)==>method4(method4);
+    method3(method3)==>method4(method4);
     """
-    return (js_string, js_string2)
+    return non_descriptive_string
+
+
+@pytest.fixture(scope="module")
+def expected_string_descriptive_output_false():
+    """Fixture for an example of pandas descriptive string"""
+    expected_js_descriptive_false = """
+    graph TD;
+    subgraph Step: method1;
+    method1(method1);
+    end;
+
+    method1_description ==> method2;
+
+    subgraph Step: method1;
+    method1(method1);
+    end;
+
+    method1 ==> method3;
+
+    subgraph Step: method2;
+    method2(method2);
+    end;
+
+    method2 ==> method4;
+
+    subgraph Step: method2;
+    method3(method3);
+    end;
+
+    method3 ==> method4;
+    """
+
+    return expected_js_descriptive_false
+
+class DescriptionExampleFlow(BaseFlow):
+    @start
+    @step(next=["method2", "method3"])
+    def method1(self):
+        """Testing the docstring"""
+        self.a = 1
+
+    @step(next=["method4"])
+    def method2(self):
+        self.a += 1
+
+    @step(next=["method4"])
+    def method3(self):
+        self.a += 2
+
+    @end
+    @step
+    def method4(self):
+        self.a += 3
+        print(self.a)
 
 
 class BadFlowExample(BaseFlow):
@@ -110,6 +211,7 @@ class BadFlowExample4(BaseFlow):
     def method_3(self):
         return None
 
+
 class BadFlowExample5(BaseFlow):
     """Bad Example of flow, end has a next value"""
 
@@ -128,7 +230,6 @@ class BadFlowExample5(BaseFlow):
         return None
 
 
-
 @pytest.mark.parametrize(
     "bad_flow_example, expectations",
     [
@@ -136,8 +237,7 @@ class BadFlowExample5(BaseFlow):
         (BadFlowExample2, does_not_raise()),
         (BadFlowExample3, does_not_raise()),
         (BadFlowExample4, does_not_raise()),
-        (BadFlowExample5, pytest.raises(ValueError))
-
+        (BadFlowExample5, pytest.raises(ValueError)),
     ],
 )
 def test_graph_validator(bad_flow_example, expectations):
@@ -145,21 +245,17 @@ def test_graph_validator(bad_flow_example, expectations):
     with expectations:
         bad_flow_graph_options = GraphOptions(base_flow=bad_flow_example)
         bad_flow_graph = Graph(graph_options=bad_flow_graph_options)
-        GraphValidator(graph=bad_flow_graph).run_validations(
-            terminal_output=True
-        )
-
-
+        GraphValidator(graph=bad_flow_graph).run_validations(terminal_output=True)
 
 
 @pytest.mark.parametrize(
     "bad_flow_example, expectations",
     [
-    (BadFlowExample, pytest.raises(InvalidFlowException)),
-    (BadFlowExample2,pytest.raises(InvalidFlowException)),
-    (BadFlowExample3, pytest.raises(InvalidFlowException)),
-    (BadFlowExample4, pytest.raises(InvalidFlowException)),
-    (BadFlowExample5, pytest.raises(ValueError))
+        (BadFlowExample, pytest.raises(InvalidFlowException)),
+        (BadFlowExample2, pytest.raises(InvalidFlowException)),
+        (BadFlowExample3, pytest.raises(InvalidFlowException)),
+        (BadFlowExample4, pytest.raises(InvalidFlowException)),
+        (BadFlowExample5, pytest.raises(ValueError)),
     ],
 )
 def test_graph_validator_with_error(bad_flow_example, expectations):
@@ -172,20 +268,20 @@ def test_graph_validator_with_error(bad_flow_example, expectations):
         )
 
 
-def test_dag_generator(expected_js_string_tuple):
-    """Function to test the DAGGenerator()._create_dag()
+def test_dag_generator(expected_js_non_descriptive):
+    """Function to test the DAGGenerator()._create_descriptive_dag() with description
+    as false which will be non -descriptive
     We iterate line by line to find differences
     """
-    expected_js_string1 = expected_js_string_tuple[0]
-    expected_js_string2 = expected_js_string_tuple[1]
-    actual_js_string = DAGGenerator()._create_dag(ExamplePandas())
-    assert (
-        actual_js_string.strip()
-        == expected_js_string1.strip()  # there is a bug in the FlowRunner class where order between functions at same level is misplaced
-        or actual_js_string.strip()
-        == expected_js_string2.strip()  # for this we need to add an OR condition so we account for both conditions
-    )
+    actual_js_non_descriptive_string = DAGGenerator()._create_descriptive_dag(ExamplePandas(), description=False)
 
+
+    for actual_line, expected_line in zip(
+        actual_js_non_descriptive_string.split("\n"), expected_js_non_descriptive.split("\n")
+    ):
+        pytest.approx(
+            actual_line.strip(), expected_line.strip()
+        )
 
 def test_dag(expected_html_content):
     """Function to test the DAGGenerator().dag() method"""
@@ -207,3 +303,43 @@ def test_display():
     that asserts its output as well"""
     flow_instance = ExamplePandas()
     DAGGenerator().display(flow_instance)
+
+
+def test_create_descriptive_dag(expected_string_descriptive_output):
+    """Test to check the functionality of descriptive dag
+    which has a subgraph and description"""
+    flow_instance = DescriptionExampleFlow()
+    actual_descriptive_js_string = DAGGenerator()._create_descriptive_dag(flow_instance)
+
+    for actual_line, expected_line in zip(
+        actual_descriptive_js_string.strip().split(),
+        expected_string_descriptive_output.strip().split(),
+
+    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+    ):
+        pytest.approx(actual_line, expected_line)
+
+
+def test_choose_dag(expected_string_descriptive_output, expected_non_descriptive_string_output):
+    """Test to check if functionality of choosing dag
+    works as expected"""
+    flow_instance = DescriptionExampleFlow()
+    actual_descriptive_js_string =  DAGGenerator()._create_descriptive_dag(flow_instance)
+
+    for actual_line, expected_line in zip(
+        actual_descriptive_js_string.strip().split(),
+        expected_string_descriptive_output.strip().split(),
+
+    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+    ):
+        pytest.approx(actual_line, expected_line)
+
+    actual_non_descriptive_output = DAGGenerator()._create_descriptive_dag(flow_instance, description=False)
+
+    for actual_line_non_descrip, expected_line_non_descrip in zip(
+        actual_non_descriptive_output.strip().split(),
+        expected_non_descriptive_string_output.strip().split(),
+
+    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+    ):
+        pytest.approx(actual_line_non_descrip, expected_line_non_descrip)

@@ -41,6 +41,15 @@ def test_display(temp_directory_fixture):
     )
     assert result.exit_code == 0
 
+def test_display_description(temp_directory_fixture):
+    """Test to check cli::flowchart function, we use a temporary directory
+    fixture for saving. We use the description flag"""
+    runner = CliRunner()
+    result = runner.invoke(
+        display, ["examples/example.py", f"--path={temp_directory_fixture}", f"--description={True}"]
+    )
+    assert result.exit_code == 0
+
 
 def test_cli():
     """Test to check cli::cli function"""
