@@ -16,27 +16,25 @@
 <div class="mermaid">
 graph TD;
 subgraph Step: method1;
-   method1(method1) ~~~ method1_description[["""Example of a method with a docstring which
+method1(method1) ~~~ method1_description[["""Example of a method with a docstring which
         will become description"""]];
 end;
-
-method1_description ==> method2;
-
-
-method1_description ==> method3;
-
+method1_description ==> method2(method2);
+method1_description ==> method3(method3);
 subgraph Step: method3;
-   method3(method3);
+method3(method3)
+method3
 end;
-
-method3 ==> method4;
-
+method3 ==> method4(method4);
 subgraph Step: method2;
-   method2(method2);
+method2(method2)
+method2
 end;
-
-method2 ==> method4;
-
+method2 ==> method4(method4);
+subgraph Step: method4;
+method4(method4)
+method4
+end;
 
 </div>
 <script type="module">

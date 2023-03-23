@@ -289,26 +289,26 @@ class DAGGenerator:
         for level in graph.levels:
             # iterate over each node in level
             for node in level:
+                subgraph_string = 'subgraph ' # create the subgraph
+                subgraph_string += f'Step: {node.name};\n' # subgraph name
+                subgraph_string += f'{node.name}({node.name})' # add the actual node_name
+                if node.docstring: # if there is a docstring we that as an edge
+                    subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
+                    subgraph_edge = f'{node.name}_description' # keep track of the edge start
+                    subgraph_string += subgraph_description
+                else:
+                    subgraph_string += f'\n{node.name}\n'
+                    subgraph_edge =  f'{node.name}'# if there is no docstring then the ending node is made as the edge
+                subgraph_string += 'end;\n' # end the subgraph
                 for next_node in node.next: # iterate over the next of the node
-                    edge_subgraph = f"subgraph Step: {node.name.replace('_', '-')};\n" # subgraph name will be the node name replacing underscores with -
-                    # node.name(node.name) += ~~~ node.docstring() or None
-                    node_name_edge = f"   {node.name}({node.name})"
-                    if node.docstring: # if docstring is present we create an invisible link with `~~~` notation
-                        node_docstring_edge = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'
-                    else: #otherwise just skip to the next string
-                        node_docstring_edge = ";\n"
+                    edge_node = f'{subgraph_edge} ==> {next_node}({next_node});\n'# now iterate over next
+                    # add the next node the edge
+                    subgraph_string += edge_node # add the edge notation
 
-                    end_subgraph = "end;\n\n" # end the subgraph
-                    # add the next edge connection node.docstring() or node.name ==> next_node
-                    if node.docstring: # if docstring is present then we assign that as the next connection
-                        next_node_edge = f"{node.name}_description ==> {next_node};\n\n"
-                    else: # otherwise the connection is direct from the node to the next
-                        next_node_edge = f"{node.name} ==> {next_node};\n\n"
+                # finally add the subgraph to the main mermaid js string
+                mermaid_js_string += subgraph_string
 
 
-                    edge_string = edge_subgraph + node_name_edge + node_docstring_edge + end_subgraph + next_node_edge # put all the strings together
-
-                    mermaid_js_string += edge_string
 
 
 

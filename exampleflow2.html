@@ -16,29 +16,25 @@
 <div class="mermaid">
 graph TD;
 subgraph Step: method1;
-   method1(method1);
+method1(method1)
+method1
 end;
-
-method1 ==> method2;
-
-subgraph Step: method1;
-   method1(method1);
-end;
-
-method1 ==> method3;
-
+method1 ==> method2(method2);
+method1 ==> method3(method3);
 subgraph Step: method3;
-   method3(method3);
+method3(method3)
+method3
 end;
-
-method3 ==> method4;
-
+method3 ==> method4(method4);
 subgraph Step: method2;
-   method2(method2);
+method2(method2)
+method2
 end;
-
-method2 ==> method4;
-
+method2 ==> method4(method4);
+subgraph Step: method4;
+method4(method4)
+method4
+end;
 
 </div>
 <script type="module">
