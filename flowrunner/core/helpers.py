@@ -330,10 +330,8 @@ class DAGGenerator:
         Returns:
             content: The html data containing the flow diagram
         """
-        if description:
-            mermaid_js_string = cls._create_descriptive_dag(flow_instance=flow_instance)
-        else:
-            mermaid_js_string = cls._create_dag(flow_instance=flow_instance)
+
+        mermaid_js_string = cls._choose_dag(flow_instance=flow_instance, description=description)
 
         root = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(root, "templates")
@@ -388,8 +386,28 @@ class DAGGenerator:
         # graph LR;
         #   A--> B & C & D;
         # """"
-        graph = cls._create_dag(flow_instance=flow_instance, description=description)
+        graph = cls._choose_dag(flow_instance=flow_instance, description=description)
         graphbytes = graph.encode("ascii")
         base64_bytes = base64.b64encode(graphbytes)
         base64_string = base64_bytes.decode("ascii")
         display(Image(url="https://mermaid.ink/img/" + base64_string))
+
+
+    @classmethod
+    def _choose_dag(cls, flow_instance, description:bool=True):
+        """
+        A factory method to choose which dag type to use, by default we use the descriptive dag
+
+        Its better to write as a seperate method than to rewrite this logic again and again
+        at seperate points
+
+        Args:
+            flow_instance: An instance of a subclass of BaseFlow
+            description: A bool value to choose between descriptive or non_descriptive_dag
+
+        Returns:
+            None: This will method will choose the correct dag creation method to use
+        """
+        if description:
+            return cls._create_descriptive_dag(flow_instance)
+        return cls._create_dag(flow_instance)

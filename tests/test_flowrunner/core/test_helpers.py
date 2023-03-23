@@ -72,10 +72,20 @@ def expected_string_descriptive_output():
     method4
     end;
     '''
-
-
     return expected_js_descriptive
 
+@pytest.fixture(scope="module")
+def expected_non_descriptive_string_output():
+    """Fixture for non descriptive output for
+    DescriptiveExampleFlow"""
+    non_descriptive_string = """
+    graph TD;
+    method1(method1)==>method2(method2);
+    method1(method1)==>method3(method3);
+    method2(method2)==>method4(method4);
+    method3(method3)==>method4(method4);
+    """
+    return non_descriptive_string
 
 
 @pytest.fixture(scope="module")
@@ -304,3 +314,28 @@ def test_create_descriptive_dag(expected_string_descriptive_output):
     # there is a bug in the FlowRunner class where order between functions at same level is misplaced
     ):
         pytest.approx(actual_line, expected_line)
+
+
+def test_choose_dag(expected_string_descriptive_output, expected_non_descriptive_string_output):
+    """Test to check if functionality of choosing dag
+    works as expected"""
+    flow_instance = DescriptionExampleFlow()
+    actual_descriptive_js_string =  DAGGenerator()._choose_dag(flow_instance)
+
+    for actual_line, expected_line in zip(
+        actual_descriptive_js_string.strip().split(),
+        expected_string_descriptive_output.strip().split(),
+
+    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+    ):
+        pytest.approx(actual_line, expected_line)
+
+    actual_non_descriptive_output = DAGGenerator()._choose_dag(flow_instance, description=False)
+
+    for actual_line_non_descrip, expected_line_non_descrip in zip(
+        actual_non_descriptive_output.strip().split(),
+        expected_non_descriptive_string_output.strip().split(),
+
+    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+    ):
+        pytest.approx(actual_line_non_descrip, expected_line_non_descrip)
