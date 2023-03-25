@@ -88,7 +88,8 @@ ExampleFlow().display()
 
 Your output will look like this.
 
-![image](https://user-images.githubusercontent.com/71138854/227299679-011df902-d809-4193-831b-fdcf38d20331.png)
+![image](https://user-images.githubusercontent.com/71138854/227732793-d5ee52a5-a090-4b51-8b63-25e4af4909f2.png)
+
 
 Or can be run in cli like this:
 
@@ -214,7 +215,7 @@ class ExamplePandas(BaseFlow):
 Now when you run `ExamplePandas().display()` you get the following output
 
 
-![image](https://user-images.githubusercontent.com/71138854/227299956-22498bc6-e53f-459c-b859-391ae4ee8d69.png)
+![image](https://user-images.githubusercontent.com/71138854/227732600-7bae5e21-3c9a-4ad9-85da-f926cded2636.png)
 
 
 ## Documentation
