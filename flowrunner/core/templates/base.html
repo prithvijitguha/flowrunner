@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
 <meta name="description" content="Diagram showing the FlowChart for {{ flow_name }}"/>
 <style>
+  /* This keeps the DAG centered */
   .mermaid {
     text-align: center;
     margin-top: 10%;
@@ -11,13 +12,27 @@
 }
 </style>
 </head>
-<title>Tree Example</title>
+<title>{{ flow_name }}</title>
 <body>
-<div class="mermaid">
+<!-- We use pre so that these parts are loaded first -->
+<pre class="mermaid">
 {{ mermaid_js_string }}
-</div>
+</pre>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  // We use the mermaid API to change the theme page wide
+  mermaid.initialize({
+  theme: 'base',
+  themeVariables: {
+      'primaryColor': '#5A5A5A',
+      'primaryTextColor': 'white',
+      'primaryBorderColor': '#5A5A5A',
+      'lineColor': '#F8B229',
+      'secondaryColor': '#006100',
+      'tertiaryColor': '#D3D3D3',
+      'tertiaryTextColor': 'black',
+    }
+  })
 </script>
   </body>
 </html>

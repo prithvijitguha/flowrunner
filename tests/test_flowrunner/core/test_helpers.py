@@ -28,24 +28,24 @@ def expected_js_non_descriptive():
     """Fixture to test the structure of js string"""
     js_string = """
     graph TD;
-    subgraph Step: create_data
+    subgraph step-create_data;
     create_data(create_data);
     end
-        create_data(create_data)==>transformation_function_1(transformation_function_1);
-        create_data(create_data)==>transformation_function_2(transformation_function_2);
-    subgraph Step: transformation_function_2
+        step-create_data==>step-transformation_function_2;
+        step-create_data==>step-transformation_function_2;
+    subgraph step-transformation_function_2;
     transformation_function_2(transformation_function_2);
     end
-        transformation_function_2(transformation_function_2)==>append_data(append_data);
-    subgraph Step: transformation_function_1
+        step-transformation_function_2;==>step-append_data;
+    subgraph step-transformation_function_1;
     transformation_function_1(transformation_function_1);
     end
-        transformation_function_1(transformation_function_1)==>append_data(append_data);
-    subgraph Step: append_data
+        step-transformation_function_3;==>step-append_data;
+    subgraph step-append_data;
     append_data(append_data);
     end
-        append_data(append_data)==>show_data(show_data);
-    subgraph Step: show_data
+        step-append_data;==>step-show_data;
+    subgraph step-show_data;
     show_data(show_data);
     end
     """
@@ -58,21 +58,21 @@ def expected_string_descriptive_output():
     """Fixture for an example of pandas descriptive string"""
     expected_js_descriptive = '''
     graph TD;
-    subgraph Step: method1;
+    subgraph step-method1;
     method1(method1) ~~~ method1_description[["""Example of a method with a docstring which
     will become description"""]];
     end;
-    method1_description ==> method2(method2);
-    method1_description ==> method3(method3);
-    subgraph Step: method3;
+    step-method1 ==> step-method2;
+    step-method1 ==> step-method3;
+    subgraph step-method3;
     method3(method3)
     end;
-    method3 ==> method4(method4);
-    subgraph Step: method2;
+    method3 ==> step-method4;
+    subgraph step-method2;
     method2(method2)
     end;
-    method2 ==> method4(method4);
-    subgraph Step: method4;
+    method2 ==> step-method4;
+    subgraph step-method4;
     method4(method4)
     end;
     '''

@@ -252,7 +252,9 @@ class DAGGenerator:
             # iterate over each node in level
             for node in level:
                 subgraph_string = 'subgraph ' # create the subgraph
-                subgraph_string += f'Step: {node.name};\n' # subgraph name
+                # we store the subgraph name so that we can use it later as an edge connection
+                subgraph_name = f'step-{node.name}' # subgraph name
+                subgraph_string += subgraph_name + '\n' # add the subgraph name to the subgraph string
                 subgraph_string += f'{node.name}({node.name})' # add the actual node_name
                 if node.docstring and description: # if there is a docstring we that as an edge and if description is set to True
                     subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
@@ -264,7 +266,9 @@ class DAGGenerator:
                     subgraph_edge =  f'{node.name}'# if there is no docstring then the ending node is made as the edge
                 subgraph_string += 'end;\n' # end the subgraph
                 for next_node in node.next: # iterate over the next of the node
-                    edge_node = f'{subgraph_edge} ==> {next_node}({next_node});\n'# now iterate over next
+                    # we point the edge of end of the current subgraph to the next subgraph
+                    # this is so that when rendering the directional arrows do not overlap text
+                    edge_node = f'{subgraph_name} ==> step-{next_node};\n'# now iterate over next
                     # add the next node the edge
                     subgraph_string += edge_node # add the edge notation
 
@@ -329,7 +333,7 @@ class DAGGenerator:
         return content
 
     @classmethod
-    def display(cls, flow_instance, description:bool =False) -> None:
+    def display(cls, flow_instance, description:bool =True) -> None:
         """Class method to display the DAG of the Flow
 
         This method only works in IPython style notebooks. Does not work in script

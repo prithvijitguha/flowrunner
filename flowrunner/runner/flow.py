@@ -107,17 +107,17 @@ class BaseFlow:
         FlowRunner().validate(flow_instance=self, terminal_output=False)
         FlowRunner().show(flow_instance=self)
 
-    def display(self):
+    def display(self, description: bool = True):
         """Method to show html output of the flowchart
 
         Args:
-            None
+            description: An optional bool argument which can turn off/on description. Defaults to True
 
         Returns:
             None: displays an html flowchart of the Flow
 
         """
-        return DAGGenerator().display(flow_instance=self)
+        return DAGGenerator().display(flow_instance=self, description=description)
 
     def dag(self, save_file: bool = False, path: str = None, description: bool = True):
         """Method to generate html flowchart for Flow
