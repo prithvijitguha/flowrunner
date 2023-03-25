@@ -8,6 +8,8 @@ Welcome to flowrunner's documentation!
    introduction
    getting_started
    pandas_example
+   example_notebook.ipynb
+   examples/example_notebook.ipynb
 
 .. toctree::
    :caption: Contributing to flowrunner
