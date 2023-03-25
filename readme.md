@@ -88,7 +88,7 @@ ExampleFlow().display()
 
 Your output will look like this.
 
-![image](https://user-images.githubusercontent.com/71138854/227732566-ce83510e-8fac-4bf8-af31-88eca722bd61.png)
+![image](https://user-images.githubusercontent.com/71138854/227732793-d5ee52a5-a090-4b51-8b63-25e4af4909f2.png)
 
 
 Or can be run in cli like this:
