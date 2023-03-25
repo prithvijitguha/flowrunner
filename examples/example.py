@@ -4,15 +4,17 @@ from flowrunner import BaseFlow, end, start, step
 
 class ExampleFlow(BaseFlow):
     @start
-    @step(next=['method2', 'method3'])
+    @step(next=["method2", "method3"])
     def method1(self):
+        """Example of a method with a docstring which
+        will become description"""
         self.a = 1
 
-    @step(next=['method4'])
+    @step(next=["method4"])
     def method2(self):
         self.a += 1
 
-    @step(next=['method4'])
+    @step(next=["method4"])
     def method3(self):
         self.a += 2
 
@@ -20,8 +22,7 @@ class ExampleFlow(BaseFlow):
     @step
     def method4(self):
         self.a += 3
-        print("output of flow is:", self.a)
-
+        print(self.a)
 
 
 class ExampleFlow2(BaseFlow):
