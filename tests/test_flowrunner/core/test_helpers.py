@@ -31,20 +31,20 @@ def expected_js_non_descriptive():
     subgraph step-create_data;
     create_data(create_data);
     end
-        create_data(create_data)==>transformation_function_1(transformation_function_1);
-        create_data(create_data)==>transformation_function_2(transformation_function_2);
+        step-create_data==>step-transformation_function_2;
+        step-create_data==>step-transformation_function_2;
     subgraph step-transformation_function_2;
     transformation_function_2(transformation_function_2);
     end
-        transformation_function_2(transformation_function_2)==>step-append_data;
+        step-transformation_function_2;==>step-append_data;
     subgraph step-transformation_function_1;
     transformation_function_1(transformation_function_1);
     end
-        transformation_function_1(transformation_function_1)==>step-append_data;
+        step-transformation_function_3;==>step-append_data;
     subgraph step-append_data;
     append_data(append_data);
     end
-        append_data(append_data)==>step-show_data;
+        step-append_data;==>step-show_data;
     subgraph step-show_data;
     show_data(show_data);
     end
@@ -62,8 +62,8 @@ def expected_string_descriptive_output():
     method1(method1) ~~~ method1_description[["""Example of a method with a docstring which
     will become description"""]];
     end;
-    method1_description ==> step-method2;
-    method1_description ==> step-method3;
+    step-method1 ==> step-method2;
+    step-method1 ==> step-method3;
     subgraph step-method3;
     method3(method3)
     end;

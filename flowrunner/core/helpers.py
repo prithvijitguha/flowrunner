@@ -253,8 +253,8 @@ class DAGGenerator:
             for node in level:
                 subgraph_string = 'subgraph ' # create the subgraph
                 # we store the subgraph name so that we can use it later as an edge connection
-                subgraph_name = f'step-{node.name};\n' # subgraph name
-                subgraph_string += subgraph_name # add the subgraph name to the subgraph string
+                subgraph_name = f'step-{node.name}' # subgraph name
+                subgraph_string += subgraph_name + '\n' # add the subgraph name to the subgraph string
                 subgraph_string += f'{node.name}({node.name})' # add the actual node_name
                 if node.docstring and description: # if there is a docstring we that as an edge and if description is set to True
                     subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
@@ -268,7 +268,7 @@ class DAGGenerator:
                 for next_node in node.next: # iterate over the next of the node
                     # we point the edge of end of the current subgraph to the next subgraph
                     # this is so that when rendering the directional arrows do not overlap text
-                    edge_node = f'{subgraph_edge} ==> step-{next_node};\n'# now iterate over next
+                    edge_node = f'{subgraph_name} ==> step-{next_node};\n'# now iterate over next
                     # add the next node the edge
                     subgraph_string += edge_node # add the edge notation
 
