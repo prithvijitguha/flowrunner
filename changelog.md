@@ -13,3 +13,15 @@ flowrunner is a lightweight package to organize and represent Data Engineering/S
 - Data store to store output of a function(incase it has return) for later
 - Param store to easily pass reusable parameters to Flow
 - Visualizing your flow as a DAG
+
+
+
+## 0.2.0 (2023-03-25)
+
+### Features:
+- Improved DAG visualization with description with option to turn off description
+- Improved style of DAG visualization
+
+### Documentation:
+- Improved documentation for readme
+- Improved example usage for pandas
