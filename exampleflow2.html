@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+<meta name="description" content="Diagram showing the FlowChart for ExampleFlow2"/>
+<style>
+  .mermaid {
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+</style>
+</head>
+<title>Tree Example</title>
+<body>
+<div class="mermaid">
+graph TD;
+subgraph step-method1;
+method1(method1)
+end;
+method1 ==> step-method2;
+method1 ==> step-method3;
+subgraph step-method3;
+method3(method3)
+end;
+method3 ==> step-method4;
+subgraph step-method2;
+method2(method2)
+end;
+method2 ==> step-method4;
+subgraph step-method4;
+method4(method4)
+end;
+
+</div>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+</script>
+  </body>
+</html>
+</body>
+</html>
