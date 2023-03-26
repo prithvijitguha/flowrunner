@@ -8,6 +8,9 @@ Graph: A class containing an arranged collection of Nodes from start, middle, en
 from dataclasses import dataclass
 from typing import Type
 
+from flowrunner.system.exceptions import CyclicFlowException
+from flowrunner.system.logger import logger
+
 
 @dataclass
 class Node:
@@ -31,12 +34,6 @@ class Node:
         We make sure that 'next' keyword argument is passed as either a single 'str' or 'list'. If
         next is None then we just assign an empty list as 'next' attribute
 
-        Args:
-            - None
-
-        Returns:
-            - None
-
         Raises:
             - If more than 1 type of element found in 'next' keyword argument. Only a single string referencing a
                 function or a list of strings referencing functions are accepted
@@ -59,7 +56,6 @@ class Node:
                 self.next = self.function_reference.next
             elif isinstance(self.function_reference.next, str):
                 # we make sure that the next is put in a list
-                print(self.function_reference.next)
                 self.next = [self.function_reference.next]
 
             else: # We do not allow any other types other than list and str
@@ -84,9 +80,6 @@ class Node:
     def __repr__(self):
         """String representation of this node, which will be actual function
         name
-
-        Args:
-            - None
 
         Returns:
             - A string representation of the Node instance
@@ -113,12 +106,12 @@ class GraphOptions:
     all the methods in the class and arrange them according to 'start', 'step', 'end' as per the decorators.
 
     Attributes:
-        - base_flow: A subclass of BaseFlow
-        - functions: A dictionary of {'test_1': <function Test.test_1 at 0x000002390259E9D0>} using inbuilt __dict__ method
-        - middle_nodes: A list of middle nodes i.e methods with only 'step' and no 'start' and 'end' decorator
-        - start: A list of middle nodes i.e methods with 'start' decorator
-        - end: A list of middle nodes i.e methods with 'end' decorator
-        - base_flow_instance: An instance of base_flow we use later to run flows
+        base_flow: A subclass of BaseFlow
+        functions: A dictionary of {'test_1': <function Test.test_1 at 0x000002390259E9D0>} using inbuilt __dict__ method
+        middle_nodes: A list of middle nodes i.e methods with only 'step' and no 'start' and 'end' decorator
+        start: A list of middle nodes i.e methods with 'start' decorator
+        end: A list of middle nodes i.e methods with 'end' decorator
+        base_flow_instance: An instance of base_flow we use later to run flows
     """
 
     # list of functions/module
@@ -130,17 +123,14 @@ class GraphOptions:
         We assign the following attributes
 
         Attributes:
-            - functions: A dictionary of {'test_1': <function Test.test_1 at 0x000002390259E9D0>} using inbuilt __dict__ method
-            - middle_nodes: A list of middle nodes i.e methods with only 'step' and no 'start' and 'end' decorator
-            - start: A list of middle nodes i.e methods with 'start' decorator
-            - end: A list of middle nodes i.e methods with 'end' decorator
-            - base_flow_instance: An instance of base_flow we use later to run flows
-
-        Args:
-            - None
+            functions: A dictionary of {'test_1': <function Test.test_1 at 0x000002390259E9D0>} using inbuilt __dict__ method
+            middle_nodes: A list of middle nodes i.e methods with only 'step' and no 'start' and 'end' decorator
+            start: A list of middle nodes i.e methods with 'start' decorator
+            end: A list of middle nodes i.e methods with 'end' decorator
+            base_flow_instance: An instance of base_flow we use later to run flows
 
         Returns:
-            - A string representation of the class
+            A string representation of the class
 
         Examples:
             >>> print(graph_options_instance)
@@ -168,15 +158,19 @@ class GraphOptions:
                 # we check if it has 'is_step' in the attribute
                 # then we do other checks on it
                 if hasattr(func, "is_step"):
+                    # START NODES
                     if hasattr(func, "is_start") and not hasattr(func, "is_end"):  # IF 'is_step'== YES 'is_start'== NO 'is_end' THEN 'start'
                         self.start.append(Node(name_func, func))
 
+                    # MIDDLE NODES
                     elif not hasattr(func, "is_start") and not hasattr(func, "is_end"): # IF 'is_step'== YES AND 'is_start' NO 'is_end' == NO THEN 'middle_nodes'
                         self.middle_nodes.append(Node(name_func, func))
 
                     elif hasattr(func, "is_start") and hasattr(func, "is_end"): # edge case if has step and start and end
                         raise ValueError(f"Not cannot have both start and end, {func}")
 
+
+                    # END NODES
                     elif hasattr(func, "is_end") and not hasattr(func, "is_start"):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
                         self.end.append(Node(name_func, func))
                         if func.next:
@@ -186,8 +180,6 @@ class GraphOptions:
 
     def __repr__(self):
         """String representation of class
-        Args:
-            None
 
         Returns:
             A string representation of the GraphOptions instance
@@ -237,11 +229,6 @@ class Graph:
             nodes: A list of all the nodes start + middle_nodes + end
             node_map: A dict of {node.name: node} for reference for later
 
-        Args:
-            None
-
-        Returns:
-            None
         """
         self.start = self.graph_options.start
         self.middle_nodes = self.graph_options.middle_nodes
@@ -257,11 +244,8 @@ class Graph:
         We assume that start will be the root node, after that we iterate over the next of each
         node and append them to each level.
 
-        Args:
-            None
-
-        Returns:
-            None
+        Raises:
+            CyclicFlowException: In case the flow is cycle, for example if we visit a node we have already visited
         """
         # TODO: Maybe in the future there may be a need to add 'end' node or a later node in 'middle_nodes' to the 'next' of 'start'. Need to add
         # check to remove any function in end and mentioned in middle nodes
@@ -269,6 +253,9 @@ class Graph:
         temp_level = self.start
 
         self.levels.append(temp_level)  # add temp level to 'self.levels'
+
+        # we need to a check for an cyclic dag, one which points at a previous level
+        checked_nodes = []
 
         # while loop for when temp_level is not empty
         while temp_level:
@@ -281,10 +268,15 @@ class Graph:
                 next = [self.node_map[next_node] for next_node in node.next]
                 # add the next to the list
                 next_level += next
+                if node in checked_nodes: # we make sure that if we have visited this node then we shouldn't check it again
+                    logger.error("node=%s is cyclic", node)
+                    raise CyclicFlowException(f"DAG is cyclic due to node={node}")
+
+                checked_nodes.append(node)
             next_level = list(
                 set(next_level)
             )  # we make sure the nodes in the level are unique
-            if not next_level:
+            if not next_level: # once we reach the end with no next then we stop
                 break
-            self.levels.append(next_level)
-            temp_level = next_level
+            self.levels.append(next_level) # append the level to the main level as a 2d array
+            temp_level = next_level # then the next level becomes the temp_level to continue the loop

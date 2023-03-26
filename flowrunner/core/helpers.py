@@ -9,6 +9,7 @@ DAGGenerator: A class for creating dags based on a subclass of BaseFlow
 import base64
 import os
 from dataclasses import dataclass
+from itertools import chain
 from typing import Tuple
 
 import click
@@ -24,15 +25,6 @@ from flowrunner.system.logger import logger
 @dataclass
 class GraphValidator:
     """This class is used to validate any Graph
-    It checks for the following:
-    - There should be atleast 1 start
-    - There should be atleast 1 end
-    - There should be atleast 1 middle
-    - All start nodes have a next value
-    - All middle nodes have a next value
-    - Any step that is not a next for any function
-    - Any start function that is mentioned in another next
-    - Validate each node, makes sure it has a return statement at the end
 
     Each of the method represents a seperate check of the validation suite to be conducted on the self.graph attribute.
     All the methods a tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
@@ -49,9 +41,6 @@ class GraphValidator:
 
         We make sure that there is atleast one start node
 
-        Args:
-            None
-
         Returns:
             A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
@@ -65,9 +54,6 @@ class GraphValidator:
         """Method to check that the start nodes specified are valid.
 
         We make sure that each of the nodes specified has a next
-
-        Args:
-            None
 
         Returns:
             A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
@@ -88,9 +74,6 @@ class GraphValidator:
 
         We make sure that there is atleast one start node
 
-        Args:
-            None
-
         Returns:
             A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
@@ -107,9 +90,6 @@ class GraphValidator:
         """Method to check that the middle nodes specified are valid.
 
         We make sure that each of the nodes specified has a next
-
-        Args:
-            None
 
         Returns:
             A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
@@ -133,9 +113,6 @@ class GraphValidator:
 
         We make sure that there is atleast one end node
 
-        Args:
-            None
-
         Returns:
             A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
                 of the output message.
@@ -146,15 +123,31 @@ class GraphValidator:
         return (True, "Validated end nodes")
 
 
+    def check_step_not_included_next(self) -> Tuple[bool, str]:
+        """Method to validate that a step mentioned is used in the next.
+
+        We find any `step` that is not mentioned in a next that is not start or end, meaning a mid starting node
+
+        Returns:
+            A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
+            of the output message.
+        """
+        all_nodes = self.graph.nodes# get all the function names
+        # levels attribute in the graph object contains a list of string all the next nodes contained in a
+        # 2 dimensional array
+        all_nexts = list(chain(*self.graph.levels)) # we use itertools chain to flatten the 2d array to 1d
+        bad_nodes = [node for node in all_nodes if node not in all_nexts]
+        if bad_nodes:
+            return (False, f"{bad_nodes} not in any `next=[]` value")
+        return (True, "Validated step next mentions")
+
+
     def get_validation_suite(self):
         """Define validation suite, more methods
         need to be added to validation suite list
 
         Any new validation method has to be added to validation_suite so that it can
         be called on validation checks.
-
-        Args:
-            - None
 
         Returns:
             - validation_suite: A dict object containing the list of GraphValidator methods to be used to validate
@@ -165,7 +158,8 @@ class GraphValidator:
             self.validate_start_next_nodes,
             self.validate_length_middle_nodes,
             self.validate_middle_next_nodes,
-            self.validate_length_end_nodes
+            self.validate_length_end_nodes,
+            self.check_step_not_included_next
         ]
         return validation_suite
 
@@ -176,10 +170,10 @@ class GraphValidator:
         Fail and str being the output message
 
         Args:
-            - terminal_output: An optional bool argument for whether to show the output in terminal
+            terminal_output: An optional bool argument for whether to show the output in terminal
 
         Returns:
-            - Echo of output {✅} or {❌} if passed or failed respectively with message
+            Echo of output {✅} or {❌} if passed or failed respectively with message
         """
         validation_suite = self.get_validation_suite()
 
@@ -198,13 +192,13 @@ class GraphValidator:
         Fail and str being the output message
 
         Args:
-            - terminal_output: An optional bool argument for whether to show the output in terminal
+            terminal_output: An optional bool argument for whether to show the output in terminal
 
         Returns:
-            - Echo of output {✅} or {❌} if passed or failed respectively with message
+            Echo of output {✅} or {❌} if passed or failed respectively with message
 
         Raises:
-            - InvalidFlowException: If any validation check failed
+            InvalidFlowException: If any validation check failed
         """
         validation_suite = self.get_validation_suite()
 
@@ -258,12 +252,10 @@ class DAGGenerator:
                 subgraph_string += f'{node.name}({node.name})' # add the actual node_name
                 if node.docstring and description: # if there is a docstring we that as an edge and if description is set to True
                     subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
-                    subgraph_edge = f'{node.name}_description' # keep track of the edge start
                     subgraph_string += subgraph_description
                 else:
                     #subgraph_string += f'\n{node.name}\n'
                     subgraph_string += '\n'
-                    subgraph_edge =  f'{node.name}'# if there is no docstring then the ending node is made as the edge
                 subgraph_string += 'end;\n' # end the subgraph
                 for next_node in node.next: # iterate over the next of the node
                     # we point the edge of end of the current subgraph to the next subgraph
@@ -274,10 +266,6 @@ class DAGGenerator:
 
                 # finally add the subgraph to the main mermaid js string
                 mermaid_js_string += subgraph_string
-
-
-
-
 
         return mermaid_js_string
 
