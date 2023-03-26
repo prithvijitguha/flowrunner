@@ -29,12 +29,12 @@ To install flowrunner, following commands will work
 Source code is hosted at https://github.com/prithvijitguha/flowRunner
 
 ```sh
-$ pip install flowrunner
+pip install flowrunner
 ```
 
 Or install from source
 ```sh
-$ pip install git+https://github.com/prithvijitguha/flowrunner@main
+pip install git+https://github.com/prithvijitguha/flowrunner@main
 ```
 
 
