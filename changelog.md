@@ -31,6 +31,7 @@ flowrunner is a lightweight package to organize and represent Data Engineering/S
 
 ### Features:
 - Improved checks for cyclic flows
+- Improved validation for stranded middle origin nodes
 
 ### Documentation:
 - Changed theme to sphinx_the_docs
