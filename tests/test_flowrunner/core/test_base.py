@@ -6,6 +6,7 @@ import pytest
 from flowrunner.core.base import Graph, GraphOptions
 from flowrunner.core.decorators import end, start, step
 from flowrunner.runner.flow import BaseFlow
+from flowrunner.system.exceptions import CyclicFlowException
 
 
 class ExampleNodeFlow(BaseFlow):
@@ -318,6 +319,78 @@ class ExampleBadFlow6(BaseFlow):
         return None
 
 
+
+
+class CyclicFlowExample(BaseFlow):
+    """Bad Example of flow, the method_3_a references the start again,
+    this can cause the graph become cyclic
+    """
+
+    @start
+    @step(next=["method_2"])
+    def method_1(self):
+        return None
+
+    @step(next=["method_3_a"])
+    def method_2(self):
+        return None
+
+    @step(next=["method_2"])
+    def method_3_a(self):
+        return
+
+
+    @step(next=["method_4"])
+    def method_3(self):
+        return None
+
+    @end
+    @step
+    def method_4(self):
+        return None
+
+
+class NonCyclicFlowExample(BaseFlow):
+    """Non cyclic flow, should not raise an error
+    """
+
+    @start
+    @step(next=["method_2"])
+    def method_1(self):
+        return None
+
+    @step(next=["method_3_a", "method_3_b"])
+    def method_2(self):
+        return None
+
+    @step(next=["method_4"])
+    def method_3_a(self):
+        return
+
+
+    @step(next=["method_6"])
+    def method_5(self):
+        return None
+
+
+    @end
+    @step
+    def method_4(self):
+        return None
+
+    @step(next=["method_5"])
+    def method_3_b(self):
+        return None
+
+
+
+    @end
+    @step
+    def method_6(self):
+        return None
+
+
+
 @pytest.mark.parametrize(
     "flow, expectation",
     [
@@ -329,6 +402,8 @@ class ExampleBadFlow6(BaseFlow):
         (ExampleBadFlow6, does_not_raise()),
         (ExampleNodeFlow, does_not_raise()),
         (ExampleNodeFlow2, does_not_raise()),
+        (CyclicFlowExample, pytest.raises(CyclicFlowException)),
+        (NonCyclicFlowExample, does_not_raise())
     ],
 )
 def test_bad_flows_node_errors(flow, expectation):

@@ -13,6 +13,7 @@ from flowrunner.core.decorators import end, start, step
 from flowrunner.core.helpers import DAGGenerator, GraphValidator
 from flowrunner.runner.flow import BaseFlow
 from flowrunner.system.exceptions import InvalidFlowException
+from tests.test_flowrunner.core.test_base import NonCyclicFlowExample
 from tests.test_flowrunner.runner.test_flow import ExamplePandas
 
 
@@ -230,6 +231,37 @@ class BadFlowExample5(BaseFlow):
         return None
 
 
+
+class BadFlowExample6(BaseFlow):
+    """Bad Example of flow, the method_3_a is not used
+    in any next and its not start
+    """
+
+    @start
+    @step(next=["method_2"])
+    def method_1(self):
+        return None
+
+    @step(next=["method_3"])
+    def method_2(self):
+        return None
+
+    @step(next=["method_3"])
+    def method_3_a(self):
+        return
+
+
+    @step(next=["method_4"])
+    def method_3(self):
+        return None
+
+    @end
+    @step
+    def method_4(self):
+        return None
+
+
+
 @pytest.mark.parametrize(
     "bad_flow_example, expectations",
     [
@@ -238,6 +270,8 @@ class BadFlowExample5(BaseFlow):
         (BadFlowExample3, does_not_raise()),
         (BadFlowExample4, does_not_raise()),
         (BadFlowExample5, pytest.raises(ValueError)),
+        (BadFlowExample6, does_not_raise()),
+        (NonCyclicFlowExample, does_not_raise())
     ],
 )
 def test_graph_validator(bad_flow_example, expectations):
@@ -256,6 +290,8 @@ def test_graph_validator(bad_flow_example, expectations):
         (BadFlowExample3, pytest.raises(InvalidFlowException)),
         (BadFlowExample4, pytest.raises(InvalidFlowException)),
         (BadFlowExample5, pytest.raises(ValueError)),
+        (BadFlowExample6, pytest.raises(InvalidFlowException)),
+        (NonCyclicFlowExample, does_not_raise())
     ],
 )
 def test_graph_validator_with_error(bad_flow_example, expectations):
