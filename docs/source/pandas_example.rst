@@ -45,9 +45,20 @@ Let's show our Flow
 Run the following command to show() your flow. This gives us a description based on the docstrings
 of what our flow is actually going to do, without actually running it
 
-.. code-block:: powershell
+.. tabs::
 
-    python -m flowrunner show pandas_example.py
+   .. group-tab::  cli
+
+      .. code-block:: powershell
+
+        python -m flowrunner show pandas_example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+        # we create an instance of the class and run its corresponding method
+        ExamplePandas().show()
 
 
 You should see the following output:
@@ -114,6 +125,38 @@ You should see the following output:
 
 .. _pandas_example.show:
 
+
+
+Display our Flow
+-------------------
+
+This requires IPython style interactive notebooks
+
+.. tabs::
+
+   .. group-tab::  cli
+
+      .. code-block:: powershell
+
+        python -m flowrunner display pandas_example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+        # we create an instance of the class and run its corresponding method
+        ExamplePandas().display()
+
+
+.. image:: https://user-images.githubusercontent.com/71138854/227732600-7bae5e21-3c9a-4ad9-85da-f926cded2636.png
+  :width: 1500
+  :alt: Display DAG Flow
+
+
+
+.. _pandas_example.display:
+
+
 Run our Flow
 --------------
 
@@ -121,9 +164,20 @@ Now that we have an idea of what our Flow is going to do, let's actually run it.
 
 The following command will run the flow
 
-.. code-block:: powershell
+.. tabs::
 
-    python -m flowrunner run pandas_example.py
+   .. group-tab::  cli
+
+      .. code-block:: powershell
+
+        python -m flowrunner run pandas_example.py
+
+   .. group-tab::  Flow methods
+
+      .. code-block:: python
+
+        # we create an instance of the class and run its corresponding method
+        ExamplePandas().run()
 
 
 You should see the following output
@@ -148,26 +202,6 @@ You should see the following output
 
 
 .. _pandas_example.run:
-
-Display our Flow
--------------------
-
-This requires IPython style interactive notebooks
-
-.. code-block:: python
-
-    ExamplePandas().display()
-
-
-.. mermaid::
-
-    graph TD;
-        create_data(create_data) --> transformation_function_1(transformation_function_1);
-        create_data(create_data) --> transformation_function_2(transformation_function_2);
-        transformation_function_1(transformation_function_1) --> append_data(append_data);
-        transformation_function_2(transformation_function_2) --> append_data(append_data);
-        append_data(append_data) --> show_data(show_data);
-
 
 
 
