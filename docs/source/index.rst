@@ -8,6 +8,7 @@ Welcome to flowrunner's documentation!
    introduction
    getting_started
    pandas_example
+   pyspark_example
    notebook_examples
 
 .. toctree::

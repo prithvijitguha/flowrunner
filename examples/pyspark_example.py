@@ -1,7 +1,19 @@
 # -*- coding: utf-8 -*-
+# Databricks notebook source
+# MAGIC %md
+# MAGIC
+# MAGIC # Install flowrunner
+
+# COMMAND ----------
+
+# MAGIC %pip install --upgrade flowrunner
+
+# COMMAND ----------
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import lit
 
+# -*- coding: utf-8 -*-
 from flowrunner import BaseFlow, end, start, step
 
 spark = SparkSession.builder.getOrCreate()
@@ -74,3 +86,39 @@ class ExampleSparkFlow(BaseFlow):
         """
         self.final_df.show()
         return self.final_df
+
+
+# COMMAND ----------
+
+# create an instance of the flow
+
+example_spark_flow = ExampleSparkFlow()
+
+
+
+# COMMAND ----------
+
+example_spark_flow.show()
+
+# COMMAND ----------
+
+example_spark_flow.validate()
+
+# COMMAND ----------
+
+example_spark_flow.display()
+
+# COMMAND ----------
+
+example_spark_flow.run()
+
+# COMMAND ----------
+
+# MAGIC %pip install python-dateutil
+
+# COMMAND ----------
+
+
+
+
+# COMMAND ----------
