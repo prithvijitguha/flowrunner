@@ -8,8 +8,7 @@ Welcome to flowrunner's documentation!
    introduction
    getting_started
    pandas_example
-   databricks_example
-   jupyter_notebook
+   notebook_examples
 
 .. toctree::
    :caption: Contributing to flowrunner
