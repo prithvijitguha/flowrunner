@@ -31,7 +31,7 @@ release = "2023"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinxcontrib.mermaid", "sphinx_tabs.tabs", "autoapi.extension", "sphinx.ext.napoleon", "sphinx_rtd_theme", "sphinx.ext.autodoc"]
+extensions = ["sphinxcontrib.mermaid", "sphinx_tabs.tabs", "nbsphinx", "autoapi.extension", "sphinx.ext.napoleon", "sphinx_rtd_theme", "sphinx.ext.autodoc"]
 
 # Sphinx autoapi related
 autoapi_type = 'python'
