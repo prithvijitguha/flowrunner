@@ -3,11 +3,14 @@ Welcome to flowrunner's documentation!
 
 .. toctree::
    :caption: Usage and Guides
-   :maxdepth: 2
+   :maxdepth: 1
 
    introduction
    getting_started
    pandas_example
+   pyspark_example
+   databricks_example
+   notebook_examples
 
 .. toctree::
    :caption: Contributing to flowrunner

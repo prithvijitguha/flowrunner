@@ -1,6 +1,6 @@
-.. _pandas_example:
+.. _pyspark_example:
 
-Pandas example with FlowRunner
+PySpark example with FlowRunner
 ================================
 
 
@@ -12,31 +12,29 @@ Pre-Requisites
 ------------------
 
 - :ref:`Getting started page <getting_started>`
-- Install pandas
+- Install pyspark(just binaries, for detailed and complete installation refer this link `Install PySpark on Windows <https://sparkbyexamples.com/pyspark/how-to-install-and-run-pyspark-on-windows/>`_)
     .. code-block:: console
 
-        pip install pandas>=1.5.3
+        pip install pyspark>=3.3.2
 
 
+.. _pyspark_example.pre_requisites:
 
 
-.. _pandas_example.pre_requisites:
-
-
-Example Pandas Flow
+Example PySpark Flow
 ----------------------
 
 Create the following flow inside a file called `pandas_example.py`. For this example we create a dataset, add a date for each dataset
 append/union these together and then show the final dataset.
 
 
-.. literalinclude:: ../../examples/pandas_example.py
+.. literalinclude:: ../../examples/pyspark_example.py
    :language: python
 
 
 
 
-.. _pandas_example.example_pandas_flow:
+.. _pyspark_example.example_pyspark_flow:
 
 
 Let's show our Flow
@@ -58,7 +56,7 @@ of what our flow is actually going to do, without actually running it
       .. code-block:: python
 
         # we create an instance of the class and run its corresponding method
-        ExamplePandas().show()
+        ExamplePySpark().show()
 
 
 You should see the following output:
@@ -66,15 +64,15 @@ You should see the following output:
 .. code-block:: console
 
     Welcome to flowrunner!
-    2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] INFO Found flow ExamplePandas
-    2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] DEBUG Validating flow for ExamplePandas
+    2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] INFO Found flow ExamplePySpark
+    2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] DEBUG Validating flow for ExamplePySpark
     ✅ Validated number of start nodes
     ✅ Validated start nodes 'next' values
     ✅ Validate number of middle_nodes
     ✅ Validated middle_nodes 'next' values
     ✅ Validated end nodes
     ✅ Validated start nodes 'next' values
-    2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] DEBUG Show flow for ExamplePandas
+    2023-03-12 19:50:47 LAPTOP flowrunner.system.logger[22656] DEBUG Show flow for ExamplePySpark
     create_data
 
 
@@ -123,7 +121,7 @@ You should see the following output:
             be more likely to write the data to some final layer/format
 
 
-.. _pandas_example.show:
+.. _pyspark_example.show:
 
 
 
@@ -145,7 +143,7 @@ This requires IPython style interactive notebooks
       .. code-block:: python
 
         # we create an instance of the class and run its corresponding method
-        ExamplePandas().display()
+        ExamplePySpark().display()
 
 
 .. image:: https://user-images.githubusercontent.com/71138854/227732600-7bae5e21-3c9a-4ad9-85da-f926cded2636.png
@@ -154,7 +152,7 @@ This requires IPython style interactive notebooks
 
 
 
-.. _pandas_example.display:
+.. _pyspark_example.display:
 
 
 Run our Flow
@@ -177,14 +175,14 @@ The following command will run the flow
       .. code-block:: python
 
         # we create an instance of the class and run its corresponding method
-        ExamplePandas().run()
+        ExamplePySpark().run()
 
 
 You should see the following output
 
 .. code-block:: console
 
-    2023-03-12 19:54:12 LAPTOP DEBUG Validating flow for ExamplePandas
+    2023-03-12 19:54:12 LAPTOP DEBUG Validating flow for ExamplePySpark
     2023-03-12 19:54:12 LAPTOP WARNING Validation will raise InvalidFlowException if invalid Flow found
     ✅ Validated number of start nodes
     ✅ Validated start nodes 'next' values
@@ -192,7 +190,7 @@ You should see the following output
     ✅ Validated middle_nodes 'next' values
     ✅ Validated end nodes
     ✅ Validated start nodes 'next' values
-    2023-03-12 19:54:12 LAPTOP DEBUG Running flow for ExamplePandas
+    2023-03-12 19:54:12 LAPTOP DEBUG Running flow for ExamplePySpark
             Name snapshot_date  marks
     rank1  Hermione    2023-03-12    100
     rank2     Harry    2023-03-12     85
@@ -201,7 +199,7 @@ You should see the following output
     rank2       Ron    2023-01-01     90
 
 
-.. _pandas_example.run:
+.. _pyspark_example.run:
 
 
 
@@ -213,4 +211,4 @@ You're all set! You can whatever you would like to this Flow as per your use cas
 Additional Resources: :ref:`Notebook Examples(Including Pyspark and Databricks Notebooks) <notebook_examples>`
 
 
-.. _pandas_example.conclusion:
+.. _pyspark_example.conclusion:
