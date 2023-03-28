@@ -12,7 +12,7 @@ Pre-Requisites
 ------------------
 
 - :ref:`Getting started page <getting_started>`
-- Install pyspark
+- Install pyspark(just binaries, for detailed and complete installation refer this link `Install PySpark on Windows <https://sparkbyexamples.com/pyspark/how-to-install-and-run-pyspark-on-windows/>`_)
     .. code-block:: console
 
         pip install pyspark>=3.3.2
@@ -207,6 +207,8 @@ Conclusion
 --------------
 
 You're all set! You can whatever you would like to this Flow as per your use case!
+
+Additional Resources: :ref:`Notebook Examples(Including Pyspark and Databricks Notebooks) <notebook_examples>`
 
 
 .. _pyspark_example.conclusion:
