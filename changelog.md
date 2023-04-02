@@ -27,11 +27,13 @@ flowrunner is a lightweight package to organize and represent Data Engineering/S
 - Improved example usage for pandas
 
 
-## 0.2.1 (TBD)
+## 0.2.1 (2023-04-02)
 
 ### Features:
 - Improved checks for cyclic flows
+- Support for PySpark `pip install flowrunner[pyspark]`
 - Improved validation for stranded middle origin nodes
 
 ### Documentation:
 - Changed theme to sphinx_the_docs
+- Improved documentation examples with Databricks and PySpark
