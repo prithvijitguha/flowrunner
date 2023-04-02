@@ -120,13 +120,9 @@ We can use ``display`` command to visualize your Flow DAG in a notebook or the C
          ExampleFlow().display()
 
 
-.. mermaid::
+.. image:: https://user-images.githubusercontent.com/71138854/227732793-d5ee52a5-a090-4b51-8b63-25e4af4909f2.png
 
-    graph TD;
-        method_1(method_1) --> method_2(method_2);
-        method_1(method_1) --> method_3(method_3);
-        method_2(method_2) --> method_4(method_4);
-        method_3(method_3) --> method_4(method_4);
+
 
 
 .. _getting_started.display:
