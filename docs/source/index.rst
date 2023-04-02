@@ -10,6 +10,7 @@ Welcome to flowrunner's documentation!
    pandas_example
    pyspark_example
    notebook_examples
+   api_reference
 
 .. toctree::
    :caption: Contributing to flowrunner
