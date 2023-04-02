@@ -9,8 +9,8 @@ Welcome to flowrunner's documentation!
    getting_started
    pandas_example
    pyspark_example
-   databricks_example
    notebook_examples
+   api_reference
 
 .. toctree::
    :caption: Contributing to flowrunner
