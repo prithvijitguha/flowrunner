@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+<meta name="description" content="Diagram showing the FlowChart for ExamplePandas"/>
+<style>
+  /* This keeps the DAG centered */
+  .mermaid {
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+</style>
+</head>
+<title>ExamplePandas</title>
+<body>
+<!-- We use pre so that these parts are loaded first -->
+<pre class="mermaid">
+graph TD;
+subgraph step-create_data
+create_data(create_data) ~~~ create_data_description[["""
+        This method we create the dataset we are going use. In real use cases,
+        you'll have to read from a source (csv, parquet, etc)
+
+        For this example we create two dataframes for students ranked by marked scored
+        for when they attempted the example on 1st January 2023 and 12th March 2023
+
+        After creating the dataset we pass it to the next methods
+
+        - transformation_function_1
+        - transformation_function_2
+        """]];
+end;
+step-create_data ==> step-transformation_function_1;
+step-create_data ==> step-transformation_function_2;
+subgraph step-transformation_function_1
+transformation_function_1(transformation_function_1) ~~~ transformation_function_1_description[["""
+        Here we add a snapshot_date to the input dataframe of 2023-03-12
+        """]];
+end;
+step-transformation_function_1 ==> step-append_data;
+subgraph step-transformation_function_2
+transformation_function_2(transformation_function_2) ~~~ transformation_function_2_description[["""
+        Here we add a snapshot_date to the input dataframe of 2023-01-01
+        """]];
+end;
+step-transformation_function_2 ==> step-append_data;
+subgraph step-append_data
+append_data(append_data) ~~~ append_data_description[["""
+        Here we append the two dataframe together
+        """]];
+end;
+step-append_data ==> step-show_data;
+subgraph step-show_data
+show_data(show_data) ~~~ show_data_description[["""
+        Here we show the new final dataframe of aggregated data. However in real use cases. It would
+        be more likely to write the data to some final layer/format
+        """]];
+end;
+
+</pre>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  // We use the mermaid API to change the theme page wide
+  mermaid.initialize({
+  theme: 'base',
+  themeVariables: {
+      'primaryColor': '#5A5A5A',
+      'primaryTextColor': 'white',
+      'primaryBorderColor': '#5A5A5A',
+      'lineColor': '#F8B229',
+      'secondaryColor': '#006100',
+      'tertiaryColor': '#D3D3D3',
+      'tertiaryTextColor': 'black',
+    }
+  })
+</script>
+  </body>
+</html>
+</body>
+</html>

@@ -23,6 +23,7 @@ Commands:
 
 """
 import inspect
+import os
 from pydoc import importfile
 
 import click
@@ -150,12 +151,46 @@ def display(filepath: str, path: str = None, description:bool = True):
         description: Optional argument for descriptive or non descriptive dag, default is descriptive
 
     Returns:
-        Runs the Flow
+        Displays the flows
     """
+    # if we pass only a single filepath as input then we visualize that filepath
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
         logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
         flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
+
+
+
+
+@cli.command()
+@click.option("--path")
+@click.option("--description", default=True)
+@click.argument("directory")
+def display_dir(directory: str, path: str = None, description:bool = True):
+    """Command to visualize a directory of Flows as Directed Acyclical Graph
+
+    Examples:
+        python -m flowrunner display_dir /my_path/to/flow_file.py
+
+    Args:
+        path: A string value of path to save flow in. Defaults to current directory
+        description: Optional argument for descriptive or non descriptive dag, default is descriptive
+        directory: A string value of directory to check for flows
+
+    Returns:
+        Displays the flows
+    """
+    flow_list = [] # list of flows to store all files
+    # then we susbtitute that value as filepath
+    for filepath in os.listdir(directory):
+        flow_list = _read_python_file(os.path.join(directory, filepath))
+        for flow_class in flow_list:
+            logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
+            flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
+
+
+
+
 
 
 if __name__ == "__main__":

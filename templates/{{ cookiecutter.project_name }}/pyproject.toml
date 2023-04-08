@@ -1,0 +1,39 @@
+[build-system]
+# Minimum requirements for the build system to execute.
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.project_name }}"
+authors = [
+    {name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.email }}"},
+]
+
+version = "0.0.0"
+
+
+description = "{{ cookiecutter.description }}"
+readme = "readme.md"
+requires-python = ">=3.8"
+keywords = ["Data Engineering", "Data Science"]
+license = {file = "LICENSE"}
+classifiers = [
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Topic :: Scientific/Engineering',
+]
+dependencies = [
+    'requests',
+    'importlib-metadata; python_version<="3.8"',
+    'flowrunner',
+    'pandas<=1.5.3'
+]
+
+
+
+
+[project.urls]
+Homepage = ""
+Documentation = ""
+Issues = ""
