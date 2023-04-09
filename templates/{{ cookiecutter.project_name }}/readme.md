@@ -7,6 +7,7 @@
 **{{ cookiecutter.project_slug }}** is a project to create and store flows for ETL workflows. Its based on the flowrunner
 package
 
+{{ cookiecutter.description }}
 
 ![flowrunner](https://github.com/prithvijitguha/flowrunner)
 

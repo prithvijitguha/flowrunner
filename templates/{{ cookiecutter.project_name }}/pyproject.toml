@@ -12,7 +12,7 @@ authors = [
 version = "0.0.0"
 
 
-description = ""
+description = "{{ cookiecutter.description }}"
 readme = "readme.md"
 requires-python = ">=3.8"
 keywords = ["Data Engineering", "Data Science"]
