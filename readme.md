@@ -304,7 +304,7 @@ class ExamplePySpark(BaseFlow):
 
 Now when you run `ExamplePySpark().display()` you get the following output
 
-![image](https://user-images.githubusercontent.com/71138854/227732600-7bae5e21-3c9a-4ad9-85da-f926cded2636.png)
+![image](https://user-images.githubusercontent.com/71138854/230785408-38e476b2-f58b-4150-b315-ea958fd73359.png)
 
 ## Documentation
 Check out the latest documentation here: [FlowRunner documentation](https://flowrunner.readthedocs.io/en/latest/)
