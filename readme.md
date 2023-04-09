@@ -37,6 +37,16 @@ Or install from source
 pip install git+https://github.com/prithvijitguha/flowrunner@main
 ```
 
+<div id="termynal" data-termynal>
+    <span data-ty="input">pip install spaCy</span>
+    <span data-ty="progress"></span>
+    <span data-ty>Successfully installed spacy</span>
+</div>
+
+
+<script src="termynal.js" data-termynal-container="#termynal"></script>
+<link rel="stylesheet" href="termynal.css">
+
 
 ## Usage
 
