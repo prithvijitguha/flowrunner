@@ -16,3 +16,9 @@ Source code is hosted at https://github.com/prithvijitguha/flowRunner
 ```sh
 pip install {{ cookiecutter.project_slug }}
 ```
+
+
+## Create flows
+```sh
+python -m flowrunner display-dir myflows --path='html_dags'
+```
