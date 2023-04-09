@@ -38,3 +38,12 @@ flowrunner is a lightweight package to organize and represent Data Engineering/S
 - Changed theme to sphinx_the_docs
 - Added API reference documentation
 - Improved documentation examples with Databricks and PySpark
+
+
+## 0.2.2 (TBD)
+
+### Features:
+- Add cookie cutter template
+
+### Documentation:
+- Fixed broken notebook example links
