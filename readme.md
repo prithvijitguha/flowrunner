@@ -235,6 +235,8 @@ class ExamplePySpark(BaseFlow):
     @step(next=["transformation_function_1", "transformation_function_2"])
     def create_data(self):
         """
+        This is an example where we use the Spark engine instead of Pandas
+
         This method we create the dataset we are going use. In real use cases,
         you'll have to read from a source (csv, parquet, etc)
 
