@@ -118,6 +118,9 @@ where=[
 [project.scripts]
 cli = "flowrunner.cli:cli"
 
+[tool.setuptools]
+py-modules = ["flowrunner"]
+
 [tool.pytest.ini_options]
 pythonpath = [
     "flowrunner",

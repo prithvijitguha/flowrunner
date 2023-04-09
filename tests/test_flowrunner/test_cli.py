@@ -33,7 +33,7 @@ def test_run():
 
 
 def test_display(temp_directory_fixture):
-    """Test to check cli::flowchart function, we use a temporary directory
+    """Test to check cli::display function, we use a temporary directory
     fixture for saving"""
     runner = CliRunner()
     result = runner.invoke(
@@ -42,7 +42,7 @@ def test_display(temp_directory_fixture):
     assert result.exit_code == 0
 
 def test_display_description(temp_directory_fixture):
-    """Test to check cli::flowchart function, we use a temporary directory
+    """Test to check cli::display function, we use a temporary directory
     fixture for saving. We use the description flag"""
     runner = CliRunner()
     result = runner.invoke(
@@ -52,7 +52,7 @@ def test_display_description(temp_directory_fixture):
 
 
 def test_display_directory(temp_directory_fixture):
-    """Test to check cli::flowchart function, we use a temporary directory
+    """Test to check cli::display_dir function, we use a temporary directory
     fixture for saving. We use the description flag"""
     runner = CliRunner()
     result = runner.invoke(

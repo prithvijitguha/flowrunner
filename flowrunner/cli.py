@@ -183,10 +183,13 @@ def display_dir(directory: str, path: str = None, description:bool = True):
     flow_list = [] # list of flows to store all files
     # then we susbtitute that value as filepath
     for filepath in os.listdir(directory):
-        flow_list = _read_python_file(os.path.join(directory, filepath))
-        for flow_class in flow_list:
-            logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
-            flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
+        # check if the file is python file otherwise ignore otherwise
+        # sometimes other files can get in the way and cause errors
+        if filepath.endswith(".py"):
+            flow_list = _read_python_file(os.path.join(directory, filepath))
+            for flow_class in flow_list:
+                logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
+                flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
 
 
 
