@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+"""An example flow using Pandas"""
+
 import pandas as pd
 
 from flowrunner import BaseFlow, end, start, step
 
 
 class ExamplePandas(BaseFlow):
+    """"An Example ETL workflow using Pandas"""
     @start
     @step(next=["transformation_function_1", "transformation_function_2"])
     def create_data(self):

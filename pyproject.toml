@@ -159,7 +159,8 @@ ignore-paths = [
 ]
 ignored-modules=[
     "pandas",
-    "pytest"
+    "pytest",
+    "flowrunner"
 ]
 
 
