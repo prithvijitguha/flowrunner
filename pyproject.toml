@@ -124,6 +124,7 @@ py-modules = ["flowrunner"]
 [tool.pytest.ini_options]
 pythonpath = [
     "flowrunner",
+    "templates",
     "tests"
     ]
 testpaths = [
