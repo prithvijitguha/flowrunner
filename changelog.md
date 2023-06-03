@@ -46,9 +46,5 @@ flowrunner is a lightweight package to organize and represent Data Engineering/S
 - Add cookie cutter template
 - Improved logging
 
-## Build:
-- Removed coloredlogs dependency
-- Added colorama dependency
-
 ### Documentation:
 - Fixed broken notebook example links
