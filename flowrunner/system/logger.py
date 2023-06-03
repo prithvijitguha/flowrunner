@@ -6,7 +6,7 @@ import logging
 from colorama import Fore, Style
 
 
-LOG_FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s | %(filename)s:%(lineno)d"
+LOG_FORMAT='%(levelname)s | %(message)s | %(asctime)s | %(name)s | %(process)d '
 
 class ColoredOuputFormatter(logging.Formatter):
     # color schemes
@@ -15,7 +15,7 @@ class ColoredOuputFormatter(logging.Formatter):
     warning_color = Fore.YELLOW
     error_color = Fore.MAGENTA
     critical_color = Fore.RED
-    format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
+    format = LOG_FORMAT
 
     # emoji schemes
     debug_emoji = "🐛"
@@ -40,11 +40,11 @@ class ColoredOuputFormatter(logging.Formatter):
 
 # create logger with 'spam_application'
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 # create console handler with a higher log level
 ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+ch.setLevel(logging.DEBUG)
 
 ch.setFormatter(ColoredOuputFormatter())
 
@@ -52,4 +52,4 @@ logger.addHandler(ch)
 # suppress the py4j logger if its there
 py4jlogger = logging.getLogger("py4j")
 py4jlogger.addHandler(ch)
-py4jlogger.setLevel(logging.INFO)
+py4jlogger.setLevel(logging.DEBUG)
