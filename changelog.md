@@ -40,10 +40,15 @@ flowrunner is a lightweight package to organize and represent Data Engineering/S
 - Improved documentation examples with Databricks and PySpark
 
 
-## 0.2.2 (TBD)
+## 0.2.2 (2023-06-03)
 
 ### Features:
 - Add cookie cutter template
+- Improved logging
+
+## Build:
+- Removed coloredlogs dependency
+- Added colorama dependency
 
 ### Documentation:
 - Fixed broken notebook example links
