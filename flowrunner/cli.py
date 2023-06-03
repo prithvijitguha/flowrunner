@@ -19,8 +19,7 @@ Commands:
   run       Command to run a Flow
   show      Command to show the order of iteration of a Flow
   validate  Command to validate a Flow
-
-
+  directory Command to visualize a directory
 """
 import inspect
 import os
