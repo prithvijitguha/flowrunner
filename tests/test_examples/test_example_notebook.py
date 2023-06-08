@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 # %%
-import sys
-import subprocess
+# pylint: skip-file
 import os
-
+import subprocess
+import sys
 
 subprocess.check_call([sys.executable, "-m", "pip", "install", "pytest"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "ipytest"])
@@ -12,15 +13,13 @@ subprocess.check_call([sys.executable, "-m", "pip", "install", "."])
 subprocess.check_call([sys.executable, "--version"])
 subprocess.check_call([sys.executable, "-m", "pip", "list"])
 
-# %%
-import pytest
 import ipytest
-import flowrunner # make sure we can import our wheel correctly
-
-
 # %%
 import pandas as pd
+# %%
+import pytest
 
+import flowrunner  # make sure we can import our wheel correctly
 from flowrunner import BaseFlow, end, start, step
 
 
@@ -105,6 +104,3 @@ def test_display():
 
 
 # %%
-
-
-
