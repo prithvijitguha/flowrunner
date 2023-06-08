@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 """Module to test that cookie cutter is working as expected"""
 import pytest
+
+# pylint: disable=redefined-outer-name
 
 @pytest.fixture
 def custom_template(tmpdir):
