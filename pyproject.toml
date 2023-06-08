@@ -34,6 +34,10 @@ dependencies = [
     'cookiecutter>=2.1.1'
 ]
 
+[tool.setuptools]
+packages = [
+    "flowrunner"
+]
 
 
 
@@ -108,11 +112,6 @@ pyspark = [
 ]
 
 
-[options]
-package_dir=[
-    "flowrunner"
-]
-
 
 [options.packages.find]
 where=[
@@ -123,13 +122,10 @@ where=[
 [project.scripts]
 cli = "flowrunner.cli:cli"
 
-[tool.setuptools]
-py-modules = ["flowrunner"]
 
 [tool.pytest.ini_options]
 pythonpath = [
     "flowrunner",
-    "templates",
     "tests"
     ]
 testpaths = [
