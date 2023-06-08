@@ -25,13 +25,13 @@ class ExamplePySpark(BaseFlow):
         """
 
         data1 = [
-            ("Hermione",100),
+            ("Hermione", 100),
             ("Harry", 85),
             ("Ron", 75),
         ]
 
-        data2 =  [
-            ("Hermione",100),
+        data2 = [
+            ("Hermione", 100),
             ("Harry", 90),
             ("Ron", 80),
         ]

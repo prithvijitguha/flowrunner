@@ -4,6 +4,7 @@ import pytest
 
 # pylint: disable=redefined-outer-name
 
+
 @pytest.fixture
 def custom_template(tmpdir):
     """Function to create cookie cutter template"""

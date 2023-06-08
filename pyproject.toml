@@ -178,3 +178,6 @@ max-line-length=145
 target-version = ['py38', 'py39']
 required-version = '23.1.0'
 include = ["flowrunner/*.py", "tests/*.py"]
+
+[tool.isort]
+skip = [".gitignore", ".dockerignore", "tests/test_examples/test_example_notebook.py"]

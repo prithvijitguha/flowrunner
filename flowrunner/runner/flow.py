@@ -26,8 +26,12 @@ class BaseFlow:
 
     """
 
-    data_store: dict = field(default_factory=lambda: {}) # a way to store any data and output from methods if any
-    param_store: dict = field(default_factory=lambda: {}) # a way to store any input params to the Flow
+    data_store: dict = field(
+        default_factory=lambda: {}
+    )  # a way to store any data and output from methods if any
+    param_store: dict = field(
+        default_factory=lambda: {}
+    )  # a way to store any input params to the Flow
 
     def __post_init__(self):
         """Post init to add attributes like levels
