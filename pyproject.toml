@@ -34,6 +34,10 @@ dependencies = [
     'cookiecutter>=2.1.1'
 ]
 
+[tool.setuptools]
+packages = [
+    "flowrunner"
+]
 
 
 
@@ -61,7 +65,7 @@ doc = [
     "coverage<=7.2.1",
     "pytest>=7.2.1",
     "pylint>=2.17.0",
-    "colorama<=0.4.6"
+    "coloredlogs<=15.0.1"
 ]
 
 dev = [
@@ -80,7 +84,7 @@ dev = [
     "pylint>=2.17.0",
     "pyspark>=3.3.2",
     "cookiecutter>=2.1.1",
-    "colorama<=0.4.6"
+    "coloredlogs<=15.0.1"
 ]
 test = [
     "click>=8.1.3",
@@ -97,7 +101,7 @@ test = [
     "pylint>=2.17.0",
     "pyspark>=3.3.2",
     "cookiecutter>=2.1.1",
-    "colorama<=0.4.6"
+    "coloredlogs<=15.0.1"
 ]
 pandas = [
     "pandas>=1.5.3"
@@ -107,11 +111,6 @@ pyspark = [
     "pyspark>=3.3.2"
 ]
 
-
-[options]
-package_dir=[
-    "flowrunner"
-]
 
 
 [options.packages.find]
@@ -123,13 +122,10 @@ where=[
 [project.scripts]
 cli = "flowrunner.cli:cli"
 
-[tool.setuptools]
-py-modules = ["flowrunner"]
 
 [tool.pytest.ini_options]
 pythonpath = [
     "flowrunner",
-    "templates",
     "tests"
     ]
 testpaths = [
