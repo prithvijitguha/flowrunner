@@ -3,6 +3,7 @@
 Module for logging
 """
 import logging
+
 import coloredlogs  # pylint: disable=import-error
 
 LOG_FORMAT='%(levelname)s | %(message)s | %(asctime)s | %(hostname)s | %(name)s | %(process)d '

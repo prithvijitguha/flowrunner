@@ -1,7 +1,5 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-exclude:
-    '[^docs/source/_static/]' # the databricks notebook is larger but required, compression did not work, and templates because that makes an issue for cookic
 
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
