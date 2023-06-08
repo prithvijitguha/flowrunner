@@ -319,8 +319,6 @@ class ExampleBadFlow6(BaseFlow):
         return None
 
 
-
-
 class CyclicFlowExample(BaseFlow):
     """Bad Example of flow, the method_3_a references the start again,
     this can cause the graph become cyclic
@@ -339,7 +337,6 @@ class CyclicFlowExample(BaseFlow):
     def method_3_a(self):
         return
 
-
     @step(next=["method_4"])
     def method_3(self):
         return None
@@ -351,8 +348,7 @@ class CyclicFlowExample(BaseFlow):
 
 
 class NonCyclicFlowExample(BaseFlow):
-    """Non cyclic flow, should not raise an error
-    """
+    """Non cyclic flow, should not raise an error"""
 
     @start
     @step(next=["method_2"])
@@ -367,11 +363,9 @@ class NonCyclicFlowExample(BaseFlow):
     def method_3_a(self):
         return
 
-
     @step(next=["method_6"])
     def method_5(self):
         return None
-
 
     @end
     @step
@@ -382,13 +376,10 @@ class NonCyclicFlowExample(BaseFlow):
     def method_3_b(self):
         return None
 
-
-
     @end
     @step
     def method_6(self):
         return None
-
 
 
 @pytest.mark.parametrize(
@@ -403,7 +394,7 @@ class NonCyclicFlowExample(BaseFlow):
         (ExampleNodeFlow, does_not_raise()),
         (ExampleNodeFlow2, does_not_raise()),
         (CyclicFlowExample, pytest.raises(CyclicFlowException)),
-        (NonCyclicFlowExample, does_not_raise())
+        (NonCyclicFlowExample, does_not_raise()),
     ],
 )
 def test_bad_flows_node_errors(flow, expectation):

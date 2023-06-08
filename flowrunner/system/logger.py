@@ -6,7 +6,9 @@ import logging
 
 import coloredlogs  # pylint: disable=import-error
 
-LOG_FORMAT='%(levelname)s | %(message)s | %(asctime)s | %(hostname)s | %(name)s | %(process)d '
+LOG_FORMAT = (
+    "%(levelname)s | %(message)s | %(asctime)s | %(hostname)s | %(name)s | %(process)d "
+)
 
 # Create a logger object.
 logger = logging.getLogger(__name__)

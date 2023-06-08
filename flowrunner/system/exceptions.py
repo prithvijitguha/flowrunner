@@ -10,7 +10,6 @@ class InvalidFlowException(Exception):
     pass
 
 
-
 class CyclicFlowException(Exception):
     """Exception when there is a Cyclic flow detected"""
 

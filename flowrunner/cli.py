@@ -45,7 +45,6 @@ def cli():
     """
 
 
-
 @cli.command()
 @click.argument("filepath")
 def validate(filepath: str):
@@ -125,10 +124,13 @@ def _read_python_file(file_path: str) -> BaseFlow:
     # flows = [] # a list to store all the subclass of BaseFlow
     flows = [
         element
-        for element in module_elements_dict.values() # iterate over all the elements in the file
-        if inspect.isclass(element) # check if the element we are iterating over is a class
+        for element in module_elements_dict.values()  # iterate over all the elements in the file
+        if inspect.isclass(
+            element
+        )  # check if the element we are iterating over is a class
         and issubclass(element, BaseFlow)  # check if subclass of BaseFlow
-        and element.__name__ != BaseFlow.__name__  # we make sure we pick only the subclass of BaseFlow and not BaseFlow itself
+        and element.__name__
+        != BaseFlow.__name__  # we make sure we pick only the subclass of BaseFlow and not BaseFlow itself
     ]
     flow_names = [flow.__name__ for flow in flows]
     logger.info("Found Flows: %s", flow_names)
@@ -139,7 +141,7 @@ def _read_python_file(file_path: str) -> BaseFlow:
 @click.option("--path")
 @click.option("--description", default=True)
 @click.argument("filepath")
-def display(filepath: str, path: str = None, description:bool = True):
+def display(filepath: str, path: str = None, description: bool = True):
     """Command to visualize a Flow as Directed Acyclical Graph
 
     Examples:
@@ -156,16 +158,16 @@ def display(filepath: str, path: str = None, description:bool = True):
     flow_list = _read_python_file(filepath)
     for flow_class in flow_list:
         logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
-        flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
-
-
+        flow_class().dag(
+            save_file=True, path=path, description=description
+        )  # we keep save file as True, assumption being if we are running through cli then we are going to save
 
 
 @cli.command()
 @click.option("--path")
 @click.option("--description", default=True)
 @click.argument("directory")
-def display_dir(directory: str, path: str = None, description:bool = True):
+def display_dir(directory: str, path: str = None, description: bool = True):
     """Command to visualize a directory of Flows as Directed Acyclical Graph
 
     Examples:
@@ -179,7 +181,7 @@ def display_dir(directory: str, path: str = None, description:bool = True):
     Returns:
         Displays the flows
     """
-    flow_list = [] # list of flows to store all files
+    flow_list = []  # list of flows to store all files
     # then we susbtitute that value as filepath
     for filepath in os.listdir(directory):
         # check if the file is python file otherwise ignore otherwise
@@ -188,11 +190,9 @@ def display_dir(directory: str, path: str = None, description:bool = True):
             flow_list = _read_python_file(os.path.join(directory, filepath))
             for flow_class in flow_list:
                 logger.info("Creating Flow DAG for flow %s", flow_class.__name__)
-                flow_class().dag(save_file=True, path=path, description=description) # we keep save file as True, assumption being if we are running through cli then we are going to save
-
-
-
-
+                flow_class().dag(
+                    save_file=True, path=path, description=description
+                )  # we keep save file as True, assumption being if we are running through cli then we are going to save
 
 
 if __name__ == "__main__":

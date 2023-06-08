@@ -20,7 +20,9 @@ from tests.test_flowrunner.runner.test_flow import ExamplePandas
 @pytest.fixture(scope="module")
 def expected_html_content():
     """Expected html output for dags"""
-    with open("tests/test_flowrunner/core/examplepandas.html", encoding="utf-8") as html_output_file:
+    with open(
+        "tests/test_flowrunner/core/examplepandas.html", encoding="utf-8"
+    ) as html_output_file:
         return html_output_file.readlines()
 
 
@@ -79,6 +81,7 @@ def expected_string_descriptive_output():
     '''
     return expected_js_descriptive
 
+
 @pytest.fixture(scope="module")
 def expected_non_descriptive_string_output():
     """Fixture for non descriptive output for
@@ -124,6 +127,7 @@ def expected_string_descriptive_output_false():
     """
 
     return expected_js_descriptive_false
+
 
 class DescriptionExampleFlow(BaseFlow):
     @start
@@ -231,7 +235,6 @@ class BadFlowExample5(BaseFlow):
         return None
 
 
-
 class BadFlowExample6(BaseFlow):
     """Bad Example of flow, the method_3_a is not used
     in any next and its not start
@@ -250,7 +253,6 @@ class BadFlowExample6(BaseFlow):
     def method_3_a(self):
         return
 
-
     @step(next=["method_4"])
     def method_3(self):
         return None
@@ -259,7 +261,6 @@ class BadFlowExample6(BaseFlow):
     @step
     def method_4(self):
         return None
-
 
 
 @pytest.mark.parametrize(
@@ -271,7 +272,7 @@ class BadFlowExample6(BaseFlow):
         (BadFlowExample4, does_not_raise()),
         (BadFlowExample5, pytest.raises(ValueError)),
         (BadFlowExample6, does_not_raise()),
-        (NonCyclicFlowExample, does_not_raise())
+        (NonCyclicFlowExample, does_not_raise()),
     ],
 )
 def test_graph_validator(bad_flow_example, expectations):
@@ -291,7 +292,7 @@ def test_graph_validator(bad_flow_example, expectations):
         (BadFlowExample4, pytest.raises(InvalidFlowException)),
         (BadFlowExample5, pytest.raises(ValueError)),
         (BadFlowExample6, pytest.raises(InvalidFlowException)),
-        (NonCyclicFlowExample, does_not_raise())
+        (NonCyclicFlowExample, does_not_raise()),
     ],
 )
 def test_graph_validator_with_error(bad_flow_example, expectations):
@@ -309,15 +310,16 @@ def test_dag_generator(expected_js_non_descriptive):
     as false which will be non -descriptive
     We iterate line by line to find differences
     """
-    actual_js_non_descriptive_string = DAGGenerator()._create_descriptive_dag(ExamplePandas(), description=False)
-
+    actual_js_non_descriptive_string = DAGGenerator()._create_descriptive_dag(
+        ExamplePandas(), description=False
+    )
 
     for actual_line, expected_line in zip(
-        actual_js_non_descriptive_string.split("\n"), expected_js_non_descriptive.split("\n")
+        actual_js_non_descriptive_string.split("\n"),
+        expected_js_non_descriptive.split("\n"),
     ):
-        pytest.approx(
-            actual_line.strip(), expected_line.strip()
-        )
+        pytest.approx(actual_line.strip(), expected_line.strip())
+
 
 def test_dag(expected_html_content):
     """Function to test the DAGGenerator().dag() method"""
@@ -350,32 +352,33 @@ def test_create_descriptive_dag(expected_string_descriptive_output):
     for actual_line, expected_line in zip(
         actual_descriptive_js_string.strip().split(),
         expected_string_descriptive_output.strip().split(),
-
-    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+        # there is a bug in the FlowRunner class where order between functions at same level is misplaced
     ):
         pytest.approx(actual_line, expected_line)
 
 
-def test_choose_dag(expected_string_descriptive_output, expected_non_descriptive_string_output):
+def test_choose_dag(
+    expected_string_descriptive_output, expected_non_descriptive_string_output
+):
     """Test to check if functionality of choosing dag
     works as expected"""
     flow_instance = DescriptionExampleFlow()
-    actual_descriptive_js_string =  DAGGenerator()._create_descriptive_dag(flow_instance)
+    actual_descriptive_js_string = DAGGenerator()._create_descriptive_dag(flow_instance)
 
     for actual_line, expected_line in zip(
         actual_descriptive_js_string.strip().split(),
         expected_string_descriptive_output.strip().split(),
-
-    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+        # there is a bug in the FlowRunner class where order between functions at same level is misplaced
     ):
         pytest.approx(actual_line, expected_line)
 
-    actual_non_descriptive_output = DAGGenerator()._create_descriptive_dag(flow_instance, description=False)
+    actual_non_descriptive_output = DAGGenerator()._create_descriptive_dag(
+        flow_instance, description=False
+    )
 
     for actual_line_non_descrip, expected_line_non_descrip in zip(
         actual_non_descriptive_output.strip().split(),
         expected_non_descriptive_string_output.strip().split(),
-
-    # there is a bug in the FlowRunner class where order between functions at same level is misplaced
+        # there is a bug in the FlowRunner class where order between functions at same level is misplaced
     ):
         pytest.approx(actual_line_non_descrip, expected_line_non_descrip)
