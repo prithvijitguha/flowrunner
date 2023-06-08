@@ -46,11 +46,17 @@ class Node:
                 # iterate over each elment in the list and peform checks on them
                 # we stop these errors at Node level as they can break the GraphOptions and Graph objects
                 for next_node in self.function_reference.next:
-                    if not isinstance(next_node, str): # if its not string raise a Type Error
-                        raise TypeError(f"Elements of 'next' can only be 'str' type, found {type(next_node)} for {next_node}")
-                    if self.function_reference.next.count(next_node) > 1: # if the count it means its a duplicate next node
+                    if not isinstance(
+                        next_node, str
+                    ):  # if its not string raise a Type Error
+                        raise TypeError(
+                            f"Elements of 'next' can only be 'str' type, found {type(next_node)} for {next_node}"
+                        )
+                    if (
+                        self.function_reference.next.count(next_node) > 1
+                    ):  # if the count it means its a duplicate next node
                         raise ValueError(
-                        f"'next' values are not unique, got duplicate values for '{next_node}'"
+                            f"'next' values are not unique, got duplicate values for '{next_node}'"
                         )
 
                 self.next = self.function_reference.next
@@ -58,10 +64,10 @@ class Node:
                 # we make sure that the next is put in a list
                 self.next = [self.function_reference.next]
 
-            else: # We do not allow any other types other than list and str
+            else:  # We do not allow any other types other than list and str
                 raise TypeError(
-                        f"'next' value can only be 'list of str' or 'str', found: {type(self.function_reference.next)}"
-                    )
+                    f"'next' value can only be 'list of str' or 'str', found: {type(self.function_reference.next)}"
+                )
         else:
             self.next = []
 
@@ -159,24 +165,31 @@ class GraphOptions:
                 # then we do other checks on it
                 if hasattr(func, "is_step"):
                     # START NODES
-                    if hasattr(func, "is_start") and not hasattr(func, "is_end"):  # IF 'is_step'== YES 'is_start'== NO 'is_end' THEN 'start'
+                    if hasattr(func, "is_start") and not hasattr(
+                        func, "is_end"
+                    ):  # IF 'is_step'== YES 'is_start'== NO 'is_end' THEN 'start'
                         self.start.append(Node(name_func, func))
 
                     # MIDDLE NODES
-                    elif not hasattr(func, "is_start") and not hasattr(func, "is_end"): # IF 'is_step'== YES AND 'is_start' NO 'is_end' == NO THEN 'middle_nodes'
+                    elif not hasattr(func, "is_start") and not hasattr(
+                        func, "is_end"
+                    ):  # IF 'is_step'== YES AND 'is_start' NO 'is_end' == NO THEN 'middle_nodes'
                         self.middle_nodes.append(Node(name_func, func))
 
-                    elif hasattr(func, "is_start") and hasattr(func, "is_end"): # edge case if has step and start and end
+                    elif hasattr(func, "is_start") and hasattr(
+                        func, "is_end"
+                    ):  # edge case if has step and start and end
                         raise ValueError(f"Not cannot have both start and end, {func}")
 
-
                     # END NODES
-                    elif hasattr(func, "is_end") and not hasattr(func, "is_start"):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
+                    elif hasattr(func, "is_end") and not hasattr(
+                        func, "is_start"
+                    ):  # IF 'is_step' == YES AND 'is_end'==YES THEN 'end'
                         self.end.append(Node(name_func, func))
                         if func.next:
-                            raise ValueError(f"End nodes cannot have next attribute {func}") # check if there is next attribute, if it is, then raise an error
-
-
+                            raise ValueError(
+                                f"End nodes cannot have next attribute {func}"
+                            )  # check if there is next attribute, if it is, then raise an error
 
     def __repr__(self):
         """String representation of class
@@ -268,7 +281,9 @@ class Graph:
                 next = [self.node_map[next_node] for next_node in node.next]
                 # add the next to the list
                 next_level += next
-                if node in checked_nodes: # we make sure that if we have visited this node then we shouldn't check it again
+                if (
+                    node in checked_nodes
+                ):  # we make sure that if we have visited this node then we shouldn't check it again
                     logger.error("node=%s is cyclic", node)
                     raise CyclicFlowException(f"DAG is cyclic due to node={node}")
 
@@ -276,7 +291,9 @@ class Graph:
             next_level = list(
                 set(next_level)
             )  # we make sure the nodes in the level are unique
-            if not next_level: # once we reach the end with no next then we stop
+            if not next_level:  # once we reach the end with no next then we stop
                 break
-            self.levels.append(next_level) # append the level to the main level as a 2d array
-            temp_level = next_level # then the next level becomes the temp_level to continue the loop
+            self.levels.append(
+                next_level
+            )  # append the level to the main level as a 2d array
+            temp_level = next_level  # then the next level becomes the temp_level to continue the loop

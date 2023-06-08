@@ -14,8 +14,10 @@ subprocess.check_call([sys.executable, "--version"])
 subprocess.check_call([sys.executable, "-m", "pip", "list"])
 
 import ipytest
+
 # %%
 import pandas as pd
+
 # %%
 import pytest
 
@@ -89,18 +91,21 @@ class ExamplePandas(BaseFlow):
 # %%
 example_pandas = ExamplePandas()
 
+
 def test_run():
     example_pandas.run()
+
 
 def test_show():
     example_pandas.show()
 
+
 def test_validate():
     example_pandas.validate()
 
+
 def test_display():
     example_pandas.display()
-
 
 
 # %%

@@ -122,7 +122,6 @@ class GraphValidator:
             return (False, "No end present, please specify with '@end'")
         return (True, "Validated end nodes")
 
-
     def check_step_not_included_next(self) -> Tuple[bool, str]:
         """Method to validate that a step mentioned is used in the next.
 
@@ -132,15 +131,16 @@ class GraphValidator:
             A tuple of (test_result, output_message) where test_result will be a True/False bool and output_message is a string value
             of the output message.
         """
-        all_nodes = self.graph.nodes# get all the function names
+        all_nodes = self.graph.nodes  # get all the function names
         # levels attribute in the graph object contains a list of string all the next nodes contained in a
         # 2 dimensional array
-        all_nexts = list(chain(*self.graph.levels)) # we use itertools chain to flatten the 2d array to 1d
+        all_nexts = list(
+            chain(*self.graph.levels)
+        )  # we use itertools chain to flatten the 2d array to 1d
         bad_nodes = [node for node in all_nodes if node not in all_nexts]
         if bad_nodes:
             return (False, f"{bad_nodes} not in any `next=[]` value")
         return (True, "Validated step next mentions")
-
 
     def get_validation_suite(self):
         """Define validation suite, more methods
@@ -159,7 +159,7 @@ class GraphValidator:
             self.validate_length_middle_nodes,
             self.validate_middle_next_nodes,
             self.validate_length_end_nodes,
-            self.check_step_not_included_next
+            self.check_step_not_included_next,
         ]
         return validation_suite
 
@@ -239,30 +239,34 @@ class DAGGenerator:
             """graph TD;\n"""  # this will be passed to mermaid-js for rendering
         )
 
-
-
         # we iterate over the graph levels
         for level in graph.levels:
             # iterate over each node in level
             for node in level:
-                subgraph_string = 'subgraph ' # create the subgraph
+                subgraph_string = "subgraph "  # create the subgraph
                 # we store the subgraph name so that we can use it later as an edge connection
-                subgraph_name = f'step-{node.name}' # subgraph name
-                subgraph_string += subgraph_name + '\n' # add the subgraph name to the subgraph string
-                subgraph_string += f'{node.name}({node.name})' # add the actual node_name
-                if node.docstring and description: # if there is a docstring we that as an edge and if description is set to True
-                    subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'# and its description if any
+                subgraph_name = f"step-{node.name}"  # subgraph name
+                subgraph_string += (
+                    subgraph_name + "\n"
+                )  # add the subgraph name to the subgraph string
+                subgraph_string += (
+                    f"{node.name}({node.name})"  # add the actual node_name
+                )
+                if (
+                    node.docstring and description
+                ):  # if there is a docstring we that as an edge and if description is set to True
+                    subgraph_description = f' ~~~ {node.name}_description[["""{node.docstring}"""]];\n'  # and its description if any
                     subgraph_string += subgraph_description
                 else:
-                    #subgraph_string += f'\n{node.name}\n'
-                    subgraph_string += '\n'
-                subgraph_string += 'end;\n' # end the subgraph
-                for next_node in node.next: # iterate over the next of the node
+                    # subgraph_string += f'\n{node.name}\n'
+                    subgraph_string += "\n"
+                subgraph_string += "end;\n"  # end the subgraph
+                for next_node in node.next:  # iterate over the next of the node
                     # we point the edge of end of the current subgraph to the next subgraph
                     # this is so that when rendering the directional arrows do not overlap text
-                    edge_node = f'{subgraph_name} ==> step-{next_node};\n'# now iterate over next
+                    edge_node = f"{subgraph_name} ==> step-{next_node};\n"  # now iterate over next
                     # add the next node the edge
-                    subgraph_string += edge_node # add the edge notation
+                    subgraph_string += edge_node  # add the edge notation
 
                 # finally add the subgraph to the main mermaid js string
                 mermaid_js_string += subgraph_string
@@ -270,7 +274,13 @@ class DAGGenerator:
         return mermaid_js_string
 
     @classmethod
-    def dag(cls, flow_instance, save_file: bool = False, path: str = None, description: bool= True) -> str:
+    def dag(
+        cls,
+        flow_instance,
+        save_file: bool = False,
+        path: str = None,
+        description: bool = True,
+    ) -> str:
         """Class method to generate DAG from Flow in the form of html output
 
         We use the Flow class to generate a flowchart and return the html content. This method can
@@ -286,7 +296,9 @@ class DAGGenerator:
             content: The html data containing the flow diagram
         """
 
-        mermaid_js_string = cls._create_descriptive_dag(flow_instance=flow_instance, description=description)
+        mermaid_js_string = cls._create_descriptive_dag(
+            flow_instance=flow_instance, description=description
+        )
 
         root = os.path.dirname(os.path.abspath(__file__))
         templates_dir = os.path.join(root, "templates")
@@ -302,7 +314,7 @@ class DAGGenerator:
         filename = f"{flow_name.lower()}.html"  # Output eg. examplepandas.html
 
         if path:  # path has a value
-            os.makedirs(path, exist_ok=True) # create the directory if it does not exit
+            os.makedirs(path, exist_ok=True)  # create the directory if it does not exit
             filename = path + filename
             # if path has a value we can safely assume that they want to save to that path
             save_file = True  # we change the value to True to make sure we save i
@@ -321,7 +333,7 @@ class DAGGenerator:
         return content
 
     @classmethod
-    def display(cls, flow_instance, description:bool =True) -> None:
+    def display(cls, flow_instance, description: bool = True) -> None:
         """Class method to display the DAG of the Flow
 
         This method only works in IPython style notebooks. Does not work in script
@@ -341,7 +353,9 @@ class DAGGenerator:
         # graph LR;
         #   A--> B & C & D;
         # """"
-        graph = cls._create_descriptive_dag(flow_instance=flow_instance, description=description)
+        graph = cls._create_descriptive_dag(
+            flow_instance=flow_instance, description=description
+        )
         graphbytes = graph.encode("ascii")
         base64_bytes = base64.b64encode(graphbytes)
         base64_string = base64_bytes.decode("ascii")

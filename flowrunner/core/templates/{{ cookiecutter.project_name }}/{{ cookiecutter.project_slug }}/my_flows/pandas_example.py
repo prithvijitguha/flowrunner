@@ -7,7 +7,8 @@ from flowrunner import BaseFlow, end, start, step
 
 
 class ExamplePandas(BaseFlow):
-    """"An Example ETL workflow using Pandas"""
+    """ "An Example ETL workflow using Pandas"""
+
     @start
     @step(next=["transformation_function_1", "transformation_function_2"])
     def create_data(self):

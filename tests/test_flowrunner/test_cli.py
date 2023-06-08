@@ -12,6 +12,7 @@ def temp_directory_fixture(tmp_path_factory):
     folder = tmp_path_factory.mktemp("example_flowchart")
     return folder
 
+
 def test_validate():
     """Test to check cli::validate function"""
     runner = CliRunner()
@@ -41,12 +42,18 @@ def test_display(temp_directory_fixture):
     )
     assert result.exit_code == 0
 
+
 def test_display_description(temp_directory_fixture):
     """Test to check cli::display function, we use a temporary directory
     fixture for saving. We use the description flag"""
     runner = CliRunner()
     result = runner.invoke(
-        display, ["examples/example.py", f"--path={temp_directory_fixture}", f"--description={True}"]
+        display,
+        [
+            "examples/example.py",
+            f"--path={temp_directory_fixture}",
+            f"--description={True}",
+        ],
     )
     assert result.exit_code == 0
 
@@ -56,7 +63,8 @@ def test_display_directory(temp_directory_fixture):
     fixture for saving. We use the description flag"""
     runner = CliRunner()
     result = runner.invoke(
-        display_dir, ["examples", f"--path={temp_directory_fixture}", f"--description={True}"]
+        display_dir,
+        ["examples", f"--path={temp_directory_fixture}", f"--description={True}"],
     )
     assert result.exit_code == 0
 
