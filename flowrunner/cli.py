@@ -26,9 +26,12 @@ import os
 from pydoc import importfile
 
 import click
+from cookiecutter.main import cookiecutter
 
 from flowrunner import BaseFlow
 from flowrunner.system.logger import logger
+
+PROJECT_TEMPLATES_PATH = "../flowrunner/flowrunner/core/templates"  # the path to the cookie cutter version of this project
 
 
 @click.group()
@@ -193,6 +196,21 @@ def display_dir(directory: str, path: str = None, description: bool = True):
                 flow_class().dag(
                     save_file=True, path=path, description=description
                 )  # we keep save file as True, assumption being if we are running through cli then we are going to save
+
+
+@cli.command()
+@click.option("--output-dir", required=False)
+def init(output_dir="."):
+    """Command to create a project directory
+
+    Examples:
+        python -m flowrunner init
+
+    Returns:
+        Displays the flows
+    """
+    # Create a cookie cutter project
+    cookiecutter(PROJECT_TEMPLATES_PATH, output_dir=output_dir)
 
 
 if __name__ == "__main__":

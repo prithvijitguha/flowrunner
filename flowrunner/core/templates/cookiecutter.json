@@ -1,0 +1,10 @@
+{
+    "project_name": "Flowrunner_Project_Simple",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "analytics_engine": [
+        "pandas"
+    ],
+    "author": "Anonymous",
+    "email": "test@example.com",
+    "description": "Example of a long description of your project"
+}

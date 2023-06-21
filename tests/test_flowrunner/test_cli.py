@@ -4,7 +4,7 @@
 import pytest
 from click.testing import CliRunner
 
-from flowrunner.cli import cli, display, display_dir, run, show, validate
+from flowrunner.cli import cli, display, display_dir, init, run, show, validate
 
 
 @pytest.fixture(scope="session")
@@ -65,6 +65,17 @@ def test_display_directory(temp_directory_fixture):
     result = runner.invoke(
         display_dir,
         ["examples", f"--path={temp_directory_fixture}", f"--description={True}"],
+    )
+    assert result.exit_code == 0
+
+
+def test_init(temp_directory_fixture):
+    """Test to check cli::init function, we use a temporary directory
+    fixture for saving"""
+    runner = CliRunner()
+    result = runner.invoke(
+        init,
+        [f"--output-dir={temp_directory_fixture}"],
     )
     assert result.exit_code == 0
 
