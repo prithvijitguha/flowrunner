@@ -199,7 +199,8 @@ def display_dir(directory: str, path: str = None, description: bool = True):
 
 
 @cli.command()
-def init():
+@click.option("--output-dir", required=False)
+def init(output_dir="."):
     """Command to create a project directory
 
     Examples:
@@ -209,9 +210,7 @@ def init():
         Displays the flows
     """
     # Create a cookie cutter project
-    cookiecutter(
-        PROJECT_TEMPLATES_PATH,
-    )
+    cookiecutter(PROJECT_TEMPLATES_PATH, output_dir=output_dir)
 
 
 if __name__ == "__main__":
